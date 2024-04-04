@@ -3,6 +3,8 @@ import {
   LegitCheckPage,
   BrandsPage,
   ValidatorPage,
+  DetailValidatorPage,
+  AddNewValidatorPage,
   SettingsPage,
 } from './pages/dashboard';
 import { SignInPage, SignUpPage } from './pages/auth';
@@ -31,6 +33,26 @@ export const routes = [
         name: 'Validator Page',
         path: '/validator',
         element: <ValidatorPage />,
+      },
+      {
+        name: 'Validator Page',
+        path: '/validator/detail/1',
+        element: <DetailValidatorPage />,
+      },
+      {
+        name: 'Validator Page',
+        path: '/validator/detail/2',
+        element: <DetailValidatorPage />,
+      },
+      {
+        name: 'Validator Page',
+        path: '/validator/detail/3',
+        element: <DetailValidatorPage />,
+      },
+      {
+        name: 'Validator Page',
+        path: '/validator/add-new-validator',
+        element: <AddNewValidatorPage />,
       },
       {
         name: 'Settings Page',
