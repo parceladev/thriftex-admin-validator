@@ -14,7 +14,7 @@ const SubmitButton = (props) => {
 };
 
 SubmitButton.propTypes = {
-  name: PropTypes.string.isRequired, // Menandakan bahwa `placeholder` adalah prop yang diperlukan dan harus bertipe string
+  name: PropTypes.string.isRequired,
 };
 
 export default SubmitButton;

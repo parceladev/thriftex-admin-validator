@@ -7,7 +7,7 @@ function App() {
     <Routes>
       <Route path="/pages/*" element={<DashboardLayout />} />
       <Route path="/auth/*" element={<AuthLayout />} />
-      <Route path="*" element={<Navigate to="/pages/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/auth/sign-in" replace />} />
     </Routes>
   );
 }
