@@ -9,10 +9,10 @@ const Sidebar = () => {
           <a href="/pages/legit-check">Legit Check</a>
         </li>
         <li>
-          <a href="/pages/brands">Brands</a>
+          <a href="/pages/brands">Brands - Admin Feature</a>
         </li>
         <li>
-          <a href="/pages/validator">Validator</a>
+          <a href="/pages/validator">Validator - Admin Feature</a>
         </li>
         <li>
           <a href="/pages/settings">Settings</a>
