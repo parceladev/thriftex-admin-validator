@@ -2,7 +2,7 @@
 import React from 'react';
 import InputPassword from './InputPassword';
 import InputEmail from './InputEmail';
-import SubmitButton from './SubmitButton';
+// import SubmitButton from './SubmitButton';
 import BorderButton from './BorderButton';
 
 const FormSignIn = () => {
@@ -16,7 +16,13 @@ const FormSignIn = () => {
       <a href="" className="mb-4 text-sm font-bold">
         Forgot password?
       </a>
-      <SubmitButton name="Sign In" />
+      {/* <SubmitButton name="Sign In" /> */}
+      <a
+        href="/pages/dashboard"
+        className="w-full p-3 text-center rounded-md bg-black/30"
+      >
+        Sign In
+      </a>
       <BorderButton />
     </div>
   );

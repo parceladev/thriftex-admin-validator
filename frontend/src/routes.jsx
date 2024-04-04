@@ -14,11 +14,6 @@ export const routes = [
     pages: [
       {
         name: 'Dashboard Page',
-        path: '/',
-        element: <DashboardPage />,
-      },
-      {
-        name: 'Dashboard Page',
         path: '/dashboard',
         element: <DashboardPage />,
       },
