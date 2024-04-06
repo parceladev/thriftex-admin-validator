@@ -7,7 +7,7 @@ const InputEmail = () => {
       <input
         type="email"
         placeholder="Username or Email"
-        className="p-4 bg-[rgba(217,217,217,0.2)] placeholder-white w-full text-white rounded-md"
+        className="w-full p-4 text-black placeholder-black border border-black rounded-md"
       />
     </div>
   );
