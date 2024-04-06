@@ -8,6 +8,7 @@ import {
   AddNewValidatorPage,
   SettingsPage,
 } from './pages/dashboard';
+import { DashboardValidatorPage } from './pages/validator';
 import { SignInPage } from './pages/auth';
 
 export const routes = [
@@ -19,6 +20,11 @@ export const routes = [
         name: 'Dashboard Page',
         path: '/dashboard',
         element: <DashboardPage />,
+      },
+      {
+        name: 'Dashboard Validator Page',
+        path: '/dashboard-validator',
+        element: <DashboardValidatorPage />,
       },
       {
         name: 'Legit Check Page',

@@ -1,11 +1,14 @@
-import Header from './../../components/layouts/Header';
+import Header from "./../../components/layouts/Header";
+import { LegitCheckTable } from "../../components/Legit Check";
 
 const LegitCheckPage = () => {
   return (
     <section className="w-full">
       <div className="flex flex-col w-full">
         <Header />
-        <div className="p-8">Legit Check Page</div>
+        <div className="p-8">
+          <LegitCheckTable />
+        </div>
       </div>
     </section>
   );
