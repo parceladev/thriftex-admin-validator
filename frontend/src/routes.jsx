@@ -1,6 +1,7 @@
 import {
   DashboardPage,
   LegitCheckPage,
+  UsersPage,
   BrandsPage,
   ValidatorPage,
   DetailValidatorPage,
@@ -26,17 +27,22 @@ export const routes = [
       },
       {
         name: 'Brands Page',
+        path: '/users',
+        element: <UsersPage />,
+      },
+      {
+        name: 'Brands Page',
         path: '/brands',
         element: <BrandsPage />,
       },
       {
         name: 'Validator Page',
-        path: '/validator',
+        path: '/validators',
         element: <ValidatorPage />,
       },
       {
         name: 'Validator Page',
-        path: '/validator/detail/1',
+        path: '/validators/detail/1',
         element: <DetailValidatorPage />,
       },
       {
