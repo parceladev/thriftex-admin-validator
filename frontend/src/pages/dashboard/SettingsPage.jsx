@@ -1,11 +1,18 @@
 import AccountSettings from './../../components/settings/AccountSettings';
+import Header from './../../components/layouts/Header';
 
 const SettingsPage = () => {
   return (
-    <div>
-      <h1 className="mb-12">Settings Page</h1>
-      <AccountSettings></AccountSettings>
-    </div>
+    <section className="w-full">
+      <div className="flex flex-col w-full">
+        <Header />
+        <div className="p-8">
+          <div className="w-full p-8 border rounded shadow-md bg-primary">
+            <AccountSettings></AccountSettings>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

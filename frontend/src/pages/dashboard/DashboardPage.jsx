@@ -1,8 +1,13 @@
+import Header from './../../components/layouts/Header';
+
 const DashboardPage = () => {
   return (
-    <div className="flex">
-      <h1>Dashboard Page</h1>
-    </div>
+    <section className="w-full">
+      <div className="flex flex-col w-full">
+        <Header />
+        <div className="p-8">Dashboard</div>
+      </div>
+    </section>
   );
 };
 
