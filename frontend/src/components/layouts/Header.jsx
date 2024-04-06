@@ -28,19 +28,31 @@ const Header = () => {
         <div>
           <p>Admin/Validator (ROLE)</p>
         </div>
-        <div className="flex gap-4">
-          <div className="flex justify-center gap-2">
-            <img src="../../../public/icons/header/language-icon.svg" alt="" />
-            <p>EN</p>
-            <img src="../../../public/icons/header/down-icon.svg" alt="" />
+        <div className="flex gap-6">
+          <div className="flex">
+            <img
+              src="../../../public/icons/header/language-icon.svg"
+              alt=""
+              className="w-6 h-6"
+            />
+            <select
+              name="languages"
+              id="language-select"
+              className="cursor-pointer"
+            >
+              <option value="EN">EN</option>
+              <option value="ID">ID</option>
+            </select>
           </div>
-          <div className="flex gap-2">
+          <div className="flex">
             <img
               src="../../../public/icons/header/light-mode-icon.svg"
               alt=""
             />
-            <p>LIGHT</p>
-            <img src="../../../public/icons/header/down-icon.svg" alt="" />
+            <select name="themes" id="theme-select" className="cursor-pointer">
+              <option value="LIGHT">LIGHT</option>
+              <option value="DARK">DARK</option>
+            </select>
           </div>
         </div>
       </div>

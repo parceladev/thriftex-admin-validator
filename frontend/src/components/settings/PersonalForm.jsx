@@ -17,7 +17,7 @@ const PersonalForm = () => {
         id="username"
         htmlFor="username"
         placeholder="Username"
-        isMust="true"
+        isMust={true}
       />
       <InputForm
         label="Name"
@@ -25,7 +25,7 @@ const PersonalForm = () => {
         id="name"
         htmlFor="name"
         placeholder="Your Name"
-        isOptional="true"
+        isOptional={true}
       />
       <InputForm
         label="Phone Number"
@@ -33,16 +33,21 @@ const PersonalForm = () => {
         id="phone-number"
         htmlFor="phone-number"
         placeholder="Ypur Phone Number"
-        isOptional="true"
+        isOptional={true}
       />
       <InputForm
         label="Gender"
-        type="text"
+        type="select"
         id="gender"
         htmlFor="gender"
-        placeholder="Select Gender"
-        isOptional="true"
-      />
+        name="gender"
+        isOptional={true}
+      >
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </InputForm>
     </form>
   );
 };

@@ -4,7 +4,7 @@ const SubmitButton = (props) => {
   const { name } = props;
   return (
     <div>
-      <button className="w-full p-3 text-center rounded-md bg-black/30">
+      <button className="w-full p-3 text-center text-white rounded-md bg-black/30">
         {name}
       </button>
     </div>

@@ -10,7 +10,7 @@ const SecurityForm = () => {
         id="email"
         htmlFor="email"
         placeholder="Your Email"
-        isMust="true"
+        isMust={true}
       />
       <InputForm
         label="Old Password"
@@ -18,7 +18,7 @@ const SecurityForm = () => {
         id="old-password"
         htmlFor="old-password"
         placeholder="Old Your Password"
-        isMust="true"
+        isMust={true}
       />
       <InputForm
         label="New Password"
@@ -26,7 +26,7 @@ const SecurityForm = () => {
         id="new-password"
         htmlFor="new-password"
         placeholder="Your New Password"
-        isMust="true"
+        isMust={true}
       />
       <InputForm
         label="Confirm New Password"
@@ -34,8 +34,11 @@ const SecurityForm = () => {
         id="confirm-new-password"
         htmlFor="confirm-new-password"
         placeholder="Confirm Your New Password"
-        isMust="true"
+        isMust={true}
       />
+      <button className="px-4 py-3 text-lg text-white rounded-sm bg-secondary w-fit">
+        Change Password
+      </button>
     </form>
   );
 };
