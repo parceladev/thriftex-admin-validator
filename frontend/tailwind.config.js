@@ -6,8 +6,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#282828",
-        secondary: "#F4F4F4",
+        primary: "#FBFBFB",
+        secondary: "#282828",
+        buttonpending: "#8D8D8D"
       },
       fontFamily: {
         sans: ["Encode Sans Semi Condensed", "sans-serif"], // Font family dari Google Fonts

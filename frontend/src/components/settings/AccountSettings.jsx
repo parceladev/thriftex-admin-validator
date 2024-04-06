@@ -1,5 +1,5 @@
-import PersonalForm from './PersonalForm';
-import SecurityForm from './SecurityForm';
+import PersonalForm from "./PersonalForm";
+import SecurityForm from "./SecurityForm";
 
 const AccountSettings = () => {
   return (
