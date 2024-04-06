@@ -7,9 +7,9 @@ import BorderButton from './BorderButton';
 
 const FormSignIn = () => {
   return (
-    <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-white bg-white/35 w-full sm:w-[475px]">
+    <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
       <a href="" className="flex justify-center mb-4">
-        <img src="/src/assets/auth/form-logo.png" alt="" />
+        <img src="../../../public/generals/logo.png" alt="" />
       </a>
       <InputEmail />
       <InputPassword placeholder="Your Password" />
@@ -19,7 +19,7 @@ const FormSignIn = () => {
       {/* <SubmitButton name="Sign In" /> */}
       <a
         href="/pages/dashboard"
-        className="w-full p-3 text-center rounded-md bg-black/30"
+        className="w-full p-3 text-center text-white rounded-md bg-black/30"
       >
         Sign In
       </a>

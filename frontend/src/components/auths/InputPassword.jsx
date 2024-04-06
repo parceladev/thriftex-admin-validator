@@ -16,12 +16,12 @@ const InputPassword = (props) => {
       <input
         type={showPassword ? 'text' : 'password'}
         placeholder={placeholder}
-        className="p-4 bg-[rgba(217,217,217,0.2)] placeholder-white text-white w-full rounded-md"
+        className="w-full p-4 text-black placeholder-black border border-black rounded-md"
       />
       <FontAwesomeIcon
-        icon={showPassword ? faEyeSlash : faEye}
+        icon={showPassword ? faEye : faEyeSlash}
         onClick={togglePasswordVisibility}
-        className="absolute inset-y-0 my-auto text-white cursor-pointer right-4"
+        className="absolute inset-y-0 my-auto text-black cursor-pointer right-4"
       />
     </div>
   );

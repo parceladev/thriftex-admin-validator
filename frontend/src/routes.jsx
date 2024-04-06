@@ -8,7 +8,7 @@ import {
   AddNewValidatorPage,
   SettingsPage,
 } from './pages/dashboard';
-import { SignInPage, SignUpPage } from './pages/auth';
+import { SignInPage } from './pages/auth';
 
 export const routes = [
   {
@@ -75,11 +75,6 @@ export const routes = [
         name: 'Sign In',
         path: '/sign-in',
         element: <SignInPage />,
-      },
-      {
-        name: 'Sign Up',
-        path: '/sign-up',
-        element: <SignUpPage />,
       },
     ],
   },
