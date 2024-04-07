@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useEffect } from "react";
 import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
 import { useState } from "react";
 const initialData = [
@@ -41,6 +42,70 @@ const initialData = [
     authenticity: "-",
     date: "07-01-2024",
     validator: "Citra Dewi",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
+  },
+  {
+    id: "#4142-ONZX",
+    brand: "Vans",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "04-01-2024",
+    validator: "Alif Lakipadada",
+  },
+  {
+    id: "#7294-OXAZ",
+    brand: "Converse",
+    status: "Pending",
+    authenticity: "-",
+    date: "04-01-2024",
+    validator: "Bagus Nararya",
+  },
+  {
+    id: "#3142-ANZX",
+    brand: "Nike",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "05-01-2024",
+    validator: "Ayu Lestari",
+  },
+  {
+    id: "#8342-KMAZ",
+    brand: "Adidas",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "06-01-2024",
+    validator: "Bayu Anggara",
+  },
+  {
+    id: "#5294-LPAZ",
+    brand: "Puma",
+    status: "Pending",
+    authenticity: "-",
+    date: "07-01-2024",
+    validator: "Citra Dewi",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
   },
   {
     id: "#6142-UMZX",
@@ -98,25 +163,43 @@ const getAuthenticityLabel = (status, authenticity) => {
 
 const LegitCheckTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+
+  // Gunakan useEffect untuk mengatur filteredData saat komponen dimuat
+  const [filteredData, setFilteredData] = useState([]);
+  useEffect(() => {
+    setFilteredData(initialData);
+  }, []);
+
+  // Hitung jumlah halaman berdasarkan filteredData
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Kalkulasikan item yang harus ditampilkan di halaman saat ini
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const handleSearch = () => {
-    setFilteredData(
-      initialData.filter((item) =>
-        item.id.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    const filtered = initialData.filter((item) =>
+      item.id.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    setFilteredData(filtered);
+    setCurrentPage(1); // Reset ke halaman pertama setelah pencarian
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
+  const handleNextPage = () => {
+    setCurrentPage(prevCurrentPage => prevCurrentPage + 1);
   };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(prevCurrentPage => prevCurrentPage - 1);
+  };
+
   return (
     <section>
       <div className="flex items-center justify-center mb-4">
@@ -172,7 +255,7 @@ const LegitCheckTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
+            {currentItems.map((item, index) => (
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -210,6 +293,15 @@ const LegitCheckTable = () => {
           </tbody>
         </table>
       </div>
+      <div className="flex justify-between items-center mt-4">
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            Halaman Sebelumnya
+          </button>
+          <span>Halaman {currentPage} dari {totalPages}</span>
+          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+            Halaman Selanjutnya
+          </button>
+        </div>
     </section>
   );
 };
