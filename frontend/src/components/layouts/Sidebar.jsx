@@ -104,6 +104,8 @@ const Sidebar = () => {
             </NavLink>
           </nav>
         </div>
+
+        {/* Role Validator */}
         <div>
           <p className="pl-5 text-black text-md">Menu Validator</p>
           <nav className="mt-2">
@@ -119,6 +121,35 @@ const Sidebar = () => {
                   alt=""
                 />
                 <p>Dashboard</p>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/pages/legit-check-validator"
+              className={({ isActive }) =>
+                isActive ? activeLinkClasses : linkClasses
+              }
+              end
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src="../../../public/icons/sidebar/legit-check-icon.svg"
+                  alt=""
+                />
+                <p>Legit Checks</p>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/pages/settings-validator"
+              className={({ isActive }) =>
+                isActive ? activeLinkClasses : linkClasses
+              }
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src="../../../public/icons/sidebar/settings-icon.svg"
+                  alt=""
+                />
+                <p>Account Settings</p>
               </div>
             </NavLink>
           </nav>
