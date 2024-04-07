@@ -3,7 +3,7 @@ import {
   TotalUserIcon,
   TotalValidatorIcon,
   TotalCheckedIcon,
-  OnProgressIcon,
+  PendingIcon,
 } from "../../../public/icons/dashboard";
 const Statistic = () => {
   return (
@@ -47,7 +47,7 @@ const Statistic = () => {
         </div>
         <div className="p-8 flex justify-between items-center border-[#13A9D9] border-2 rounded-md">
           <div className="flex flex-col gap-3">
-            <img src={OnProgressIcon} alt="Total Legit Check" />
+            <img src={PendingIcon} alt="Total Legit Check" />
             <h2 className="text-[18px]">3089</h2>
           </div>
           <div className="flex self-end">
