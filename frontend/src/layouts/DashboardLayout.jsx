@@ -1,20 +1,20 @@
-import { Routes, Route } from 'react-router-dom';
-import { Sidebar } from '../components/layouts';
-import routes from '../routes';
+import { Routes, Route } from "react-router-dom";
+import { Sidebar } from "../components/layouts";
+import routes from "../routes";
 
 export function DashboardLayout() {
   return (
     <section>
       <div className="flex w-full">
-        <Sidebar routes={routes} />
+        <Sidebar /> {/* Hapus prop `routes` jika tidak diperlukan oleh Sidebar */}
         <div className="w-full h-auto ml-72">
           <Routes>
-            {routes.map(
-              ({ layout, pages }) =>
-                layout === 'DashboardLayout' &&
-                pages.map(({ path, element }) => (
-                  <Route exact key={path} path={path} element={element} />
+            {routes.map(({ layout, pagesadmin }) =>
+              layout === 'DashboardLayout' && pagesadmin // Pastikan pagesadmin terdefinisi
+              ? pagesadmin.map(({ path, element }) => (
+                  <Route key={path} path={path} element={element} />
                 ))
+              : null // Tambahkan kondisi null untuk menghindari error jika pagesadmin tidak ada
             )}
           </Routes>
         </div>
@@ -23,6 +23,6 @@ export function DashboardLayout() {
   );
 }
 
-DashboardLayout.displayName = '/src/layouts/DashboardLayout.jsx';
+DashboardLayout.displayName = "/src/layouts/DashboardLayout.jsx";
 
 export default DashboardLayout;
