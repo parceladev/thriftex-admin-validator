@@ -18,13 +18,13 @@ const FormSignIn = () => {
       </a>
       {/* <SubmitButton name="Sign In" /> */}
       <a
-        href="/admin/dashboard"
+        href="/admin-role/dashboard"
         className="w-full p-3 text-center text-white rounded-md bg-black/30"
       >
         Sign In as Admin
       </a>
       <a
-        href="/validator/dashboard"
+        href="/validator-role/dashboard"
         className="w-full p-3 text-center text-white rounded-md bg-black/30"
       >
         Sign In as Validator

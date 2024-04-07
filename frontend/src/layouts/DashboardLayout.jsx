@@ -4,7 +4,7 @@ import routes from '../routes';
 
 export function DashboardLayout() {
   const location = useLocation();
-  const isValidator = location.pathname.includes('/validator');
+  const isValidator = location.pathname.includes('/validator-role');
 
   return (
     <section>

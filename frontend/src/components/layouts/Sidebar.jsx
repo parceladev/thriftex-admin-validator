@@ -9,8 +9,8 @@ const Sidebar = () => {
   const linkClasses = `${baseLinkClasses} text-black hover:bg-gray-700 hover:text-white`;
   const activeLinkClasses = `${baseLinkClasses} bg-gray-700 text-white`;
 
-  const isValidator = location.pathname.includes('/validator');
-  const basePath = isValidator ? '/validator' : '/admin'; // Tentukan basePath berdasarkan role
+  const isValidator = location.pathname.includes('/validator-role');
+  const basePath = isValidator ? '/validator-role' : '/admin-role'; // Tentukan basePath berdasarkan role
   const sidebarType = isValidator ? 'sidebarValidator' : 'sidebarAdmin';
 
   return (
