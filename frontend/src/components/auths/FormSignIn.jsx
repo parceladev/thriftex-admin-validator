@@ -18,10 +18,16 @@ const FormSignIn = () => {
       </a>
       {/* <SubmitButton name="Sign In" /> */}
       <a
-        href="/pages/dashboard"
+        href="/admin/dashboard"
         className="w-full p-3 text-center text-white rounded-md bg-black/30"
       >
-        Sign In
+        Sign In as Admin
+      </a>
+      <a
+        href="/validator/dashboard"
+        className="w-full p-3 text-center text-white rounded-md bg-black/30"
+      >
+        Sign In as Validator
       </a>
       <BorderButton />
     </div>

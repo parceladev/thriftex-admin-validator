@@ -4,10 +4,8 @@ import {
   UsersPage,
   BrandsPage,
   ValidatorPage,
-  DetailValidatorPage,
-  AddNewValidatorPage,
   SettingsPage,
-} from "./pages/dashboard";
+} from './pages/admin';
 
 import {
   legitCheckIcon,
@@ -16,96 +14,88 @@ import {
   settingsIcon,
   userIcon,
   validatorIcon,
-} from "../public/icons/sidebar";
+} from '../public/icons/sidebar';
 
 import {
   DashboardValidatorPage,
   LegitCheckValidatorPage,
   SettingsValidatorPage,
-} from "./pages/validator";
+} from './pages/validator';
 
-import { SignInPage } from "./pages/auth";
+import { SignInPage } from './pages/auth';
 
 export const routes = [
   {
-    title: "Pages",
-    layout: "DashboardLayout",
-    pagesadmin: [
-      // Role Admin
+    title: 'Pages',
+    layout: 'DashboardLayout',
+    sidebarAdmin: [
       {
         icon: dashboardIcon,
-        name: "Dashboard Page",
-        path: "/dashboard",
+        name: 'Dashboard',
+        path: '/dashboard',
         element: <DashboardPage />,
       },
       {
         icon: legitCheckIcon,
-        name: "Legit Check Page",
-        path: "/legit-check",
+        name: 'Legit Check',
+        path: '/legit-check',
         element: <LegitCheckPage />,
       },
       {
         icon: userIcon,
-        name: "Users Page",
-        path: "/users",
+        name: 'Users',
+        path: '/users',
         element: <UsersPage />,
       },
       {
         icon: brandIcon,
-        name: "Brands Page",
-        path: "/brands",
+        name: 'Brands',
+        path: '/brands',
         element: <BrandsPage />,
       },
       {
         icon: validatorIcon,
-        name: "Validator Page",
-        path: "/validators",
+        name: 'Validator',
+        path: '/validators',
         element: <ValidatorPage />,
       },
       {
-        name: "Detail Validator Page",
-        path: "/validators/detail/1",
-        element: <DetailValidatorPage />,
-      },
-      {
-        name: "Add New Validator Page",
-        path: "/validator/add-new-validator",
-        element: <AddNewValidatorPage />,
-      },
-      {
         icon: settingsIcon,
-        name: "Settings Page",
-        path: "/settings",
+        name: 'Settings',
+        path: '/settings',
         element: <SettingsPage />,
       },
-
-      // Role Validator
     ],
-    pagesvalidator: [
+    sidebarValidator: [
       {
-        name: "Dashboard Validator Page",
-        path: "/dashboard-validator",
+        icon: dashboardIcon,
+        name: 'Dashboard',
+        path: '/dashboard',
         element: <DashboardValidatorPage />,
       },
       {
-        name: "Legit Check Validator Page",
-        path: "/legit-check-validator",
+        icon: legitCheckIcon,
+        name: 'Legit Check',
+        path: '/legit-check',
         element: <LegitCheckValidatorPage />,
       },
       {
-        name: "Settings Validator Page",
-        path: "/settings-validator",
+        icon: settingsIcon,
+        name: 'Settings',
+        path: '/settings',
         element: <SettingsValidatorPage />,
       },
     ],
+    pagesRoleAdmin: [],
+    pagesRoleValidator: [],
   },
   {
-    title: "Auth Pages",
-    layout: "AuthLayout",
+    title: 'Auth Pages',
+    layout: 'AuthLayout',
     pages: [
       {
-        name: "Sign In",
-        path: "/sign-in",
+        name: 'Sign In',
+        path: '/sign-in',
         element: <SignInPage />,
       },
     ],

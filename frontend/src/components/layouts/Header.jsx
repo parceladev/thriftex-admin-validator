@@ -1,7 +1,14 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const role = location.pathname.includes('/admin')
+    ? 'Admin'
+    : location.pathname.includes('/validator')
+    ? 'Validator'
+    : 'Unknown';
 
   return (
     <header className="flex flex-col w-full">
@@ -26,7 +33,7 @@ const Header = () => {
       </div>
       <div className="flex justify-between px-8 py-3 border-b-2 border-gray-200 shadow-md">
         <div>
-          <p>Admin/Validator (ROLE)</p>
+          <p>{role} (ROLE)</p>
         </div>
         <div className="flex gap-6">
           <div className="flex">
