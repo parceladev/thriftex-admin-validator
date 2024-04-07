@@ -8,7 +8,8 @@ module.exports = {
       colors: {
         primary: "#FBFBFB",
         secondary: "#282828",
-        buttonpending: "#8D8D8D"
+        buttonpending: "#8D8D8D",
+        buttonangle: "#D9E0E7"
       },
       fontFamily: {
         sans: ["Encode Sans Semi Condensed", "sans-serif"], // Font family dari Google Fonts
