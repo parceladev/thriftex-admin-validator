@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 
-const ModalDeleteBrand = ({ isOpen, onClose, onDeleteAccount }) => {
+const ModalDeleteUser = ({ isOpen, onClose, onDeleteAccount }) => {
   if (!isOpen) return null;
 
   return (
@@ -57,4 +57,4 @@ const ModalDeleteBrand = ({ isOpen, onClose, onDeleteAccount }) => {
   );
 };
 
-export default ModalDeleteBrand;
+export default ModalDeleteUser;

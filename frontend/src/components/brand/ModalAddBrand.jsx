@@ -1,32 +1,133 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { IoCloseSharp } from 'react-icons/io5';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
-const ModalAddBrand = ({ isOpen, onClose }) => {
+const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <div className="mt-3 text-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Add Brand</h3>
-          <div className="mt-2 px-7 py-3">
-            <input
-              type="text"
-              placeholder="Enter brand name"
-              className="mt-5 mb-3 w-full border p-2"
-            />
-            <div className="flex justify-center items-center w-full">
-              <label className="border-dashed border-2 border-gray-300 w-full p-12 flex justify-center items-center">
-                <div className="text-gray-700">
-                  <p>Make sure to upload your logo with transparent background image</p>
-                  <input type="file" className="hidden" />
+    <div
+      className="fixed z-10 inset-0 overflow-y-auto"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
+        <div
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          aria-hidden="true"
+        ></div>
+        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+          &#8203;
+        </span>
+        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div className="bg-white pb-4 sm:pb-4">
+            <div className="sm:flex sm:items-start">
+              <div className="mt-3 text-center sm:mt-0 w-full sm:text-left">
+                <div className="w-full flex justify-between border-b p-3">
+                  <h3
+                    className="text-xl px-6 py-1 leading-6 font-medium text-gray-900"
+                    id="modal-title"
+                  >
+                    Add Brand
+                  </h3>
+                  <button
+                    onClick={onClose}
+                    type="button"
+                    className="mt-3 w-full inline-flex justify-center px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  >
+                    <IoCloseSharp />
+                  </button>
                 </div>
-              </label>
+                <div className="mt-2">
+                  <form>
+                    <div className="flex flex-wrap w-full sm:items-center p-6">
+                      <label
+                        htmlFor="full-name"
+                        className="block w-full text-md font-medium text-gray-700"
+                      >
+                        Brand Name <span className="text-gray-300">(Required)</span>
+                      </label>
+                      <div className="mt-1 w-full">
+                        <input
+                          id="full-name"
+                          name="full-name"
+                          type="text"
+                          autoComplete="name"
+                          required
+                          className="appearance-none block w-full px-3 py-2 border-b-2 border-gray-600 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-600 focus:border-gray-500 sm:text-sm"
+                          placeholder="Enter full name"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap w-full sm:items-center p-6">
+                      <label
+                        htmlFor="confirm-password"
+                        className="block w-full text-md font-medium text-gray-700"
+                      >
+                        Brand logo <span className="text-gray-300">(Required)</span>
+                      </label>
+                      <div className="mt-1 relative w-full">
+                        <p className="text-gray-600">
+                          Make sure to your logo with tarnsparrent <br />
+                          background image.
+                        </p>
+                        <div className="mt-1 relative w-full">
+                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div className="space-y-1 text-center">
+                              <svg
+                                className="mx-auto h-12 w-12 text-gray-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M3 7v6a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7m-7 4V3H3v12a1 1 0 001 1h3m10 0h3a1 1 0 001-1V3h-7v8z"
+                                />
+                              </svg>
+                              <div className="flex text-sm text-gray-600">
+                                <label
+                                  htmlFor="file-upload"
+                                  className="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500"
+                                >
+                                  <span className="focus:outline-none focus:border focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Upload a file
+                                  </span>
+                                  <input
+                                    id="file-upload"
+                                    name="file-upload"
+                                    type="file"
+                                    className="sr-only"
+                                  />
+                                </label>
+                                <p className="pl-1">or drag and drop</p>
+                              </div>
+                              <p className="text-xs text-gray-500">PNG up to 10MB</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="items-center px-4 py-3">
+          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
-              id="ok-btn"
-              className="px-4 py-2 bg-gray-800 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={onCreateAccount}
+              type="button"
+              className="py-3 w-full mb-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
             >
               CREATE ACCOUNT
             </button>
