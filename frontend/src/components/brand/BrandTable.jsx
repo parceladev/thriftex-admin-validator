@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import ModalAddBrand from './ModalAddBrand';
 import { FaPlus } from 'react-icons/fa6';
 import { FaTrashCan } from 'react-icons/fa6';
 import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
+import ModalAddBrand from './ModalAddBrand';
+import ModalDeleteBrand from './ModalDeleteBrand'
 
 const initialData = [
     {
@@ -46,7 +47,7 @@ const initialData = [
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredData, setFilteredData] = useState(initialData);
     const [isModalAddOpen, setIsModalAddOpen] = useState(false);
-    // const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+    const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   
     const handleSearchChange = (event) => {
       setSearchTerm(event.target.value);
@@ -72,13 +73,13 @@ const initialData = [
       setIsModalAddOpen(false);
     };
   
-    // const openModalDeleteBrand = () => {
-    //   setIsModalDeleteOpen(true);
-    // };
+    const openModalDeleteBrand = () => {
+      setIsModalDeleteOpen(true);
+    };
   
-    // const closeModalDeleteBrand = () => {
-    //   setIsModalDeleteOpen(false);
-    // };
+    const closeModalDeleteBrand = () => {
+      setIsModalDeleteOpen(false);
+    };
   
     return (
       <section>
@@ -136,7 +137,7 @@ const initialData = [
                 <th scope="col" className="py-3 px-6">
                   Date Creation
                 </th>
-                <th scope="col" className="py-3 px-6">
+                <th scope="col" className="py-3 px-6 text-center">
                   Action
                 </th>
               </tr>
@@ -152,21 +153,21 @@ const initialData = [
                   </th>
                   <td className="py-4 px-6">{item.username}</td>
                   <td className="py-4 px-6">{item.dateCreation}</td>
-                  {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                    <button type="button" className="" onClick={openModalDelete} aria-label="Delete">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                    <button type="button" className="" onClick={openModalDeleteBrand} aria-label="Delete">
                       <FaTrashCan className="h-5 w-5 text-gray-500" />
                     </button>
-                  </td> */}
+                  </td>
                   {/* <td className="py-4 px-6">{item.validator}</td> */}
                 </tr>
               ))}
             </tbody>
           </table>
-          {/* <ModalDelete
+          <ModalDeleteBrand
             isOpen={isModalDeleteOpen}
-            onClose={closeModalDelete}
+            onClose={closeModalDeleteBrand}
             onCreateAccount={() => console.log('Create Account')}
-          /> */}
+          />
         </div>
       </section>
     );

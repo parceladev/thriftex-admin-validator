@@ -1,11 +1,12 @@
 import Header from './../../components/layouts/Header';
+import { UserTable } from '../../components/user management';
 
 const UsersPage = () => {
   return (
     <section className="w-full">
-      <div className="flex flex-col w-full">
-        <Header />
-        <div className="p-8">User Page</div>
+      <Header />
+      <div className="flex flex-col w-full p-8">
+        <UserTable />
       </div>
     </section>
   );

@@ -249,7 +249,7 @@ const ValidatorTable = () => {
               <th scope="col" className="py-3 px-6">
                 Date Creation
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="py-3 px-6 text-center">
                 Action
               </th>
             </tr>
