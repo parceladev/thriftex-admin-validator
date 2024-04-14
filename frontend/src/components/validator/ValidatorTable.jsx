@@ -2,6 +2,8 @@
 import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
 import { FaPlus } from 'react-icons/fa6';
 import { FaTrashCan } from 'react-icons/fa6';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import ModalValidator from './ModalValidator';
 import ModalDelete from './ModalDelete';
@@ -152,11 +154,24 @@ const initialData = [
 const ValidatorTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState(initialData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalRecords = filteredData.length;
+
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
   };
 
   const handleSearch = () => {
@@ -164,6 +179,17 @@ const ValidatorTable = () => {
       initialData.filter((item) => item.username.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+  };
+
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -282,6 +308,48 @@ const ValidatorTable = () => {
           onClose={closeModalDelete}
           onCreateAccount={() => console.log('Create Account')}
         />
+      </div>
+      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
+        <div className="flex justify-center items-center gap-5">
+          <div>
+            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
+              Display
+            </label>
+            <select
+              id="itemsPerPage"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <span className="font-sans font-light  text-[16px]">
+            Showing {showingFrom} to {showingTo} of {totalRecords} records
+          </span>
+        </div>
+
+        <div className="flex gap-2 justify-center items-center ">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
+          >
+            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
+          </button>
+          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
+            <p>{currentPage}</p>
+          </div>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
+          >
+            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
+          </button>
+        </div>
       </div>
     </section>
   );
