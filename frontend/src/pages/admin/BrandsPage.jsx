@@ -1,11 +1,12 @@
+import { BrandTable } from '../../components/brand';
 import Header from './../../components/layouts/Header';
 
 const BrandsPage = () => {
   return (
     <section className="w-full">
-      <div className="flex flex-col w-full">
         <Header />
-        <div className="p-8">Brands Page</div>
+      <div className="flex flex-col w-full p-8">
+        <BrandTable />
       </div>
     </section>
   );
