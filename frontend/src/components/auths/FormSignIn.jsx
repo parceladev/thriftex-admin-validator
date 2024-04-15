@@ -1,48 +1,53 @@
-import { useState, useEffect } from "react";
-import InputEmail from "./InputEmail";
-import InputPassword from "./InputPassword";
-import BorderButton from "./BorderButton";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { saveToken, validateToken } from "./tokenUtilities";
+import { useState } from 'react';
+import InputEmail from './InputEmail';
+import InputPassword from './InputPassword';
+import BorderButton from './BorderButton';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { saveToken, validateToken } from '../../utils/TokenUtilities';
 
 const FormSignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("email", email);
-      formData.append("password", password);
+      formData.append('email', email);
+      formData.append('password', password);
 
       const response = await axios({
-        method: "post",
-        url: "http://localhost/rest.thriftex/api/users/login",
+        method: 'post',
+        url: 'http://localhost/rest.thriftex/api/users/login',
         data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       const data = response.data;
 
       if (data.status) {
-        const token = saveToken(data.token);
-        console.log(token);
+        if (!data.token) {
+          console.error('Token is undefined or null.');
+        } else {
+          saveToken(data.token);
+        }
+
         const validation = validateToken(data.token);
         if (validation.valid) {
-          console.log("Token is valid:", validation.decoded);
-          if (validation.decoded.role === "validator") {
-            navigate("/validator-role/dashboard");
-          } else if (validation.decoded.role === "admin") {
-            navigate("/admin-role/dashboard");
+          // console.log('Token is valid:', validation.decoded);
+          if (validation.decoded.role === 'validator') {
+            navigate('/validator-role/dashboard');
+          } else if (validation.decoded.role === 'admin') {
+            navigate('/admin-role/dashboard');
           } else {
-            console.error("You Dont Allowed Access", validation.decoded.role);
+            console.error('You Dont Allowed Access', validation.decoded.role);
+            navigate('/');
           }
         } else {
-          throw new Error("Invalid token");
+          throw new Error('Invalid token');
         }
       } else {
         setErrorMessage(data.message);
@@ -50,8 +55,8 @@ const FormSignIn = () => {
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
-        : "Login failed. Please try again.";
-      console.error("Login Error:", errorMessage);
+        : 'Login failed. Please try again.';
+      console.error('Login Error:', errorMessage);
       setErrorMessage(errorMessage);
     }
   };
@@ -84,7 +89,7 @@ const FormSignIn = () => {
         <BorderButton />
       </form>
       {errorMessage && (
-        <p className="text-red-500 text-center">{errorMessage}</p>
+        <p className="text-center text-red-500">{errorMessage}</p>
       )}
     </div>
   );

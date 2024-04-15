@@ -1,9 +1,8 @@
-// App.js
-import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthLayout } from "./layouts/AuthLayout";
-import { DashboardLayout } from "./layouts/DashboardLayout";
-import NotFoundPage from "./pages/NotFoundPage";
-import { ProtectedRoute } from "./components/auths/ProtectedRoute";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthLayout } from './layouts/AuthLayout';
+import { DashboardLayout } from './layouts/DashboardLayout';
+import NotFoundPage from './pages/NotFoundPage';
+import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
   return (
@@ -12,11 +11,11 @@ function App() {
       <Route path="/auth/*" element={<AuthLayout />} />
       <Route
         path="/admin-role/*"
-        element={<ProtectedRoute element={<DashboardLayout />} />}
+        element={<PrivateRoute element={<DashboardLayout />} />}
       />
       <Route
         path="/validator-role/*"
-        element={<ProtectedRoute element={<DashboardLayout />} />}
+        element={<PrivateRoute element={<DashboardLayout />} />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

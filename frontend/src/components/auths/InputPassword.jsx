@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import Proptypes from "prop-types";
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import Proptypes from 'prop-types';
 
-const InputPassword = ({ value, onChange, placeholder }) => {
+const InputPassword = (props) => {
+  const { value, onChange, placeholder } = props;
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -13,7 +14,7 @@ const InputPassword = ({ value, onChange, placeholder }) => {
   return (
     <div className="relative w-full">
       <input
-        type={showPassword ? "text" : "password"}
+        type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
@@ -30,9 +31,9 @@ const InputPassword = ({ value, onChange, placeholder }) => {
   );
 };
 
-InputPassword.prototype = {
-  value: Proptypes.string,
-  onChange: Proptypes.string,
+InputPassword.propTypes = {
+  value: Proptypes.string.isRequired,
+  onChange: Proptypes.func,
   placeholder: Proptypes.string,
 };
 
