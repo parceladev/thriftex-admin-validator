@@ -11,9 +11,7 @@ const ValidatorPage = () => {
         <Header/>
       <div className="flex flex-col w-full p-8">
         <ValidatorTable/>
-        {/* <Header />
-        <SearchBar/>
-        <DataTable data={dummyData} itemsPerPage={10}/> */}
+        
       </div>
     </section>
   );
