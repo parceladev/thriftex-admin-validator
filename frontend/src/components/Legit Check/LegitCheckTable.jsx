@@ -1,9 +1,57 @@
 /* eslint-disable no-unused-vars */
 import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 const initialData = [
+  {
+    id: "#4142-ONZX",
+    brand: "Vans",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "04-01-2024",
+    validator: "Alif Lakipadada",
+  },
+  {
+    id: "#7294-OXAZ",
+    brand: "Converse",
+    status: "Pending",
+    authenticity: "-",
+    date: "04-01-2024",
+    validator: "Bagus Nararya",
+  },
+  {
+    id: "#3142-ANZX",
+    brand: "Nike",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "05-01-2024",
+    validator: "Ayu Lestari",
+  },
+  {
+    id: "#8342-KMAZ",
+    brand: "Adidas",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "06-01-2024",
+    validator: "Bayu Anggara",
+  },
+  {
+    id: "#5294-LPAZ",
+    brand: "Puma",
+    status: "Pending",
+    authenticity: "-",
+    date: "07-01-2024",
+    validator: "Citra Dewi",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
+  },
   {
     id: "#4142-ONZX",
     brand: "Vans",
@@ -198,7 +246,7 @@ const LegitCheckTable = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item, index) => (
+            {currentItems.map((item, index) => (
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -239,7 +287,10 @@ const LegitCheckTable = () => {
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
         <div className="flex justify-center items-center gap-5">
           <div>
-            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
+            <label
+              htmlFor="itemsPerPage"
+              className="mx-3 font-sans font-light text-[16px]"
+            >
               Display
             </label>
             <select

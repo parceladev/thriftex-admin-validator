@@ -1,175 +1,78 @@
-import { useState } from 'react';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { FaTrashCan } from 'react-icons/fa6';
-import ModalDeleteUser from './ModalDeleteUser';
-
-const initialData = [
-  {
-    id: 1,
-    username: 'DavidHernandez',
-    email: 'david@example.com',
-    dateCreation: '2024-04-16',
-  },
-  {
-    id: 2,
-    username: 'AmandaMartinez',
-    email: 'amanda@example.com',
-    dateCreation: '2024-04-17',
-  },
-  {
-    id: 3,
-    username: 'JamesRodriguez',
-    email: 'james@example.com',
-    dateCreation: '2024-04-18',
-  },
-  {
-    id: 4,
-    username: 'MelissaLopez',
-    email: 'melissa@example.com',
-    dateCreation: '2024-04-19',
-  },
-  {
-    id: 5,
-    username: 'DanielGonzalez',
-    email: 'daniel@example.com',
-    dateCreation: '2024-04-20',
-  },
-  {
-    id: 6,
-    username: 'LaurenPerez',
-    email: 'lauren@example.com',
-    dateCreation: '2024-04-21',
-  },
-  {
-    id: 7,
-    username: 'KevinTaylor',
-    email: 'kevin@example.com',
-    dateCreation: '2024-04-22',
-  },
-  {
-    id: 8,
-    username: 'AshleyMoore',
-    email: 'ashley@example.com',
-    dateCreation: '2024-04-23',
-  },
-  {
-    id: 9,
-    username: 'RyanClark',
-    email: 'ryan@example.com',
-    dateCreation: '2024-04-24',
-  },
-  {
-    id: 10,
-    username: 'RachelScott',
-    email: 'rachel@example.com',
-    dateCreation: '2024-04-25',
-  },
-  {
-    id: 11,
-    username: 'AlexSmith',
-    email: 'alexsmith@example.com',
-    dateCreation: '2024-04-26',
-  },
-  {
-    id: 12,
-    username: 'MariaGarcia',
-    email: 'mariagarcia@example.com',
-    dateCreation: '2024-04-27',
-  },
-  {
-    id: 13,
-    username: 'MichaelJohnson',
-    email: 'michaeljohnson@example.com',
-    dateCreation: '2024-04-28',
-  },
-  {
-    id: 14,
-    username: 'JessicaWilliams',
-    email: 'jessicawilliams@example.com',
-    dateCreation: '2024-04-29',
-  },
-  {
-    id: 15,
-    username: 'RobertBrown',
-    email: 'robertbrown@example.com',
-    dateCreation: '2024-04-30',
-  },
-  {
-    id: 16,
-    username: 'LindaDavis',
-    email: 'lindadavis@example.com',
-    dateCreation: '2024-05-01',
-  },
-  {
-    id: 17,
-    username: 'JohnMiller',
-    email: 'johnmiller@example.com',
-    dateCreation: '2024-05-02',
-  },
-  {
-    id: 18,
-    username: 'SarahWilson',
-    email: 'sarahwilson@example.com',
-    dateCreation: '2024-05-03',
-  },
-  {
-    id: 19,
-    username: 'JamesTaylor',
-    email: 'jamestaylor@example.com',
-    dateCreation: '2024-05-04',
-  },
-  {
-    id: 20,
-    username: 'PatriciaAnderson',
-    email: 'patriciaanderson@example.com',
-    dateCreation: '2024-05-05',
-  },
-];
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FaTrashCan } from "react-icons/fa6";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 const UserTable = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [data, setData] = useState([]); // Data keseluruhan yang didapatkan dari API
+  const [filteredData, setFilteredData] = useState([]); // Data yang akan ditampilkan setelah filter
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
+  useEffect(() => {
+    fetchUserData();
+  }, [currentPage, itemsPerPage, searchTerm]);
+
+  const fetchUserData = async () => {
+    const token = Cookies.get("token");
+    try {
+      const response = await axios.get(
+        `http://localhost/rest.thriftex/api/users/list?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
+        { headers: { Authorization: `${token}` } }
+      );
+      if (response.data && response.data.data) {
+        const apiData = response.data.data;
+        setData(apiData.data); 
+        setFilteredData(apiData.data); 
+        setTotalRecords(apiData.total_data); 
+      } else {
+        console.error("Error fetching data:", response.data.message);
+        setData([]);
+        setFilteredData([]);
+        setTotalRecords(0);
+      }
+    } catch (error) {
+      console.error("Error with fetching table data:", error);
+      setData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+    }
+  };
+  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const handleSearch = () => {
-    setFilteredData(
-      initialData.filter((item) => item.username.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    } else {
+      fetchUserData(); // Jika sudah di halaman 1, tetap panggil fetch
+    }
   };
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+    setCurrentPage(1);
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+    if (currentPage < Math.ceil(totalRecords / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  };
-
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -181,6 +84,17 @@ const UserTable = () => {
     setIsModalDeleteOpen(false);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  };
+
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo =
+    currentPage * itemsPerPage < totalRecords
+      ? currentPage * itemsPerPage
+      : totalRecords;
   return (
     <section>
       <div className="flex items-center justify-center mb-4">
@@ -193,7 +107,7 @@ const UserTable = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               onKeyPress={(event) => {
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   handleSearch();
                 }
               }}
@@ -231,7 +145,10 @@ const UserTable = () => {
           </thead>
           <tbody>
             {filteredData.map((item, index) => (
-              <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr
+                key={index}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
                 <th
                   scope="row"
                   className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -240,9 +157,14 @@ const UserTable = () => {
                 </th>
                 <td className="py-4 px-6">{item.username}</td>
                 <td className="py-4 px-6">{item.email}</td>
-                <td className="py-4 px-6">{item.dateCreation}</td>
+                <td className="py-4 px-6">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                  <button type="button" className="" onClick={openModalDelete} aria-label="Delete">
+                  <button
+                    type="button"
+                    className=""
+                    onClick={openModalDelete}
+                    aria-label="Delete"
+                  >
                     <FaTrashCan className="h-5 w-5 text-gray-500" />
                   </button>
                 </td>
@@ -254,13 +176,16 @@ const UserTable = () => {
         <ModalDeleteUser
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
         <div className="flex justify-center items-center gap-5">
           <div>
-            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
+            <label
+              htmlFor="itemsPerPage"
+              className="mx-3 font-sans font-light text-[16px]"
+            >
               Display
             </label>
             <select
