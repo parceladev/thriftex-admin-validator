@@ -17,6 +17,7 @@ const PersonalForm = () => {
         id="username"
         htmlFor="username"
         placeholder="Username"
+        value="Gerry"
         isMust={true}
       />
       <InputForm

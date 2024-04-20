@@ -6,7 +6,7 @@ import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 const AccountSettings = () => {
   return (
     <section>
-      <form action="" className="flex flex-col w-full">
+      <div className="flex flex-col w-full">
         <div className="flex w-full gap-16">
           <PersonalForm />
           <SecurityForm />
@@ -17,7 +17,7 @@ const AccountSettings = () => {
             className="text-4xl text-white"
           />
         </button>
-      </form>
+      </div>
     </section>
   );
 };

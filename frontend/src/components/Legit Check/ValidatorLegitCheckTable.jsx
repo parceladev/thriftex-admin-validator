@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
+
 import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 const initialData = [
   {
@@ -10,7 +9,7 @@ const initialData = [
     status: "Done",
     authenticity: "FAKE",
     date: "04-01-2024",
-    validator: "Alif Lakipadada",
+    validator: "You",
   },
   {
     id: "#7294-OXAZ",
@@ -18,7 +17,7 @@ const initialData = [
     status: "Pending",
     authenticity: "-",
     date: "04-01-2024",
-    validator: "Bagus Nararya",
+    validator: "You",
   },
   {
     id: "#3142-ANZX",
@@ -26,7 +25,7 @@ const initialData = [
     status: "Done",
     authenticity: "ORIGINAL",
     date: "05-01-2024",
-    validator: "Ayu Lestari",
+    validator: "You",
   },
   {
     id: "#8342-KMAZ",
@@ -34,7 +33,7 @@ const initialData = [
     status: "Done",
     authenticity: "FAKE",
     date: "06-01-2024",
-    validator: "Bayu Anggara",
+    validator: "You",
   },
   {
     id: "#5294-LPAZ",
@@ -42,7 +41,7 @@ const initialData = [
     status: "Pending",
     authenticity: "-",
     date: "07-01-2024",
-    validator: "Citra Dewi",
+    validator: "You",
   },
   {
     id: "#6142-UMZX",
@@ -50,7 +49,7 @@ const initialData = [
     status: "Done",
     authenticity: "ORIGINAL",
     date: "08-01-2024",
-    validator: "Dian Sastro",
+    validator: "You",
   },
 ];
 const getStatusClasses = (status) => {
@@ -71,7 +70,7 @@ const getAuthenticityClasses = (authenticity) => {
     case "ORIGINAL":
       return "bg-secondary text-primary";
     default:
-      return "bg-gray-200 text-gray-800";
+      return "bg-buttonpending text-primary";
   }
 };
 
@@ -98,17 +97,9 @@ const getAuthenticityLabel = (status, authenticity) => {
   return "-";
 };
 
-const LegitCheckTable = () => {
+const ValidatorLegitCheckTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filteredData, setFilteredData] = useState(initialData);
-
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -121,22 +112,6 @@ const LegitCheckTable = () => {
       )
     );
   };
-
-  const handleItemsPerPageChange = (event) => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  };
-
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -236,50 +211,8 @@ const LegitCheckTable = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
-          <div>
-            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
-              Display
-            </label>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <span className="font-sans font-light  text-[16px]">
-            Showing {showingFrom} to {showingTo} of {totalRecords} records
-          </span>
-        </div>
-
-        <div className="flex gap-2 justify-center items-center ">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
-          </button>
-          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
-            <p>{currentPage}</p>
-          </div>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
-          </button>
-        </div>
-      </div>
     </section>
   );
 };
 
-export default LegitCheckTable;
+export default ValidatorLegitCheckTable;

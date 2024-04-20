@@ -1,14 +1,28 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { deleteToken } from '../../utils/TokenUtilities';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
   const role = location.pathname.includes('/admin')
     ? 'Admin'
     : location.pathname.includes('/validator')
     ? 'Validator'
     : 'Unknown';
+
+  const toggleLogoutPopup = () => {
+    setShowLogoutPopup(!showLogoutPopup);
+  };
+
+  const handleLogout = () => {
+    deleteToken();
+    setShowLogoutPopup(false);
+    navigate('/auth/sign-in');
+  };
 
   return (
     <header className="flex flex-col w-full">
@@ -23,11 +37,19 @@ const Header = () => {
             src="../../../public/icons/header/notification-icon.svg"
             alt="profile-image"
           />
-          <div className="w-6 h-full rounded-full bg-slate-200">
+          <div className="relative w-6 h-full rounded-full bg-slate-200">
             <img
               src="../../../public/icons/header/alif-lakipadada-profile.png"
               alt=""
+              onClick={toggleLogoutPopup}
             />
+            {showLogoutPopup && (
+              <div className="absolute right-0 w-48 px-4 py-2 mt-2 bg-white border border-gray-300 shadow-lg">
+                <button onClick={handleLogout} className="w-full text-left">
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

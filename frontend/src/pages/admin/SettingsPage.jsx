@@ -8,7 +8,7 @@ const SettingsPage = () => {
         <Header />
         <div className="p-8">
           <div className="w-full p-8 border rounded shadow-md bg-primary">
-            <AccountSettings></AccountSettings>
+            <AccountSettings/>
           </div>
         </div>
       </div>
