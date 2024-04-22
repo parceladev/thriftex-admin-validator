@@ -255,7 +255,7 @@ const LegitCheckTable = () => {
                   scope="row"
                   className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {index + 1}
+                  {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
                 <td className="py-4 px-6">{item.id}</td>
                 <td className="py-4 px-6">{item.brand}</td>
