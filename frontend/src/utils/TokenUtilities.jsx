@@ -4,7 +4,7 @@ const saveToken = (token) => {
   if (!token) {
     return;
   }
-  Cookies.set("token", token, {
+  Cookies.set("access_token", token, {
     expires: 30, // Expires 30 Days
     secure: true, // Only send the cookie over HTTPS.
     sameSite: "Strict", // Strict sameSite policy.
@@ -12,11 +12,11 @@ const saveToken = (token) => {
 };
 
 const deleteToken = () => {
-  Cookies.remove("token");
+  Cookies.remove("access_token");
 };
 
 const getToken = () => {
-  return Cookies.get("token");
+  return Cookies.get("access_token");
 };
 
 const decodeToken = (token) => {

@@ -7,6 +7,7 @@ import {
   TotalCheckedIcon,
   PendingIcon,
 } from "../../../public/icons/dashboard";
+import { getToken } from "../../utils/TokenUtilities";
 
 const Statistic = () => {
   const [summaryData, setSummaryData] = useState({
@@ -19,7 +20,7 @@ const Statistic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get('token');
+        const token = getToken()
         if (!token) {
           throw new Error('Unauthorized - No token provided');
         }

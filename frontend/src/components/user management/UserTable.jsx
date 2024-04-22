@@ -3,25 +3,32 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FaTrashCan } from "react-icons/fa6";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { getToken } from "../../utils/TokenUtilities";
 
 const UserTable = () => {
-  const [data, setData] = useState([]); // Data keseluruhan yang didapatkan dari API
-  const [filteredData, setFilteredData] = useState([]); // Data yang akan ditampilkan setelah filter
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
+    const token = getToken();
     try {
       const response = await axios.get(
         `http://localhost/rest.thriftex/api/users/list?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
@@ -29,9 +36,9 @@ const UserTable = () => {
       );
       if (response.data && response.data.data) {
         const apiData = response.data.data;
-        setData(apiData.data); 
-        setFilteredData(apiData.data); 
-        setTotalRecords(apiData.total_data); 
+        setData(apiData.data);
+        setFilteredData(apiData.data);
+        setTotalRecords(apiData.total_data);
       } else {
         console.error("Error fetching data:", response.data.message);
         setData([]);
@@ -44,8 +51,12 @@ const UserTable = () => {
       setFilteredData([]);
       setTotalRecords(0);
     }
+    setIsLoading(false);
   };
-  
+
+  if (isLoading) {
+    <FontAwesomeIcon icon={faSpinner} />;
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -55,7 +66,7 @@ const UserTable = () => {
     if (currentPage !== 1) {
       setCurrentPage(1);
     } else {
-      fetchUserData(); // Jika sudah di halaman 1, tetap panggil fetch
+      fetchUserData();
     }
   };
 
@@ -86,7 +97,10 @@ const UserTable = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);

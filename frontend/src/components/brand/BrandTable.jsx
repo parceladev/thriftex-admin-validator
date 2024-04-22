@@ -1,93 +1,92 @@
-import { useState } from 'react';
-import { FaPlus } from 'react-icons/fa6';
-import { FaTrashCan } from 'react-icons/fa6';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import ModalAddBrand from './ModalAddBrand';
-import ModalDeleteBrand from './ModalDeleteBrand';
-
-const initialData = [
-  {
-    id: 1,
-    username: 'Nike',
-    dateCreation: '2024-04-07',
-  },
-  {
-    id: 2,
-    username: 'Adidas',
-    dateCreation: '2024-04-08',
-  },
-  {
-    id: 3,
-    username: 'Puma',
-    dateCreation: '2024-04-09',
-  },
-  {
-    id: 4,
-    username: 'Reebok',
-    dateCreation: '2024-04-10',
-  },
-  {
-    id: 5,
-    username: 'Under Armour',
-    dateCreation: '2024-04-11',
-  },
-  {
-    id: 6,
-    username: 'New Balance',
-    dateCreation: '2024-04-12',
-  },
-  {
-    id: 7,
-    username: 'Vans',
-    dateCreation: '2024-04-13',
-  },
-];
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { FaPlus } from "react-icons/fa6";
+import { FaTrashCan } from "react-icons/fa6";
+import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
+import ModalAddBrand from "./ModalAddBrand";
+import ModalDeleteBrand from "./ModalDeleteBrand";
+import { getToken } from "../../utils/TokenUtilities";
 
 const BrandTable = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
+  useEffect(() => {
+    fetchUserData();
+  }, [currentPage, itemsPerPage, searchTerm]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    const token = getToken()
+    try {
+      const response = await axios.get(
+        `http://localhost/rest.thriftex/api/users/brands?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
+        { headers: { Authorization: `${token}` } }
+      );
+      if (response.data && response.data.data) {
+        const apiData = response.data.data;
+        setData(apiData.data);
+        setFilteredData(apiData.data);
+        setTotalRecords(apiData.total_data);
+      } else {
+        console.error("Error fetching data:", response.data.message);
+        setData([]);
+        setFilteredData([]);
+        setTotalRecords(0);
+      }
+    } catch (error) {
+      console.error("Error with fetching table data:", error);
+      setData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+    }
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    <FontAwesomeIcon icon={faSpinner} />;
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleItemsPerPageChange = (event) => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+  const handleSearch = () => {
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    } else {
+      fetchUserData();
+    }
   };
 
-  const handleSearch = () => {
-    setFilteredData(
-      initialData.filter((item) => item.username.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+    if (currentPage < Math.ceil(totalRecords / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  };
-
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -107,6 +106,20 @@ const BrandTable = () => {
     setIsModalDeleteOpen(false);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo =
+    currentPage * itemsPerPage < totalRecords
+      ? currentPage * itemsPerPage
+      : totalRecords;
   return (
     <section>
       <div className="flex items-center justify-center mb-4 gap-3">
@@ -120,7 +133,7 @@ const BrandTable = () => {
                 value={searchTerm}
                 onChange={handleSearchChange}
                 onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
+                  if (event.key === "Enter") {
                     handleSearch();
                   }
                 }}
@@ -147,7 +160,7 @@ const BrandTable = () => {
         <ModalAddBrand
           isOpen={isModalAddOpen}
           onClose={closeModalAddbrand}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -158,7 +171,7 @@ const BrandTable = () => {
                 No.
               </th>
               <th scope="col" className="py-3 px-6">
-                Username
+                Brand Name
               </th>
               <th scope="col" className="py-3 px-6">
                 Date Creation
@@ -170,15 +183,18 @@ const BrandTable = () => {
           </thead>
           <tbody>
             {filteredData.map((item, index) => (
-              <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr
+                key={index}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
                 <th
                   scope="row"
                   className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {index + 1}
                 </th>
-                <td className="py-4 px-6">{item.username}</td>
-                <td className="py-4 px-6">{item.dateCreation}</td>
+                <td className="py-4 px-6">{item.brand_name}</td>
+                <td className="py-4 px-6">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                   <button
                     type="button"
@@ -189,7 +205,6 @@ const BrandTable = () => {
                     <FaTrashCan className="h-5 w-5 text-gray-500" />
                   </button>
                 </td>
-                {/* <td className="py-4 px-6">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
@@ -197,13 +212,16 @@ const BrandTable = () => {
         <ModalDeleteBrand
           isOpen={isModalDeleteOpen}
           onClose={closeModalDeleteBrand}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
         <div className="flex justify-center items-center gap-5">
           <div>
-            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
+            <label
+              htmlFor="itemsPerPage"
+              className="mx-3 font-sans font-light text-[16px]"
+            >
               Display
             </label>
             <select
