@@ -182,7 +182,7 @@ const BrandTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th
                   scope="row"
