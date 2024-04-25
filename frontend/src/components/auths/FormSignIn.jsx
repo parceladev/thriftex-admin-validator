@@ -53,10 +53,10 @@ const FormSignIn = () => {
       return;
     }
 
-    // if (password.length < 8) {
-    //   handleError('Password must be at least 8 characters long.');
-    //   return;
-    // }
+    if (password.length < 8) {
+      handleError('Password must be at least 8 characters long.');
+      return;
+    }
 
     const response = await signIn(email, password);
     if (response.data) {

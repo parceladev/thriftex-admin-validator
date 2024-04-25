@@ -1,4 +1,6 @@
 import { PropTypes } from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import InputForm from './InputForm';
 
@@ -37,6 +39,7 @@ const PersonalForm = (props) => {
           <FontAwesomeIcon icon={faPenToSquare} className="text-gray-700" />
         </div>
       </div>
+
       <InputForm
         label="Username"
         name="username"

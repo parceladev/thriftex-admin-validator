@@ -1,9 +1,10 @@
+import { useState, useEffect } from 'react';
 import PersonalForm from './PersonalForm';
 import SecurityForm from './SecurityForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import updateProfile from '../../utils/profile-api-service';
 import { decodeToken, getAccessToken } from '../../utils/token-utilities';
-import updateProfile from './../../utils/profile-api-service';
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({
@@ -110,7 +111,7 @@ const AccountSettings = () => {
   };
 
   return (
-    <section>
+    <section className="flex flex-col">
       <form onSubmit={handleSubmit} className="flex flex-col w-full">
         <div className="flex w-full gap-16">
           <PersonalForm

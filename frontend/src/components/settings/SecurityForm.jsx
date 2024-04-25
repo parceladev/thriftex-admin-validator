@@ -1,10 +1,9 @@
-import { PropTypes } from 'prop-types';
-
+import { useState } from 'react';
 import InputForm from './InputForm';
+import { PropTypes } from 'prop-types';
 
 const SecurityForm = (props) => {
   const { userData, handleInputChange } = props;
-
   const [showChangePassword, setShowChangePassword] = useState(false);
 
   const toggleChangePassword = () => {
