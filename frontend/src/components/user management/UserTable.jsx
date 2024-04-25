@@ -1,21 +1,21 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleLeft,
   faAngleRight,
   faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import { FaTrashCan } from "react-icons/fa6";
-import ModalDeleteUser from "./ModalDeleteUser";
-import { getToken } from "../../utils/TokenUtilities";
+} from '@fortawesome/free-solid-svg-icons';
+import { FaTrashCan } from 'react-icons/fa6';
+import ModalDeleteUser from './ModalDeleteUser';
+import { getAccessToken } from '../../utils/token-utilities';
 
 const UserTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -28,7 +28,7 @@ const UserTable = () => {
 
   const fetchUserData = async () => {
     setIsLoading(true);
-    const token = getToken();
+    const token = getAccessToken();
     try {
       const response = await axios.get(
         `http://localhost/rest.thriftex/api/users/list?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
@@ -40,13 +40,13 @@ const UserTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error("Error fetching data:", response.data.message);
+        console.error('Error fetching data:', response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -99,8 +99,8 @@ const UserTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -121,14 +121,14 @@ const UserTable = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               onKeyPress={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                   handleSearch();
                 }
               }}
             />
             <button
               type="button"
-              className="border border-l-secondary  w-fit p-3"
+              className="p-3 border border-l-secondary w-fit"
               onClick={handleSearch}
             >
               <img src={SearchValidatorIcon} alt="Search User" />
@@ -136,29 +136,28 @@ const UserTable = () => {
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Username
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Email
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Date Creation
               </th>
-              <th scope="col" className="py-3 px-6 text-center">
+              <th scope="col" className="px-6 py-3 text-center">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-
             {filteredData.map((item, index) => (
               <tr
                 key={index}
@@ -166,24 +165,24 @@ const UserTable = () => {
               >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="py-4 px-6">{item.username}</td>
-                <td className="py-4 px-6">{item.email}</td>
-                <td className="py-4 px-6">{formatDate(item.created_at)}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                <td className="px-6 py-4">{item.username}</td>
+                <td className="px-6 py-4">{item.email}</td>
+                <td className="px-6 py-4">{formatDate(item.created_at)}</td>
+                <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     className=""
                     onClick={openModalDelete}
                     aria-label="Delete"
                   >
-                    <FaTrashCan className="h-5 w-5 text-gray-500" />
+                    <FaTrashCan className="w-5 h-5 text-gray-500" />
                   </button>
                 </td>
-                {/* <td className="py-4 px-6">{item.validator}</td> */}
+                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
@@ -191,11 +190,11 @@ const UserTable = () => {
         <ModalDeleteUser
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log("Create Account")}
+          onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
+        <div className="flex items-center justify-center gap-5">
           <div>
             <label
               htmlFor="itemsPerPage"
@@ -219,7 +218,7 @@ const UserTable = () => {
           </span>
         </div>
 
-        <div className="flex gap-2 justify-center items-center ">
+        <div className="flex items-center justify-center gap-2 ">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}

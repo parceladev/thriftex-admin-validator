@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deleteToken } from '../../utils/TokenUtilities';
+import { deleteToken } from '../../utils/token-utilities';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

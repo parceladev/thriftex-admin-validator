@@ -7,7 +7,7 @@ import {
   TotalCheckedIcon,
   PendingIcon,
 } from "../../../public/icons/dashboard";
-import { getToken } from "../../utils/TokenUtilities";
+import { getAccessToken } from "../../utils/token-utilities";
 
 const Statistic = () => {
   const [summaryData, setSummaryData] = useState({
@@ -20,7 +20,7 @@ const Statistic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = getToken()
+        const token = getAccessToken()
         if (!token) {
           throw new Error('Unauthorized - No token provided');
         }
@@ -46,7 +46,7 @@ const Statistic = () => {
 
   return (
     <section>
-      <div className="p-8 flex justify-between items-center">
+      <div className="flex items-center justify-between p-8">
         <div className="flex flex-col gap-3">
           <img src={TotalUserIcon} alt="Total Legit Check" />
           <h2 className="text-[18px]">{summaryData.total_user}</h2>
