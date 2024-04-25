@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import ModalAddBrand from './ModalAddBrand';
 import ModalDeleteBrand from './ModalDeleteBrand';
-import { getToken } from '../../utils/token-utilities';
+import { getAccessToken } from '../../utils/token-utilities';
 
 const BrandTable = () => {
   const [data, setData] = useState([]);
@@ -31,7 +31,7 @@ const BrandTable = () => {
 
   const fetchUserData = async () => {
     setIsLoading(true);
-    const token = getToken();
+    const token = getAccessToken();
     try {
       const response = await axios.get(
         `http://localhost/rest.thriftex/api/users/brands?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,

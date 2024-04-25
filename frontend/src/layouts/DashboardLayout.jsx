@@ -9,8 +9,7 @@ export function DashboardLayout() {
   return (
     <section>
       <div className="flex w-full">
-        <Sidebar />{' '}
-        {/* Hapus prop `routes` jika tidak diperlukan oleh Sidebar */}
+        <Sidebar />
         <div className="w-full h-auto ml-72">
           <Routes>
             {routes.map(

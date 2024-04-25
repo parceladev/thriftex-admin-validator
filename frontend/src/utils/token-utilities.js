@@ -1,65 +1,114 @@
-import Cookies from "js-cookie";
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const saveToken = (token) => {
-  if (!token) {
-    return;
-  }
-  Cookies.set("access_token", token, {
-    expires: 30, // Expires 30 Days
-    secure: true, // Only send the cookie over HTTPS.
-    sameSite: "Strict", // Strict sameSite policy.
+const API_BASE_URL = 'http://localhost/rest.thriftex/api';
+
+const saveToken = (accessToken, refreshToken) => {
+  Cookies.set('access_token', accessToken, {
+    expires: 1,
+    secure: true,
+    sameSite: 'Strict',
+  });
+  Cookies.set('refresh_token', refreshToken, {
+    expires: 30,
+    secure: true,
+    sameSite: 'Strict',
   });
 };
 
-const deleteToken = () => {
-  Cookies.remove("access_token");
-};
+const getAccessToken = () => Cookies.get('access_token');
 
-const getToken = () => {
-  return Cookies.get("access_token");
+const getRefreshToken = () => Cookies.get('refresh_token');
+
+const deleteToken = () => {
+  Cookies.remove('access_token');
+  Cookies.remove('refresh_token');
 };
 
 const decodeToken = (token) => {
   try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
       atob(base64)
-        .split("")
-        .map((c) => {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join("")
+        .split('')
+        .map((c) => '%'.concat(('00' + c.charCodeAt(0).toString(16)).slice(-2)))
+        .join('')
     );
-
     return JSON.parse(jsonPayload);
   } catch (error) {
-    console.error("Error decoding token:", error);
+    console.error('Error decoding token:', error);
     return null;
   }
 };
 
-const validateToken = () => {
-  const token = getToken();
+const refreshToken = async () => {
+  const currentRefreshToken = getRefreshToken();
+  if (!currentRefreshToken) {
+    console.error('No refresh token available.');
+    return false;
+  }
+
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/users/refresh_token`,
+      {
+        refreshToken: currentRefreshToken,
+      },
+      {
+        timeout: 5000,
+      }
+    );
+
+    const { data } = response;
+    if (data.status) {
+      saveToken(data.accessToken, data.refreshToken);
+      return true;
+    } else {
+      if (data.tokenInvalid) {
+        deleteToken();
+      }
+      return false;
+    }
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return false;
+  }
+};
+
+const validateToken = async () => {
+  const token = getAccessToken();
   if (!token) {
-    console.error("No token found in cookies");
     return { valid: false };
   }
 
-  const decoded = decodeToken(token);
-  if (!decoded) {
-    console.error("Failed to decode token");
-    return { valid: false };
-  }
-
-  const now = Date.now() / 1000;
-  if (decoded.exp < now) {
-    console.error("Token expired.");
+  try {
+    const decoded = decodeToken(token);
+    const now = Date.now() / 1000;
+    if (decoded.exp < now + 60) {
+      const isRefreshed = await refreshToken();
+      if (isRefreshed) {
+        const newToken = getAccessToken();
+        const newDecoded = decodeToken(newToken);
+        return { valid: true, decoded: newDecoded };
+      } else {
+        return { valid: false };
+      }
+    }
+    return { valid: true, decoded };
+  } catch (error) {
+    console.error('Token validation error:', error);
     deleteToken();
     return { valid: false };
   }
-
-  return { valid: true, decoded };
 };
 
-export { saveToken, getToken, deleteToken, decodeToken, validateToken };
+export {
+  saveToken,
+  getAccessToken,
+  getRefreshToken,
+  deleteToken,
+  decodeToken,
+  validateToken,
+  refreshToken,
+};

@@ -3,64 +3,69 @@ import InputEmail from './InputEmail';
 import InputPassword from './InputPassword';
 import BorderButton from './BorderButton';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { saveToken, validateToken } from '../../utils/token-utilities';
+import { signIn } from '../../utils/auth-api-service';
+import { decodeToken, getAccessToken } from '../../utils/token-utilities';
 
 const FormSignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleSuccess = () => {
+    setSuccessMessage('Please Wait, Redirecting...');
+    const token = getAccessToken();
+    if (token) {
+      const decoded = decodeToken(token);
+      setTimeout(() => {
+        if (decoded.role === 'admin') {
+          navigate('/admin-role/dashboard');
+        } else if (decoded.role === 'validator') {
+          navigate('/validator-role/dashboard');
+        } else {
+          navigate('/user/home');
+        }
+      }, 1000);
+    } else {
+      console.log('No token found');
+    }
+  };
+
+  const handleError = (message) => {
+    setErrorMessage(message);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
 
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost/rest.thriftex/api/users/login',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+    setErrorMessage('');
+    setSuccessMessage('');
 
-      const data = response.data;
-      console.log(data);
+    if (!email || !password) {
+      handleError('Both email and password are required.');
+      return;
+    }
 
-      if (data.status) {
-        if (!data.access_token) {
-          console.error('Token is undefined or null.');
-        } else {
-          saveToken(data.access_token);
-        }
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailPattern.test(email)) {
+      handleError('Please enter a valid email address.');
+      return;
+    }
 
-        const validation = validateToken(data.token);
-        if (validation.valid) {
-          // console.log('Token is valid:', validation.decoded);
-          if (validation.decoded.role === 'validator') {
-            navigate('/validator-role/dashboard');
-          } else if (validation.decoded.role === 'admin') {
-            navigate('/admin-role/dashboard');
-          } else {
-            console.error('You Dont Allowed Access', validation.decoded.role);
-            navigate('/');
-          }
-        } else {
-          throw new Error('Invalid token');
-        }
-      } else {
-        setErrorMessage(data.message);
-      }
-    } catch (error) {
-      const errorMessage = error.response
-        ? error.response.data.message
-        : 'Login failed. Please try again.';
-      console.error('Login Error:', errorMessage);
-      setErrorMessage(errorMessage);
+    // if (password.length < 8) {
+    //   handleError('Password must be at least 8 characters long.');
+    //   return;
+    // }
+
+    const response = await signIn(email, password);
+    if (response.data) {
+      handleSuccess();
+    } else {
+      handleError(response.error);
     }
   };
+
   return (
     <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
       <a href="/" className="flex justify-center mb-4">
@@ -71,6 +76,7 @@ const FormSignIn = () => {
           <InputEmail
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Username or Email"
           />
           <InputPassword
             value={password}
@@ -90,7 +96,10 @@ const FormSignIn = () => {
         <BorderButton />
       </form>
       {errorMessage && (
-        <p className="text-center text-red-500">{errorMessage}</p>
+        <p className="mt-2 text-center text-red-500">{errorMessage}</p>
+      )}
+      {successMessage && (
+        <p className="mt-2 text-center text-green-500">{successMessage}</p>
       )}
     </div>
   );
