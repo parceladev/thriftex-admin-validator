@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FaTrashCan } from "react-icons/fa6";
 import ModalDeleteUser from "./ModalDeleteUser";
-import { getToken } from "../../utils/TokenUtilities";
+import { getToken } from "../../utils/token-utilities";
 
 const UserTable = () => {
   const [data, setData] = useState([]);
@@ -128,7 +128,7 @@ const UserTable = () => {
             />
             <button
               type="button"
-              className="border border-l-secondary  w-fit p-3"
+              className="p-3 border border-l-secondary w-fit"
               onClick={handleSearch}
             >
               <img src={SearchValidatorIcon} alt="Search User" />
@@ -136,23 +136,23 @@ const UserTable = () => {
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Username
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Email
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Date Creation
               </th>
-              <th scope="col" className="py-3 px-6 text-center">
+              <th scope="col" className="px-6 py-3 text-center">
                 Action
               </th>
             </tr>
@@ -166,24 +166,24 @@ const UserTable = () => {
               >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="py-4 px-6">{item.username}</td>
-                <td className="py-4 px-6">{item.email}</td>
-                <td className="py-4 px-6">{formatDate(item.created_at)}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                <td className="px-6 py-4">{item.username}</td>
+                <td className="px-6 py-4">{item.email}</td>
+                <td className="px-6 py-4">{formatDate(item.created_at)}</td>
+                <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     className=""
                     onClick={openModalDelete}
                     aria-label="Delete"
                   >
-                    <FaTrashCan className="h-5 w-5 text-gray-500" />
+                    <FaTrashCan className="w-5 h-5 text-gray-500" />
                   </button>
                 </td>
-                {/* <td className="py-4 px-6">{item.validator}</td> */}
+                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
@@ -195,7 +195,7 @@ const UserTable = () => {
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
+        <div className="flex items-center justify-center gap-5">
           <div>
             <label
               htmlFor="itemsPerPage"
@@ -219,7 +219,7 @@ const UserTable = () => {
           </span>
         </div>
 
-        <div className="flex gap-2 justify-center items-center ">
+        <div className="flex items-center justify-center gap-2 ">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}

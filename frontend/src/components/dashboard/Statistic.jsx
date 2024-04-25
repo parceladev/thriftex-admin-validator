@@ -1,35 +1,38 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import {
   TotalUserIcon,
   TotalValidatorIcon,
   TotalCheckedIcon,
   PendingIcon,
-} from "../../../public/icons/dashboard";
-import { getToken } from "../../utils/TokenUtilities";
+} from '../../../public/icons/dashboard';
+import { getToken } from '../../utils/token-utilities';
 
 const Statistic = () => {
   const [summaryData, setSummaryData] = useState({
     total_user: 0,
     total_validator: 0,
     total_checked: 0,
-    total_progress: 0
+    total_progress: 0,
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = getToken()
+        const token = getToken();
         if (!token) {
           throw new Error('Unauthorized - No token provided');
         }
 
-        const response = await axios.get('http://localhost/rest.thriftex/api/legits/summaryadmin', {
-          headers: {
-            'Authorization': `${token}`
+        const response = await axios.get(
+          'http://localhost/rest.thriftex/api/legits/summaryadmin',
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
           }
-        });
+        );
 
         if (response.data.status) {
           setSummaryData(response.data.data);
@@ -37,7 +40,7 @@ const Statistic = () => {
           console.error('No data received:', response.data.message);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -46,7 +49,7 @@ const Statistic = () => {
 
   return (
     <section>
-      <div className="p-8 flex justify-between items-center">
+      <div className="flex items-center justify-between p-8">
         <div className="flex flex-col gap-3">
           <img src={TotalUserIcon} alt="Total Legit Check" />
           <h2 className="text-[18px]">{summaryData.total_user}</h2>

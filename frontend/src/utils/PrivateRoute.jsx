@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-import { getToken, saveToken } from './TokenUtilities';
+import { getToken, saveToken } from './token-utilities';
 
 const PrivateRoute = ({ element }) => {
   const token = getToken();
