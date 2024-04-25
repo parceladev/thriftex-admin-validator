@@ -3,10 +3,15 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    } else {
+      setSelectedFile(null);
+    }
   };
 
   if (!isOpen) return null;
@@ -52,7 +57,7 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="full-name"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Brand Name <span className="text-gray-300">(Required)</span>
+                        Brand Name <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 w-full">
                         <input
@@ -71,7 +76,7 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="confirm-password"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Brand logo <span className="text-gray-300">(Required)</span>
+                        Brand logo <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">
                         <p className="text-gray-600">
@@ -98,21 +103,23 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
                               <div className="flex text-sm text-gray-600">
                                 <label
                                   htmlFor="file-upload"
-                                  className="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500"
+                                  className="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:ring-indigo-500"
                                 >
-                                  <span className="focus:outline-none focus:border focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                    Upload a file
-                                  </span>
+                                  Upload File
                                   <input
                                     id="file-upload"
                                     name="file-upload"
                                     type="file"
                                     className="sr-only"
+                                    onChange={handleFileChange}
                                   />
                                 </label>
                                 <p className="pl-1">or drag and drop</p>
                               </div>
-                              <p className="text-xs text-gray-500">PNG up to 10MB</p>
+                              {selectedFile && (
+                                <p className="text-md text-red-500">File: {selectedFile.name}</p>
+                              )}
+                              {/* <p className="text-xs text-gray-500">PNG up to 10MB</p> */}
                             </div>
                           </div>
                         </div>
