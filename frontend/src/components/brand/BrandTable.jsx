@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import { FaPlus } from 'react-icons/fa6';
 import { FaTrashCan } from 'react-icons/fa6';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleLeft,
-  faAngleRight,
-  faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import ModalAddBrand from './ModalAddBrand';
 import ModalDeleteBrand from './ModalDeleteBrand';
-import { getAccessToken } from '../../utils/token-utilities';
+import { SearchTable, TablePagination, AddButton } from '../generals';
+import { fetchBrands } from '../../utils/brand-api-service';
 
 const BrandTable = () => {
   const [data, setData] = useState([]);
@@ -31,22 +25,15 @@ const BrandTable = () => {
 
   const fetchUserData = async () => {
     setIsLoading(true);
-    const token = getAccessToken();
     try {
-      const response = await axios.get(
-        `http://localhost/rest.thriftex/api/users/brands?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
-        { headers: { Authorization: `${token}` } }
-      );
+      const response = await fetchBrands(currentPage, itemsPerPage, searchTerm);
       if (response.data && response.data.data) {
-        const apiData = response.data.data;
+        const apiData = response.data;
         setData(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error('Error fetching data:', response.data.message);
-        setData([]);
-        setFilteredData([]);
-        setTotalRecords(0);
+        throw new Error('No data received');
       }
     } catch (error) {
       console.error('Error with fetching table data:', error);
@@ -125,38 +112,27 @@ const BrandTable = () => {
       <div className="flex items-center justify-center gap-3 mb-4">
         <div className="w-full">
           <div className="flex items-center gap-4 rounded-md ">
-            <div className="flex w-full border-secondary border-[1px] rounded-md">
-              <input
-                type="text"
-                className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
-                placeholder="Search Item ID"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch();
-                  }
-                }}
-              />
-              <button
-                type="button"
-                className="p-3 border border-l-secondary w-fit"
-                onClick={handleSearch}
-              >
-                <img src={SearchValidatorIcon} alt="Search Validator" />
-              </button>
-            </div>
-            <button
+            <SearchTable
+              typeInput="text"
+              placeholder="Search Item ID"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onClick={handleSearch}
+              typeButton="button"
+              altIcon="Search Validator"
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+            />
+            <AddButton
               type="button"
-              className="flex items-center justify-center w-1/4 py-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black"
+              label="ADD BRAND"
               onClick={openModalAddBrand}
-            >
-              <span className="mr-2">ADD BRAND</span>
-              <FaPlus className="w-5 h-5" />
-            </button>
+            />
           </div>
         </div>
-        {/* Render ModalValidator component */}
         <ModalAddBrand
           isOpen={isModalAddOpen}
           onClose={closeModalAddbrand}
@@ -215,51 +191,21 @@ const BrandTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex items-center justify-center gap-5">
-          <div>
-            <label
-              htmlFor="itemsPerPage"
-              className="mx-3 font-sans font-light text-[16px]"
-            >
-              Display
-            </label>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <span className="font-sans font-light  text-[16px]">
-            Showing {showingFrom} to {showingTo} of {totalRecords} records
-          </span>
-        </div>
-
-        <div className="flex items-center justify-center gap-2 ">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
-          </button>
-          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
-            <p>{currentPage}</p>
-          </div>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
-          </button>
-        </div>
-      </div>
+      <TablePagination
+        htmlFor="itemsPerPage"
+        label="Display"
+        id="itemsPerPage"
+        value={itemsPerPage.toString()}
+        onChange={handleItemsPerPageChange}
+        disabledLeft={currentPage === 1}
+        disabledRight={currentPage === totalPages}
+        onClickLeft={handlePreviousPage}
+        onClickRight={handleNextPage}
+        showingFrom={showingFrom}
+        showingTo={showingTo}
+        totalRecords={totalRecords}
+        currentPage={currentPage}
+      />
     </section>
   );
 };
