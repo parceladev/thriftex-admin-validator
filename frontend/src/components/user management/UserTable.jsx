@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FaTrashCan } from 'react-icons/fa6';
 import ModalDeleteUser from './ModalDeleteUser';
+import { SearchTable, TablePagination } from '../generals';
 import { getAccessToken } from '../../utils/token-utilities';
 
 const UserTable = () => {
@@ -113,27 +114,20 @@ const UserTable = () => {
     <section>
       <div className="flex items-center justify-center mb-4">
         <div className="w-full ">
-          <div className="flex items-center border-secondary border-[1px] rounded-md ">
-            <input
-              type="text"
-              className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
-              placeholder="Search Item ID"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  handleSearch();
-                }
-              }}
-            />
-            <button
-              type="button"
-              className="p-3 border border-l-secondary w-fit"
-              onClick={handleSearch}
-            >
-              <img src={SearchValidatorIcon} alt="Search User" />
-            </button>
-          </div>
+          <SearchTable
+            typeInput="text"
+            placeholder="Search Item ID"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onClick={handleSearch}
+            typeButton="button"
+            altIcon="Search User"
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                handleSearch();
+              }
+            }}
+          />
         </div>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -193,51 +187,21 @@ const UserTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex items-center justify-center gap-5">
-          <div>
-            <label
-              htmlFor="itemsPerPage"
-              className="mx-3 font-sans font-light text-[16px]"
-            >
-              Display
-            </label>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <span className="font-sans font-light  text-[16px]">
-            Showing {showingFrom} to {showingTo} of {totalRecords} records
-          </span>
-        </div>
-
-        <div className="flex items-center justify-center gap-2 ">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
-          </button>
-          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
-            <p>{currentPage}</p>
-          </div>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
-          </button>
-        </div>
-      </div>
+      <TablePagination
+        htmlFor="itemsPerPage"
+        label="Display"
+        id="itemsPerPage"
+        value={itemsPerPage.toString()}
+        onChange={handleItemsPerPageChange}
+        disabledLeft={currentPage === 1}
+        disabledRight={currentPage === totalPages}
+        onClickLeft={handlePreviousPage}
+        onClickRight={handleNextPage}
+        showingFrom={showingFrom}
+        showingTo={showingTo}
+        totalRecords={totalRecords}
+        currentPage={currentPage}
+      />
     </section>
   );
 };

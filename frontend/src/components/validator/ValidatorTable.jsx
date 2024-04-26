@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
-import { FaPlus } from 'react-icons/fa6';
 import { FaTrashCan } from 'react-icons/fa6';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import ModalValidator from './ModalValidator';
 import ModalDelete from './ModalDelete';
+import { SearchTable, TablePagination, AddButton } from '../generals';
 
 const initialData = [
   {
@@ -176,7 +172,9 @@ const ValidatorTable = () => {
 
   const handleSearch = () => {
     setFilteredData(
-      initialData.filter((item) => item.username.toLowerCase().includes(searchTerm.toLowerCase()))
+      initialData.filter((item) =>
+        item.username.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     );
   };
 
@@ -215,38 +213,28 @@ const ValidatorTable = () => {
 
   return (
     <section>
-      <div className="flex items-center justify-center mb-4 gap-3">
+      <div className="flex items-center justify-center gap-3 mb-4">
         <div className="w-full">
           <div className="flex items-center gap-4 rounded-md ">
-            <div className="flex w-full border-secondary border-[1px] rounded-md">
-              <input
-                type="text"
-                className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
-                placeholder="Search Item ID"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    handleSearch();
-                  }
-                }}
-              />
-              <button
-                type="button"
-                className="border border-l-secondary  w-fit p-3"
-                onClick={handleSearch}
-              >
-                <img src={SearchValidatorIcon} alt="Search Validator" />
-              </button>
-            </div>
-            <button
+            <SearchTable
+              typeInput="text"
+              placeholder="Search Item ID"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onClick={handleSearch}
+              typeButton="button"
+              altIcon="Search Validator"
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
+            />
+            <AddButton
               type="button"
-              className="py-3 w-1/4 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
+              label="ADD VALIDATOR"
               onClick={openModalAdd}
-            >
-              <span className="mr-2">ADD VALIDATOR</span>
-              <FaPlus className="h-5 w-5" />
-            </button>
+            />
           </div>
         </div>
         {/* Render ModalValidator component */}
@@ -256,49 +244,57 @@ const ValidatorTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Username
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Email
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Brand Checking
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Date Creation
               </th>
-              <th scope="col" className="py-3 px-6 text-center">
+              <th scope="col" className="px-6 py-3 text-center">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
             {currentItems.map((item, index) => (
-              <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr
+                key={item.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="py-4 px-6">{item.username}</td>
-                <td className="py-4 px-6">{item.email}</td>
-                <td className="py-4 px-6">{item.brandChecking}</td>
-                <td className="py-4 px-6">{item.dateCreation}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                  <button type="button" className="" onClick={openModalDelete} aria-label="Delete">
-                    <FaTrashCan className="h-5 w-5 text-gray-500" />
+                <td className="px-6 py-4">{item.username}</td>
+                <td className="px-6 py-4">{item.email}</td>
+                <td className="px-6 py-4">{item.brandChecking}</td>
+                <td className="px-6 py-4">{item.dateCreation}</td>
+                <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
+                  <button
+                    type="button"
+                    className=""
+                    onClick={openModalDelete}
+                    aria-label="Delete"
+                  >
+                    <FaTrashCan className="w-5 h-5 text-gray-500" />
                   </button>
                 </td>
-                {/* <td className="py-4 px-6">{item.validator}</td> */}
+                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
@@ -309,48 +305,21 @@ const ValidatorTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
-          <div>
-            <label htmlFor="itemsPerPage" className="mx-3 font-sans font-light text-[16px]">
-              Display
-            </label>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <span className="font-sans font-light  text-[16px]">
-            Showing {showingFrom} to {showingTo} of {totalRecords} records
-          </span>
-        </div>
-
-        <div className="flex gap-2 justify-center items-center ">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
-          </button>
-          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
-            <p>{currentPage}</p>
-          </div>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
-          </button>
-        </div>
-      </div>
+      <TablePagination
+        htmlFor="itemsPerPage"
+        label="Display"
+        id="itemsPerPage"
+        value={itemsPerPage.toString()}
+        onChange={handleItemsPerPageChange}
+        disabledLeft={currentPage === 1}
+        disabledRight={currentPage === totalPages}
+        onClickLeft={handlePreviousPage}
+        onClickRight={handleNextPage}
+        showingFrom={showingFrom}
+        showingTo={showingTo}
+        totalRecords={totalRecords}
+        currentPage={currentPage}
+      />
     </section>
   );
 };
