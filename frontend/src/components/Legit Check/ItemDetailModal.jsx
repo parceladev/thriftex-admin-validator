@@ -63,7 +63,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
         <form onSubmit={handleSubmit} className="p-8">
           {/* Item Category */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[20px] ">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[20px] ">
               ITEM CATEGORY
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -81,7 +81,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Item Brand */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               ITEM BRAND
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -99,7 +99,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Item Name */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               ITEM NAME{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -117,7 +117,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Item Photos */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               ITEM PHOTOS{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -138,7 +138,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Purchase Date */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               PURCHASE{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -156,7 +156,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Store Name */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block  text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block  text-sans text-secondary uppercase font-sans text-[17px]">
               STORE NAME{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -174,7 +174,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Item Condition */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               ITEM CONDITION{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -192,7 +192,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Other Note */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               OTHER NOTE{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Optional)
@@ -208,7 +208,7 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
 
           {/* Authenticity */}
           <div className="mb-4">
-            <label className="text-sm font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               AUTHENTICITY{" "}
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
