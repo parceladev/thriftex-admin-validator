@@ -1,24 +1,27 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
+import { FaPlus } from 'react-icons/fa6';
+import { FaTrashCan } from 'react-icons/fa6';
+import { SearchValidatorIcon } from '../../../../public/icons/legitcheck';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleLeft,
   faAngleRight,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
-import { FaTrashCan } from 'react-icons/fa6';
-import ModalDeleteUser from './ModalDeleteUser';
-import { getAccessToken } from '../../utils/token-utilities';
+import ModalAddBrand from './ModalAddBrand';
+import ModalDeleteBrand from './ModalDeleteBrand';
+import { getAccessToken } from '../../../utils/token-utilities';
 
-const UserTable = () => {
+const BrandTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +34,7 @@ const UserTable = () => {
     const token = getAccessToken();
     try {
       const response = await axios.get(
-        `http://localhost/rest.thriftex/api/users/list?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
+        `http://localhost/rest.thriftex/api/users/brands?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
         { headers: { Authorization: `${token}` } }
       );
       if (response.data && response.data.data) {
@@ -87,11 +90,19 @@ const UserTable = () => {
     }
   };
 
-  const openModalDelete = () => {
+  const openModalAddBrand = () => {
+    setIsModalAddOpen(true);
+  };
+
+  const closeModalAddbrand = () => {
+    setIsModalAddOpen(false);
+  };
+
+  const openModalDeleteBrand = () => {
     setIsModalDeleteOpen(true);
   };
 
-  const closeModalDelete = () => {
+  const closeModalDeleteBrand = () => {
     setIsModalDeleteOpen(false);
   };
 
@@ -111,30 +122,46 @@ const UserTable = () => {
       : totalRecords;
   return (
     <section>
-      <div className="flex items-center justify-center mb-4">
-        <div className="w-full ">
-          <div className="flex items-center border-secondary border-[1px] rounded-md ">
-            <input
-              type="text"
-              className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
-              placeholder="Search Item ID"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  handleSearch();
-                }
-              }}
-            />
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <div className="w-full">
+          <div className="flex items-center gap-4 rounded-md ">
+            <div className="flex w-full border-secondary border-[1px] rounded-md">
+              <input
+                type="text"
+                className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
+                placeholder="Search Item ID"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onKeyPress={(event) => {
+                  if (event.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="p-3 border border-l-secondary w-fit"
+                onClick={handleSearch}
+              >
+                <img src={SearchValidatorIcon} alt="Search Validator" />
+              </button>
+            </div>
             <button
               type="button"
-              className="p-3 border border-l-secondary w-fit"
-              onClick={handleSearch}
+              className="flex items-center justify-center w-1/4 py-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black"
+              onClick={openModalAddBrand}
             >
-              <img src={SearchValidatorIcon} alt="Search User" />
+              <span className="mr-2">ADD BRAND</span>
+              <FaPlus className="w-5 h-5" />
             </button>
           </div>
         </div>
+        {/* Render ModalValidator component */}
+        <ModalAddBrand
+          isOpen={isModalAddOpen}
+          onClose={closeModalAddbrand}
+          onCreateAccount={() => console.log('Create Account')}
+        />
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -144,10 +171,7 @@ const UserTable = () => {
                 No.
               </th>
               <th scope="col" className="px-6 py-3">
-                Username
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Email
+                Brand Name
               </th>
               <th scope="col" className="px-6 py-3">
                 Date Creation
@@ -169,27 +193,25 @@ const UserTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.username}</td>
-                <td className="px-6 py-4">{item.email}</td>
+                <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-6 py-4">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     className=""
-                    onClick={openModalDelete}
+                    onClick={openModalDeleteBrand}
                     aria-label="Delete"
                   >
                     <FaTrashCan className="w-5 h-5 text-gray-500" />
                   </button>
                 </td>
-                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
         </table>
-        <ModalDeleteUser
+        <ModalDeleteBrand
           isOpen={isModalDeleteOpen}
-          onClose={closeModalDelete}
+          onClose={closeModalDeleteBrand}
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
@@ -242,4 +264,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default BrandTable;

@@ -3,8 +3,8 @@ import PersonalForm from './PersonalForm';
 import SecurityForm from './SecurityForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
-import updateProfile from '../../utils/profile-api-service';
-import { decodeToken, getAccessToken } from '../../utils/token-utilities';
+import updateProfile from '../../../utils/profile-api-service';
+import { decodeToken, getAccessToken } from '../../../utils/token-utilities';
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({

@@ -1,8 +1,8 @@
-import { NavLink, useLocation } from 'react-router-dom'; // Pastikan untuk mengimpor useLocation
-import routes from '../../routes'; // Pastikan path ini benar
+import { NavLink, useLocation } from 'react-router-dom';
+import routes from '../../routes';
 
 const Sidebar = () => {
-  const location = useLocation(); // Digunakan untuk mendapatkan lokasi/path saat ini
+  const location = useLocation();
 
   const baseLinkClasses =
     'flex items-center px-4 py-2 transition-colors duration-200 transform';
@@ -10,7 +10,7 @@ const Sidebar = () => {
   const activeLinkClasses = `${baseLinkClasses} bg-gray-700 text-white`;
 
   const isValidator = location.pathname.includes('/validator-role');
-  const basePath = isValidator ? '/validator-role' : '/admin-role'; // Tentukan basePath berdasarkan role
+  const basePath = isValidator ? '/validator-role' : '/admin-role';
   const sidebarType = isValidator ? 'sidebarValidator' : 'sidebarAdmin';
 
   return (
@@ -34,7 +34,7 @@ const Sidebar = () => {
                     {route[sidebarType].map(({ icon, name, path }) => (
                       <NavLink
                         key={name}
-                        to={`${basePath}${path}`} // Gunakan basePath untuk menentukan awalan jalur
+                        to={`${basePath}${path}`}
                         className={({ isActive }) =>
                           isActive ? activeLinkClasses : linkClasses
                         }

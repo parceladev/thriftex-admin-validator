@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React from 'react';
-import FormSignIn from './../../components/auths/FormSignIn';
+import FormSignIn from '../../components/generals/auths/FormSignIn';
 
 const SignInPage = () => {
   return (

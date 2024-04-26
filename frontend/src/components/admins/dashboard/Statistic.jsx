@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchSummaryData } from '../../utils/total-api-service';
+import { fetchSummaryData } from '../../../utils/total-api-service';
 import CardStatistic from './CardStatistic';
 import CardTotalUser from './CardTotalUser';
 import {
@@ -8,7 +8,7 @@ import {
   TotalValidatorIcon,
   TotalCheckedIcon,
   PendingIcon,
-} from '../../../public/icons/dashboard';
+} from '../../../../public/icons/dashboard';
 
 const Statistic = () => {
   const [summaryData, setSummaryData] = useState({

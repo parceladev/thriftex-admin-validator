@@ -1,5 +1,5 @@
-import Header from "./../../components/layouts/Header";
-import { Statistic } from "../../components/dashboard";
+import Header from "../../components/layouts/Header";
+import { Statistic } from "../../components/admins/dashboard";
 
 const DashboardPage = () => {
   return (

@@ -1,55 +1,106 @@
 /* eslint-disable no-unused-vars */
-import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
+import { SearchValidatorIcon } from "../../../../public/icons/legitcheck";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import ItemDetailModal from "./ItemDetailModal";
 const initialData = [
   {
     id: "#4142-ONZX",
-    category: "Shoes",
     brand: "Vans",
-    name: "Vans Old Skool",
     status: "Done",
     authenticity: "FAKE",
     date: "04-01-2024",
     validator: "Alif Lakipadada",
-    photos: [
-      "https://via.placeholder.com/150/0000FF/808080",
-      "https://via.placeholder.com/150/FF0000/FFFFFF",
-      "https://via.placeholder.com/150/FFFF00/000000",
-      "https://via.placeholder.com/150/000000/FFFFFF",
-    ],
-    purchase: "04-01-2024",
-    storeName: "Sneaker Street",
-    condition: "New",
-    otherNote: "Limited edition colorway",
-    authenticityOption: "FAKE",
   },
   {
     id: "#7294-OXAZ",
-    category: "Apparel",
-    brand: "Supreme",
-    name: "Supreme T-Shirt",
+    brand: "Converse",
     status: "Pending",
     authenticity: "-",
-    date: "05-01-2024",
+    date: "04-01-2024",
     validator: "Bagus Nararya",
-    photos: [
-      "https://via.placeholder.com/150/00FF00/000000",
-      "https://via.placeholder.com/150/FF00FF/FFFFFF",
-      "https://via.placeholder.com/150/00FFFF/000000",
-      "https://via.placeholder.com/150/FFD700/000000",
-    ],
-    purchase: "05-01-2024",
-    storeName: "Supreme Store",
-    condition: "Used",
-    otherNote: "",
-    authenticityOption: "ORIGINAL",
   },
-  // ... tambahkan entri lain sesuai kebutuhan
+  {
+    id: "#3142-ANZX",
+    brand: "Nike",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "05-01-2024",
+    validator: "Ayu Lestari",
+  },
+  {
+    id: "#8342-KMAZ",
+    brand: "Adidas",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "06-01-2024",
+    validator: "Bayu Anggara",
+  },
+  {
+    id: "#5294-LPAZ",
+    brand: "Puma",
+    status: "Pending",
+    authenticity: "-",
+    date: "07-01-2024",
+    validator: "Citra Dewi",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
+  },
+  {
+    id: "#4142-ONZX",
+    brand: "Vans",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "04-01-2024",
+    validator: "Alif Lakipadada",
+  },
+  {
+    id: "#7294-OXAZ",
+    brand: "Converse",
+    status: "Pending",
+    authenticity: "-",
+    date: "04-01-2024",
+    validator: "Bagus Nararya",
+  },
+  {
+    id: "#3142-ANZX",
+    brand: "Nike",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "05-01-2024",
+    validator: "Ayu Lestari",
+  },
+  {
+    id: "#8342-KMAZ",
+    brand: "Adidas",
+    status: "Done",
+    authenticity: "FAKE",
+    date: "06-01-2024",
+    validator: "Bayu Anggara",
+  },
+  {
+    id: "#5294-LPAZ",
+    brand: "Puma",
+    status: "Pending",
+    authenticity: "-",
+    date: "07-01-2024",
+    validator: "Citra Dewi",
+  },
+  {
+    id: "#6142-UMZX",
+    brand: "Reebok",
+    status: "Done",
+    authenticity: "ORIGINAL",
+    date: "08-01-2024",
+    validator: "Dian Sastro",
+  },
 ];
-
 const getStatusClasses = (status) => {
   switch (status) {
     case "Done":
@@ -107,14 +158,6 @@ const LegitCheckTable = () => {
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
   const totalRecords = filteredData.length;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const openModalWithItem = (item) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -167,7 +210,7 @@ const LegitCheckTable = () => {
             />
             <button
               type="button"
-              className="border border-l-secondary  w-fit p-3"
+              className="p-3 border border-l-secondary w-fit"
               onClick={handleSearch}
             >
               <img src={SearchValidatorIcon} alt="Search Validator" />
@@ -175,29 +218,29 @@ const LegitCheckTable = () => {
           </div>
         </div>
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Item ID
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Brand
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Status
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Authenticity
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Date Uploaded
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Validator
               </th>
             </tr>
@@ -207,17 +250,16 @@ const LegitCheckTable = () => {
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                onClick={() => openModalWithItem(item)}
               >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {index + 1}
+                  {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="py-4 px-6 cursor-pointer">{item.id}</td>
-                <td className="py-4 px-6 cursor-pointer">{item.brand}</td>
-                <td className="px-5 py-2 whitespace-no-wrap cursor-pointer">
+                <td className="px-6 py-4">{item.id}</td>
+                <td className="px-6 py-4">{item.brand}</td>
+                <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
                       item.status
@@ -226,7 +268,7 @@ const LegitCheckTable = () => {
                     {getStatusLabel(item.status)}
                   </span>
                 </td>
-                <td className="px-5 py-2 whitespace-no-wrap cursor-pointer">
+                <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
                       item.authenticity
@@ -235,20 +277,15 @@ const LegitCheckTable = () => {
                     {getAuthenticityLabel(item.status, item.authenticity)}
                   </span>
                 </td>
-                <td className="py-4 px-6 cursor-pointer">{item.date}</td>
-                <td className="py-4 px-6 cursor-pointer">{item.validator}</td>
+                <td className="px-6 py-4">{item.date}</td>
+                <td className="px-6 py-4">{item.validator}</td>
               </tr>
             ))}
           </tbody>
-          <ItemDetailModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            itemDetail={selectedItem || {}}
-          />
         </table>
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
+        <div className="flex items-center justify-center gap-5">
           <div>
             <label
               htmlFor="itemsPerPage"
@@ -272,7 +309,7 @@ const LegitCheckTable = () => {
           </span>
         </div>
 
-        <div className="flex gap-2 justify-center items-center ">
+        <div className="flex items-center justify-center gap-2 ">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}

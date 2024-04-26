@@ -1,5 +1,5 @@
-import Header from './../../components/layouts/Header';
-import { UserTable } from '../../components/user management';
+import Header from '../../components/layouts/Header';
+import { UserTable } from '../../components/admins/usermanage/';
 
 const UsersPage = () => {
   return (

@@ -1,5 +1,5 @@
-import Header from "./../../components/layouts/Header";
-import { LegitCheckTable } from "../../components/Legit Check";
+import Header from '../../components/layouts/Header';
+import { LegitCheckTable } from '../../components/admins/legitcheck';
 
 const LegitCheckPage = () => {
   return (

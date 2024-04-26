@@ -1,8 +1,8 @@
-import { TotalLegitCheckIcon, TotalCheckedIcon, PendingIcon } from "../../../public/icons/dashboard"
+import { TotalLegitCheckIcon, TotalCheckedIcon, PendingIcon } from "../../../../public/icons/dashboard"
 const statistic = () => {
   return (
     <section>
-       <div className="p-8 flex justify-between items-center">
+       <div className="flex items-center justify-between p-8">
         <div className="flex flex-col gap-3">
           <img src={TotalLegitCheckIcon} alt="Total Legit Check" />
           <h2 className="text-[18px]">3089</h2>

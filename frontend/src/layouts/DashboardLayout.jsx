@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { Sidebar } from '../components/layouts';
+import { Sidebar } from '../components/layouts/';
 import routes from '../routes';
 
 export function DashboardLayout() {

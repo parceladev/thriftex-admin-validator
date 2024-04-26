@@ -1,5 +1,6 @@
-import { ValidatorLegitCheckTable } from "../../components/Legit Check";
-import Header from "../../components/layouts/Header";
+import { ValidatorLegitCheckTable } from '../../components/admins/legitcheck';
+import Header from '../../components/layouts/Header';
+
 const LegitCheckValidatorPage = () => {
   return (
     <div>

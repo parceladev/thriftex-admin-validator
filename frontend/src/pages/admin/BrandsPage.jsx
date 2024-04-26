@@ -1,4 +1,4 @@
-import { BrandTable } from '../../components/brand';
+import { BrandTable } from '../../components/admins/brand/';
 import Header from './../../components/layouts/Header';
 
 const BrandsPage = () => {

@@ -3,8 +3,8 @@ import InputEmail from './InputEmail';
 import InputPassword from './InputPassword';
 import BorderButton from './BorderButton';
 import { useNavigate } from 'react-router-dom';
-import { signIn } from '../../utils/auth-api-service';
-import { decodeToken, getAccessToken } from '../../utils/token-utilities';
+import { signIn } from '../../../utils/auth-api-service';
+import { decodeToken, getAccessToken } from '../../../utils/token-utilities';
 
 const FormSignIn = () => {
   const [email, setEmail] = useState('');
