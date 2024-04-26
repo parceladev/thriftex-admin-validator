@@ -32,7 +32,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                   <form>
                     <div className="flex flex-wrap w-full sm:items-center p-6">
                       <label htmlFor="full-name" className="block w-full text-md font-medium text-gray-700">
-                        Full name <span className="text-gray-300">(Required)</span>
+                        Full name <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 w-full">
                         <input id="full-name" name="full-name" type="text" autoComplete="name" required className="appearance-none block w-full px-3 py-2 border-b-2 border-gray-600 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-600 focus:border-gray-500 sm:text-sm" placeholder="Enter full name" />
@@ -40,7 +40,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                     </div>
                     <div className="flex flex-wrap w-full sm:items-center p-6">
                       <label htmlFor="email" className="block w-full text-md font-medium text-gray-700">
-                        Email <span className="text-gray-300">(Required)</span>
+                        Email <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 w-full">
                         <input id="email" name="email" type="text" autoComplete="name" required className="appearance-none block w-full px-3 py-2 border-b-2 border-gray-600 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-600 focus:border-gray-500 sm:text-sm" placeholder="Enter name" />
@@ -48,7 +48,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                     </div>
                     <div className="flex flex-wrap w-full sm:items-center p-6">
                       <label htmlFor="password" className="block w-full text-md font-medium text-gray-700">
-                        Password <span className="text-gray-300">(Required)</span>
+                        Password <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">
                         <input
@@ -75,7 +75,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                     </div>
                     <div className="flex flex-wrap w-full sm:items-center p-6">
                       <label htmlFor="confirm-password" className="block w-full text-md font-medium text-gray-700">
-                        Confirm Password <span className="text-gray-300">(Required)</span>
+                        Confirm Password <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">
                         <input

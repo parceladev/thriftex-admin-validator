@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
-import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
-const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
+
+const ModalAddBrand = ({ isOpen, onClose, onAddBrand }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -79,12 +79,12 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
                         Brand logo <span className="text-red-400">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">
-                        <p className="text-gray-600">
-                          Make sure to your logo with tarnsparrent <br />
+                        <p className="text-gray-600 ">
+                          Make sure to your logo with transparrent <br />
                           background image.
                         </p>
                         <div className="mt-1 relative w-full">
-                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                          <div className="mt-3 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                             <div className="space-y-1 text-center">
                               <svg
                                 className="mx-auto h-12 w-12 text-gray-400"
@@ -132,7 +132,7 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
-              onClick={onCreateAccount}
+              onClick={onAddBrand}
               type="button"
               className="py-3 w-full mb-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
             >

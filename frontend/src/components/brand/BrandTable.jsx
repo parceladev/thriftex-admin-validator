@@ -135,7 +135,7 @@ const BrandTable = () => {
             </div>
             <button
               type="button"
-              className="py-3 w-1/4 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
+              className="py-4 w-1/4 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
               onClick={openModalAddBrand}
             >
               <span className="mr-2">ADD BRAND</span>
@@ -197,7 +197,7 @@ const BrandTable = () => {
         <ModalDeleteBrand
           isOpen={isModalDeleteOpen}
           onClose={closeModalDeleteBrand}
-          onCreateAccount={() => console.log('Create Account')}
+          // onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">

@@ -254,7 +254,7 @@ const UserTable = () => {
         <ModalDeleteUser
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log('Create Account')}
+          // onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
