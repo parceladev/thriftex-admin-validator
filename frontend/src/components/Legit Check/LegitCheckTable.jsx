@@ -1,120 +1,43 @@
-import { useState } from 'react';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
+import { fectchLegitData } from '../../utils/legit-api-service';
 
-const initialData = [
-  {
-    id: '#4142-ONZX',
-    brand: 'Vans',
-    status: 'Done',
-    authenticity: 'FAKE',
-    date: '04-01-2024',
-    validator: 'Alif Lakipadada',
-  },
-  {
-    id: '#7294-OXAZ',
-    brand: 'Converse',
-    status: 'Pending',
-    authenticity: '-',
-    date: '04-01-2024',
-    validator: 'Bagus Nararya',
-  },
-  {
-    id: '#3142-ANZX',
-    brand: 'Nike',
-    status: 'Done',
-    authenticity: 'ORIGINAL',
-    date: '05-01-2024',
-    validator: 'Ayu Lestari',
-  },
-  {
-    id: '#8342-KMAZ',
-    brand: 'Adidas',
-    status: 'Done',
-    authenticity: 'FAKE',
-    date: '06-01-2024',
-    validator: 'Bayu Anggara',
-  },
-  {
-    id: '#5294-LPAZ',
-    brand: 'Puma',
-    status: 'Pending',
-    authenticity: '-',
-    date: '07-01-2024',
-    validator: 'Citra Dewi',
-  },
-  {
-    id: '#6142-UMZX',
-    brand: 'Reebok',
-    status: 'Done',
-    authenticity: 'ORIGINAL',
-    date: '08-01-2024',
-    validator: 'Dian Sastro',
-  },
-  {
-    id: '#4142-ONZX',
-    brand: 'Vans',
-    status: 'Done',
-    authenticity: 'FAKE',
-    date: '04-01-2024',
-    validator: 'Alif Lakipadada',
-  },
-  {
-    id: '#7294-OXAZ',
-    brand: 'Converse',
-    status: 'Pending',
-    authenticity: '-',
-    date: '04-01-2024',
-    validator: 'Bagus Nararya',
-  },
-  {
-    id: '#3142-ANZX',
-    brand: 'Nike',
-    status: 'Done',
-    authenticity: 'ORIGINAL',
-    date: '05-01-2024',
-    validator: 'Ayu Lestari',
-  },
-  {
-    id: '#8342-KMAZ',
-    brand: 'Adidas',
-    status: 'Done',
-    authenticity: 'FAKE',
-    date: '06-01-2024',
-    validator: 'Bayu Anggara',
-  },
-  {
-    id: '#5294-LPAZ',
-    brand: 'Puma',
-    status: 'Pending',
-    authenticity: '-',
-    date: '07-01-2024',
-    validator: 'Citra Dewi',
-  },
-  {
-    id: '#6142-UMZX',
-    brand: 'Reebok',
-    status: 'Done',
-    authenticity: 'ORIGINAL',
-    date: '08-01-2024',
-    validator: 'Dian Sastro',
-  },
-];
-const getStatusClasses = (status) => {
-  switch (status) {
-    case 'Done':
+const getStatusLabel = (legit_status) => {
+  switch (legit_status) {
+    case 'legited':
+      return 'DONE';
+    case 'posted':
+      return 'PENDING';
+    default:
+      return legit_status;
+  }
+};
+
+const getStatusClasses = (legit_status) => {
+  switch (legit_status) {
+    case 'done':
       return 'bg-secondary text-primary';
-    case 'Pending':
+    case 'posted':
       return 'bg-buttonpending text-primary';
     default:
       return 'bg-gray-200 text-gray-800';
   }
 };
 
-const getAuthenticityClasses = (authenticity) => {
-  switch (authenticity) {
+const getAuthenticityLabel = (legit_status, check_result) => {
+  if (legit_status === 'posted') {
+    return '-';
+  } else if (legit_status === 'Done' && check_result === 'ORIGINAL') {
+    return 'ORIGINAL';
+  } else if (check_result === 'FAKE') {
+    return 'FAKE';
+  }
+
+  return '-';
+};
+
+const getAuthenticityClasses = (check_result) => {
+  switch (check_result) {
     case 'FAKE':
       return 'bg-primary text-secondary border-[1px] border-secondary';
     case 'ORIGINAL':
@@ -124,40 +47,36 @@ const getAuthenticityClasses = (authenticity) => {
   }
 };
 
-const getStatusLabel = (status) => {
-  switch (status) {
-    case 'Done':
-      return 'DONE';
-    case 'Pending':
-      return 'PENDING';
-    default:
-      return status;
-  }
-};
-
-const getAuthenticityLabel = (status, authenticity) => {
-  if (status === 'Pending') {
-    return '-';
-  } else if (status === 'Done' && authenticity === 'ORIGINAL') {
-    return 'ORIGINAL';
-  } else if (authenticity === 'FAKE') {
-    return 'FAKE';
-  }
-
-  return '-';
-};
-
 const LegitCheckTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const totalRecords = filteredData.length;
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const data = await fectchLegitData();
+      if (data.status) {
+        setFilteredData(data.data);
+      } else {
+        setError(data.message || 'Failed to fetch data');
+      }
+      setLoading(false);
+    };
+
+    loadData();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -165,7 +84,7 @@ const LegitCheckTable = () => {
 
   const handleSearch = () => {
     setFilteredData(
-      initialData.filter((item) =>
+      filteredData.filter((item) =>
         item.id.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
@@ -173,7 +92,7 @@ const LegitCheckTable = () => {
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+    setCurrentPage(1);
   };
 
   const handleNextPage = () => {
@@ -184,8 +103,36 @@ const LegitCheckTable = () => {
     setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   };
 
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // const handleSearchChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
+
+  // const handleSearch = () => {
+  //   setFilteredData(
+  //     initialData.filter((item) =>
+  //       item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  //     )
+  //   );
+  // };
+
+  // const handleItemsPerPageChange = (event) => {
+  //   setItemsPerPage(Number(event.target.value));
+  //   setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+  // };
+
+  // const handleNextPage = () => {
+  //   setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+  // };
+
+  // const handlePreviousPage = () => {
+  //   setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+  // };
+
+  // const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  // const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -251,28 +198,28 @@ const LegitCheckTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.id}</td>
-                <td className="px-6 py-4">{item.brand}</td>
+                <td className="px-6 py-4">{item.case_code}</td>
+                <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
-                      item.status
+                      item.legit_status
                     )}`}
                   >
-                    {getStatusLabel(item.status)}
+                    {getStatusLabel(item.legit_status)}
                   </span>
                 </td>
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
-                      item.authenticity
+                      item.check_result
                     )}`}
                   >
-                    {getAuthenticityLabel(item.status, item.authenticity)}
+                    {getAuthenticityLabel(item.legit_status, item.check_result)}
                   </span>
                 </td>
-                <td className="px-6 py-4">{item.date}</td>
-                <td className="px-6 py-4">{item.validator}</td>
+                <td className="px-6 py-4">{item.submit_time}</td>
+                <td className="px-6 py-4">{item.id}</td>
               </tr>
             ))}
           </tbody>
