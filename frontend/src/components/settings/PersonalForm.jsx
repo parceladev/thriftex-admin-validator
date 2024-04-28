@@ -11,7 +11,7 @@ const PersonalForm = (props) => {
   return (
     <div className="flex flex-col w-full gap-5">
       <h1 className="mb-8 text-2xl font-semibold">Personal Information</h1>
-      <IdValidator value={userData.userId} />
+      {userData.role === 'validator' && <IdValidator value={userData.userId} />}
       <div className="relative flex items-center justify-center w-20 h-20 border-2 border-black rounded-full cursor-pointer bg-slate-300">
         {userData.photo ? (
           typeof userData.photo === 'object' ? (

@@ -10,6 +10,7 @@ const AccountSettings = () => {
   const [userData, setUserData] = useState({
     userId: '',
     photo: '',
+    role: '',
     username: '',
     name: '',
     phoneNumber: '',
@@ -28,6 +29,7 @@ const AccountSettings = () => {
         setUserData({
           userId: decoded.user_id || '',
           photo: decoded.foto || '',
+          role: decoded.role || '',
           username: decoded.username || '',
           name: decoded.nama || '',
           phoneNumber: decoded.no_hp || '',
@@ -82,6 +84,7 @@ const AccountSettings = () => {
     const updatedUserData = {
       user_id: userData.userId,
       foto: userData.photo,
+      role: userData.role,
       username: userData.username,
       nama: userData.name,
       no_hp: userData.phoneNumber,
