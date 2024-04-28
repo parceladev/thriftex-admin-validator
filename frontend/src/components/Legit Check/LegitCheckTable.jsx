@@ -63,7 +63,7 @@ const LegitCheckTable = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  useEffect(() => {
+  useEffect(() => { 
     const loadData = async () => {
       setLoading(true);
       const data = await fectchLegitData();

@@ -1,206 +1,88 @@
-import { FaTrashCan } from 'react-icons/fa6';
-import { useState } from 'react';
-import ModalValidator from './ModalValidator';
-import ModalDelete from './ModalDelete';
-import { SearchTable, TablePagination, AddButton } from '../generals';
-
-const initialData = [
-  {
-    id: 1,
-    username: 'JohnDoe',
-    email: 'john@example.com',
-    brandChecking: 'Nike',
-    dateCreation: '2024-04-07',
-  },
-  {
-    id: 2,
-    username: 'JaneSmith',
-    email: 'jane@example.com',
-    brandChecking: 'Adidas',
-    dateCreation: '2024-04-08',
-  },
-  {
-    id: 3,
-    username: 'AliceJohnson',
-    email: 'alice@example.com',
-    brandChecking: 'Puma',
-    dateCreation: '2024-04-09',
-  },
-  {
-    id: 4,
-    username: 'BobBrown',
-    email: 'bob@example.com',
-    brandChecking: 'Reebok',
-    dateCreation: '2024-04-10',
-  },
-  {
-    id: 5,
-    username: 'EmilyDavis',
-    email: 'emily@example.com',
-    brandChecking: 'Under Armour',
-    dateCreation: '2024-04-11',
-  },
-  {
-    id: 6,
-    username: 'ChrisWilson',
-    email: 'chris@example.com',
-    brandChecking: 'New Balance',
-    dateCreation: '2024-04-12',
-  },
-  {
-    id: 7,
-    username: 'JessicaMartinez',
-    email: 'jessica@example.com',
-    brandChecking: 'Vans',
-    dateCreation: '2024-04-13',
-  },
-  {
-    id: 8,
-    username: 'MichaelThompson',
-    email: 'michael@example.com',
-    brandChecking: 'Converse',
-    dateCreation: '2024-04-14',
-  },
-  {
-    id: 9,
-    username: 'SarahGarcia',
-    email: 'sarah@example.com',
-    brandChecking: 'Fila',
-    dateCreation: '2024-04-15',
-  },
-  {
-    id: 10,
-    username: 'DavidHernandez',
-    email: 'david@example.com',
-    brandChecking: 'Skechers',
-    dateCreation: '2024-04-16',
-  },
-  {
-    id: 11,
-    username: 'AmandaMartinez',
-    email: 'amanda@example.com',
-    brandChecking: 'Asics',
-    dateCreation: '2024-04-17',
-  },
-  {
-    id: 12,
-    username: 'JamesRodriguez',
-    email: 'james@example.com',
-    brandChecking: 'Columbia',
-    dateCreation: '2024-04-18',
-  },
-  {
-    id: 13,
-    username: 'MelissaLopez',
-    email: 'melissa@example.com',
-    brandChecking: 'Timberland',
-    dateCreation: '2024-04-19',
-  },
-  {
-    id: 14,
-    username: 'DanielGonzalez',
-    email: 'daniel@example.com',
-    brandChecking: 'Lacoste',
-    dateCreation: '2024-04-20',
-  },
-  {
-    id: 15,
-    username: 'LaurenPerez',
-    email: 'lauren@example.com',
-    brandChecking: 'Tommy Hilfiger',
-    dateCreation: '2024-04-21',
-  },
-  {
-    id: 16,
-    username: 'KevinTaylor',
-    email: 'kevin@example.com',
-    brandChecking: 'Calvin Klein',
-    dateCreation: '2024-04-22',
-  },
-  {
-    id: 17,
-    username: 'AshleyMoore',
-    email: 'ashley@example.com',
-    brandChecking: 'Ralph Lauren',
-    dateCreation: '2024-04-23',
-  },
-  {
-    id: 18,
-    username: 'RyanClark',
-    email: 'ryan@example.com',
-    brandChecking: 'Hugo Boss',
-    dateCreation: '2024-04-24',
-  },
-  {
-    id: 19,
-    username: 'RachelScott',
-    email: 'rachel@example.com',
-    brandChecking: 'Giorgio Armani',
-    dateCreation: '2024-04-25',
-  },
-  {
-    id: 20,
-    username: 'JustinLewis',
-    email: 'justin@example.com',
-    brandChecking: 'Versace',
-    dateCreation: '2024-04-26',
-  },
-];
+import { FaTrashCan } from "react-icons/fa6";
+import { useState, useEffect } from "react";
+import ModalValidator from "./ModalValidator";
+import ModalDelete from "./ModalDelete";
+import { SearchTable, TablePagination, AddButton } from "../generals";
+import { fetchAllValidator } from "../../utils/users_api-service";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const ValidatorTable = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
+  useEffect(() => {
+    fetchUserData();
+  }, [currentPage, itemsPerPage, searchTerm]);
+
+  const fetchUserData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetchAllValidator(
+        currentPage,
+        itemsPerPage,
+        searchTerm
+      );
+
+      if (response.data && response.data.data) {
+        const apiData = response.data;
+        setData(apiData.data);
+        // console.log(apiData.data);
+        setFilteredData(apiData.data);
+        setTotalRecords(apiData.total_data);
+      } else {
+        console.error("Error fetching data:", response.data.message);
+        setData([]);
+        setFilteredData([]);
+        setTotalRecords(0);
+      }
+    } catch (error) {
+      console.error("Error with fetching table data:", error);
+      setData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+    }
+    setIsLoading(false);
+  };
+
+  if (isLoading) {
+    <FontAwesomeIcon icon={faSpinner} />;
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleItemsPerPageChange = (event) => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
-  };
-
   const handleSearch = () => {
-    setFilteredData(
-      initialData.filter((item) =>
-        item.username.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  };
-
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    } else {
+      fetchUserData();
     }
   };
 
-  const openModalAdd = () => {
-    setIsModalAddOpen(true);
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1);
   };
 
-  const closeModalAdd = () => {
-    setIsModalAddOpen(false);
+  const handleNextPage = () => {
+    if (currentPage < Math.ceil(totalRecords / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const openModalDelete = () => {
@@ -211,6 +93,27 @@ const ValidatorTable = () => {
     setIsModalDeleteOpen(false);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo =
+    currentPage * itemsPerPage < totalRecords
+      ? currentPage * itemsPerPage
+      : totalRecords;
+  const openModalAdd = () => {
+    setIsModalAddOpen(true);
+  };
+
+  const closeModalAdd = () => {
+    setIsModalAddOpen(false);
+  };
   return (
     <section>
       <div className="flex items-center justify-center gap-3 mb-4">
@@ -225,7 +128,7 @@ const ValidatorTable = () => {
               typeButton="button"
               altIcon="Search Validator"
               onKeyPress={(event) => {
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   handleSearch();
                 }
               }}
@@ -241,7 +144,7 @@ const ValidatorTable = () => {
         <ModalValidator
           isOpen={isModalAddOpen}
           onClose={closeModalAdd}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -258,9 +161,6 @@ const ValidatorTable = () => {
                 Email
               </th>
               <th scope="col" className="px-6 py-3">
-                Brand Checking
-              </th>
-              <th scope="col" className="px-6 py-3">
                 Date Creation
               </th>
               <th scope="col" className="px-6 py-3 text-center">
@@ -269,7 +169,7 @@ const ValidatorTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr
                 key={item.id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -282,8 +182,7 @@ const ValidatorTable = () => {
                 </th>
                 <td className="px-6 py-4">{item.username}</td>
                 <td className="px-6 py-4">{item.email}</td>
-                <td className="px-6 py-4">{item.brandChecking}</td>
-                <td className="px-6 py-4">{item.dateCreation}</td>
+                <td className="px-6 py-4">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
@@ -302,7 +201,7 @@ const ValidatorTable = () => {
         <ModalDelete
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <TablePagination

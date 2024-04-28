@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { SearchValidatorIcon } from '../../../public/icons/legitcheck';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faAngleRight,
   faSpinner,
-} from '@fortawesome/free-solid-svg-icons';
-import { FaTrashCan } from 'react-icons/fa6';
-import ModalDeleteUser from './ModalDeleteUser';
-import { SearchTable, TablePagination } from '../generals';
-import { getAccessToken } from '../../utils/token-utilities';
+} from "@fortawesome/free-solid-svg-icons";
+import { FaTrashCan } from "react-icons/fa6";
+import ModalDeleteUser from "./ModalDeleteUser";
+import { fetchAllUsers } from "../../utils/users_api-service";
+import { SearchTable, TablePagination } from "../generals";
+import { getAccessToken } from "../../utils/token-utilities";
 
 const UserTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -29,25 +30,27 @@ const UserTable = () => {
 
   const fetchUserData = async () => {
     setIsLoading(true);
-    const token = getAccessToken();
     try {
-      const response = await axios.get(
-        `http://localhost/rest.thriftex/api/users/list?page=${currentPage}&limit=${itemsPerPage}&search=${searchTerm}`,
-        { headers: { Authorization: `${token}` } }
+      const response = await fetchAllUsers(
+        currentPage,
+        itemsPerPage,
+        searchTerm
       );
+
       if (response.data && response.data.data) {
-        const apiData = response.data.data;
+        const apiData = response.data;
         setData(apiData.data);
+        // console.log(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error('Error fetching data:', response.data.message);
+        console.error("Error fetching data:", response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error('Error with fetching table data:', error);
+      console.error("Error with fetching table data:", error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -100,8 +103,8 @@ const UserTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      '0'
-    )}-${String(date.getDate()).padStart(2, '0')}`;
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -123,7 +126,7 @@ const UserTable = () => {
             typeButton="button"
             altIcon="Search User"
             onKeyPress={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 handleSearch();
               }
             }}
@@ -184,7 +187,7 @@ const UserTable = () => {
         <ModalDeleteUser
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <TablePagination
