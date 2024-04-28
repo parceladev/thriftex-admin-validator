@@ -8,6 +8,7 @@ import { decodeToken, getAccessToken } from '../../utils/token-utilities';
 
 const AccountSettings = () => {
   const [userData, setUserData] = useState({
+    userId: '',
     photo: '',
     username: '',
     name: '',
@@ -25,6 +26,7 @@ const AccountSettings = () => {
       const decoded = decodeToken(token);
       if (decoded) {
         setUserData({
+          userId: decoded.user_id || '',
           photo: decoded.foto || '',
           username: decoded.username || '',
           name: decoded.nama || '',
@@ -78,6 +80,7 @@ const AccountSettings = () => {
     }
 
     const updatedUserData = {
+      user_id: userData.userId,
       foto: userData.photo,
       username: userData.username,
       nama: userData.name,
