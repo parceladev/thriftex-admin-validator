@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { FaPlus } from 'react-icons/fa6';
-import { FaTrashCan } from 'react-icons/fa6';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import ModalAddBrand from './ModalAddBrand';
-import ModalDeleteBrand from './ModalDeleteBrand';
-import { SearchTable, TablePagination, AddButton } from '../generals';
-import { fetchBrands } from '../../utils/brand-api-service';
+import { useState, useEffect } from "react";
+import { FaPlus } from "react-icons/fa6";
+import { FaTrashCan } from "react-icons/fa6";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import ModalAddBrand from "./ModalAddBrand";
+import ModalDeleteBrand from "./ModalDeleteBrand";
+import { SearchTable, TablePagination, AddButton } from "../generals";
+import { fetchBrands } from "../../utils/brand-api-service";
 
 const BrandTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -33,10 +33,10 @@ const BrandTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        throw new Error('No data received');
+        throw new Error("No data received");
       }
     } catch (error) {
-      console.error('Error with fetching table data:', error);
+      console.error("Error with fetching table data:", error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -97,8 +97,8 @@ const BrandTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      '0'
-    )}-${String(date.getDate()).padStart(2, '0')}`;
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -121,7 +121,7 @@ const BrandTable = () => {
               typeButton="button"
               altIcon="Search Validator"
               onKeyPress={(event) => {
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   handleSearch();
                 }
               }}
@@ -136,7 +136,7 @@ const BrandTable = () => {
         <ModalAddBrand
           isOpen={isModalAddOpen}
           onClose={closeModalAddbrand}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -188,7 +188,7 @@ const BrandTable = () => {
         <ModalDeleteBrand
           isOpen={isModalDeleteOpen}
           onClose={closeModalDeleteBrand}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <TablePagination
