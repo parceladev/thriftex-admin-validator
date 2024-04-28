@@ -1,10 +1,6 @@
 import { PropTypes } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faPaste,
-  faPenToSquare,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import InputForm from './InputForm';
 import IdValidator from './IdValidator';
@@ -15,7 +11,7 @@ const PersonalForm = (props) => {
   return (
     <div className="flex flex-col w-full gap-5">
       <h1 className="mb-8 text-2xl font-semibold">Personal Information</h1>
-      <IdValidator />
+      {userData.role === 'validator' && <IdValidator value={userData.userId} />}
       <div className="relative flex items-center justify-center w-20 h-20 border-2 border-black rounded-full cursor-pointer bg-slate-300">
         {userData.photo ? (
           typeof userData.photo === 'object' ? (
@@ -104,6 +100,7 @@ const PersonalForm = (props) => {
 
 PersonalForm.propTypes = {
   userData: PropTypes.shape({
+    user_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     photo: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(File)]),
     username: PropTypes.string,
     name: PropTypes.string,

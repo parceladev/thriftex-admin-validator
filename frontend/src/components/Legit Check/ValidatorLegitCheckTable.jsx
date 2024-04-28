@@ -1,119 +1,82 @@
-/* eslint-disable no-unused-vars */
-import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import ItemDetailModal from "./ItemDetailModal";
-const initialData = [
-  {
-    id: "#4142-ONZX",
-    category: "Shoes",
-    brand: "Vans",
-    name: "Vans Old Skool",
-    status: "Done",
-    authenticity: "FAKE",
-    date: "04-01-2024",
-    validator: "Alif Lakipadada",
-    photos: [
-      "https://via.placeholder.com/150/0000FF/808080",
-      "https://via.placeholder.com/150/FF0000/FFFFFF",
-      "https://via.placeholder.com/150/FFFF00/000000",
-      "https://via.placeholder.com/150/000000/FFFFFF",
-    ],
-    purchase: "04-01-2024",
-    storeName: "Sneaker Street",
-    condition: "New",
-    otherNote: "Limited edition colorway",
-    authenticityOption: "FAKE",
-  },
-  {
-    id: "#7294-OXAZ",
-    category: "Apparel",
-    brand: "Supreme",
-    name: "Supreme T-Shirt",
-    status: "Pending",
-    authenticity: "-",
-    date: "05-01-2024",
-    validator: "Bagus Nararya",
-    photos: [
-      "https://via.placeholder.com/150/00FF00/000000",
-      "https://via.placeholder.com/150/FF00FF/FFFFFF",
-      "https://via.placeholder.com/150/00FFFF/000000",
-      "https://via.placeholder.com/150/FFD700/000000",
-    ],
-    purchase: "05-01-2024",
-    storeName: "Supreme Store",
-    condition: "Used",
-    otherNote: "",
-    authenticityOption: "ORIGINAL",
-  },
-  // ... tambahkan entri lain sesuai kebutuhan
-];
+import { useState, useEffect } from 'react';
+import { SearchTable, TablePagination } from '../generals';
+import { fectchLegitData } from '../../utils/legit-api-service';
 
-const getStatusClasses = (status) => {
-  switch (status) {
-    case "Done":
-      return "bg-secondary text-primary";
-    case "Pending":
-      return "bg-buttonpending text-primary";
+const getStatusLabel = (legit_status) => {
+  switch (legit_status) {
+    case 'legited':
+      return 'DONE';
+    case 'posted':
+      return 'PENDING';
     default:
-      return "bg-gray-200 text-gray-800";
+      return legit_status;
   }
 };
 
-const getAuthenticityClasses = (authenticity) => {
-  switch (authenticity) {
-    case "FAKE":
-      return "bg-primary text-secondary border-[1px] border-secondary";
-    case "ORIGINAL":
-      return "bg-secondary text-primary";
+const getStatusClasses = (legit_status) => {
+  switch (legit_status) {
+    case 'done':
+      return 'bg-secondary text-primary';
+    case 'posted':
+      return 'bg-buttonpending text-primary';
     default:
-      return "bg-gray-200 text-gray-800";
+      return 'bg-gray-200 text-gray-800';
   }
 };
 
-const getStatusLabel = (status) => {
-  switch (status) {
-    case "Done":
-      return "DONE";
-    case "Pending":
-      return "PENDING";
+const getAuthenticityLabel = (legit_status, check_result) => {
+  if (legit_status === 'posted') {
+    return '-';
+  } else if (legit_status === 'Done' && check_result === 'ORIGINAL') {
+    return 'ORIGINAL';
+  } else if (check_result === 'FAKE') {
+    return 'FAKE';
+  }
+
+  return '-';
+};
+
+const getAuthenticityClasses = (check_result) => {
+  switch (check_result) {
+    case 'FAKE':
+      return 'bg-primary text-secondary border-[1px] border-secondary';
+    case 'ORIGINAL':
+      return 'bg-secondary text-primary';
     default:
-      return status;
+      return 'bg-gray-200 text-gray-800';
   }
 };
 
-const getAuthenticityLabel = (status, authenticity) => {
-  if (status === "Pending") {
-    return "-";
-  } else if (status === "Done" && authenticity === "ORIGINAL") {
-    return "ORIGINAL";
-  } else if (authenticity === "FAKE") {
-    return "FAKE";
-  }
-
-  return "-";
-};
-
-const LegitCheckTable = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+const ValidatorLegitCheckTable = () => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filteredData, setFilteredData] = useState(initialData);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const totalRecords = filteredData.length;
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalRecords = filteredData.length;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const data = await fectchLegitData();
+      if (data.status) {
+        setFilteredData(data.data);
+      } else {
+        setError(data.message || 'Failed to fetch data');
+      }
+      setLoading(false);
+    };
 
-  const openModalWithItem = (item) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
+    loadData();
+  }, []);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -121,7 +84,7 @@ const LegitCheckTable = () => {
 
   const handleSearch = () => {
     setFilteredData(
-      initialData.filter((item) =>
+      filteredData.filter((item) =>
         item.id.toLowerCase().includes(searchTerm.toLowerCase())
       )
     );
@@ -129,7 +92,7 @@ const LegitCheckTable = () => {
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+    setCurrentPage(1);
   };
 
   const handleNextPage = () => {
@@ -140,11 +103,39 @@ const LegitCheckTable = () => {
     setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   };
 
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // const handleSearchChange = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
+
+  // const handleSearch = () => {
+  //   setFilteredData(
+  //     initialData.filter((item) =>
+  //       item.id.toLowerCase().includes(searchTerm.toLowerCase())
+  //     )
+  //   );
+  // };
+
+  // const handleItemsPerPageChange = (event) => {
+  //   setItemsPerPage(Number(event.target.value));
+  //   setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
+  // };
+
+  // const handleNextPage = () => {
+  //   setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+  // };
+
+  // const handlePreviousPage = () => {
+  //   setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+  // };
+
+  // const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  // const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       handleSearch();
     }
   };
@@ -152,52 +143,45 @@ const LegitCheckTable = () => {
     <section>
       <div className="flex items-center justify-center mb-4">
         <div className="w-full ">
-          <div className="flex items-center border-secondary border-[1px] rounded-md ">
-            <input
-              type="text"
-              className="  w-full rounded-md leading-none text-gray-700 p-3 text-[14px] focus:outline-none focus:ring-0"
-              placeholder="Search Item ID"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              onKeyPress={(event) => {
-                if (event.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-            />
-            <button
-              type="button"
-              className="border border-l-secondary  w-fit p-3"
-              onClick={handleSearch}
-            >
-              <img src={SearchValidatorIcon} alt="Search Validator" />
-            </button>
-          </div>
+          <SearchTable
+            typeInput="text"
+            placeholder="Search Item ID"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onClick={handleSearch}
+            typeButton="button"
+            altIcon="Search Legit Check"
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                handleSearch();
+              }
+            }}
+          />
         </div>
       </div>
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 No.
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Item ID
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Brand
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Status
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Authenticity
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Date Uploaded
               </th>
-              <th scope="col" className="py-3 px-6">
+              <th scope="col" className="px-6 py-3">
                 Validator
               </th>
             </tr>
@@ -207,93 +191,57 @@ const LegitCheckTable = () => {
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                onClick={() => openModalWithItem(item)}
               >
                 <th
                   scope="row"
-                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  {index + 1}
+                  {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="py-4 px-6 cursor-pointer">{item.id}</td>
-                <td className="py-4 px-6 cursor-pointer">{item.brand}</td>
-                <td className="px-5 py-2 whitespace-no-wrap cursor-pointer">
+                <td className="px-6 py-4">{item.case_code}</td>
+                <td className="px-6 py-4">{item.brand_name}</td>
+                <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
-                      item.status
+                      item.legit_status
                     )}`}
                   >
-                    {getStatusLabel(item.status)}
+                    {getStatusLabel(item.legit_status)}
                   </span>
                 </td>
-                <td className="px-5 py-2 whitespace-no-wrap cursor-pointer">
+                <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
-                      item.authenticity
+                      item.check_result
                     )}`}
                   >
-                    {getAuthenticityLabel(item.status, item.authenticity)}
+                    {getAuthenticityLabel(item.legit_status, item.check_result)}
                   </span>
                 </td>
-                <td className="py-4 px-6 cursor-pointer">{item.date}</td>
-                <td className="py-4 px-6 cursor-pointer">{item.validator}</td>
+                <td className="px-6 py-4">{item.submit_time}</td>
+                <td className="px-6 py-4">You</td>
               </tr>
             ))}
           </tbody>
-          <ItemDetailModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            itemDetail={selectedItem || {}}
-          />
         </table>
       </div>
-      <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
-        <div className="flex justify-center items-center gap-5">
-          <div>
-            <label
-              htmlFor="itemsPerPage"
-              className="mx-3 font-sans font-light text-[16px]"
-            >
-              Display
-            </label>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px] "
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </div>
-          <span className="font-sans font-light  text-[16px]">
-            Showing {showingFrom} to {showingTo} of {totalRecords} records
-          </span>
-        </div>
-
-        <div className="flex gap-2 justify-center items-center ">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
-          </button>
-          <div className="w-[40px]  h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
-            <p>{currentPage}</p>
-          </div>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="bg-buttonangle  text-secondary w-[34px] h-[34px] rounded-md"
-          >
-            <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
-          </button>
-        </div>
-      </div>
+      <TablePagination
+        htmlFor="itemsPerPage"
+        label="Display"
+        id="itemsPerPage"
+        value={itemsPerPage.toString()}
+        onChange={handleItemsPerPageChange}
+        disabledLeft={currentPage === 1}
+        disabledRight={currentPage === totalPages}
+        onClickLeft={handlePreviousPage}
+        onClickRight={handleNextPage}
+        showingFrom={showingFrom}
+        showingTo={showingTo}
+        totalRecords={totalRecords}
+        currentPage={currentPage}
+      />
     </section>
   );
 };
 
-export default LegitCheckTable;
+export default ValidatorLegitCheckTable;
