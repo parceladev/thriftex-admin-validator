@@ -67,10 +67,11 @@ const ValidatorLegitCheckTable = () => {
     const loadData = async () => {
       setLoading(true);
       const data = await fectchLegitData();
-      if (data.status) {
-        setFilteredData(data.data);
+      if (data && data.status && Array.isArray(data.data.data)) {
+        setFilteredData(data.data.data);
       } else {
-        setError(data.message || 'Failed to fetch data');
+        setError('Failed to fetch data or data format incorrect');
+        setFilteredData([]);
       }
       setLoading(false);
     };
