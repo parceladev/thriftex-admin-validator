@@ -1,23 +1,14 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleLeft,
-  faAngleRight,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import { FaTrashCan } from "react-icons/fa6";
-import ModalDeleteUser from "./ModalDeleteUser";
-import { fetchAllUsers } from "../../utils/users_api-service";
-import { SearchTable, TablePagination } from "../generals";
-import { getAccessToken } from "../../utils/token-utilities";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import ModalDeleteUser from './ModalDeleteUser';
+import { fetchAllUsers } from '../../utils/users_api-service';
+import { SearchTable, TablePagination } from '../generals';
 
 const UserTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -44,13 +35,13 @@ const UserTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error("Error fetching data:", response.data.message);
+        console.error('Error fetching data:', response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -103,8 +94,8 @@ const UserTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -126,7 +117,7 @@ const UserTable = () => {
             typeButton="button"
             altIcon="Search User"
             onKeyPress={(event) => {
-              if (event.key === "Enter") {
+              if (event.key === 'Enter') {
                 handleSearch();
               }
             }}
@@ -176,10 +167,9 @@ const UserTable = () => {
                     onClick={openModalDelete}
                     aria-label="Delete"
                   >
-                    <FaTrashCan className="w-5 h-5 text-gray-500" />
+                    <FontAwesomeIcon icon={faUserXmark} />
                   </button>
                 </td>
-                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
@@ -187,7 +177,7 @@ const UserTable = () => {
         <ModalDeleteUser
           isOpen={isModalDeleteOpen}
           onClose={closeModalDelete}
-          onCreateAccount={() => console.log("Create Account")}
+          onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <TablePagination
