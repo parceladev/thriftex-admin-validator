@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
 import { fectchLegitData } from '../../utils/legit-api-service';
+import ItemDetailModal from './ItemDetailModal';
 
 const getStatusLabel = (legit_status) => {
   switch (legit_status) {
@@ -54,6 +55,8 @@ const ValidatorLegitCheckTable = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const totalRecords = filteredData.length;
   const showingFrom = (currentPage - 1) * itemsPerPage + 1;
@@ -78,6 +81,16 @@ const ValidatorLegitCheckTable = () => {
 
     loadData();
   }, []);
+
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedItem(null);
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -107,39 +120,6 @@ const ValidatorLegitCheckTable = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  // const handleSearchChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   setFilteredData(
-  //     initialData.filter((item) =>
-  //       item.id.toLowerCase().includes(searchTerm.toLowerCase())
-  //     )
-  //   );
-  // };
-
-  // const handleItemsPerPageChange = (event) => {
-  //   setItemsPerPage(Number(event.target.value));
-  //   setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
-  // };
-
-  // const handleNextPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  // };
-
-  // const handlePreviousPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  // };
-
-  // const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  // const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
   return (
     <section>
       <div className="flex items-center justify-center mb-4">
@@ -199,7 +179,12 @@ const ValidatorLegitCheckTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.case_code}</td>
+                <td
+                  className="px-6 py-4 cursor-pointer"
+                  onClick={() => openModal(item)}
+                >
+                  {item.case_code}
+                </td>
                 <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
@@ -225,6 +210,13 @@ const ValidatorLegitCheckTable = () => {
             ))}
           </tbody>
         </table>
+        {selectedItem && (
+          <ItemDetailModal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            item={selectedItem}
+          />
+        )}
       </div>
       <TablePagination
         htmlFor="itemsPerPage"

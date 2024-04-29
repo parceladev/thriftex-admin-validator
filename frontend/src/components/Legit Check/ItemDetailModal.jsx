@@ -1,30 +1,41 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
+import Proptypes from 'prop-types';
+import InputModal from './InputModal';
+import { fetchDetailListLegit } from '../../utils/legit-api-service';
 
-// Contoh data dummy
-const initialData = {
-  id: "#4142-ONZX",
-  category: "Shoes",
-  brand: "Vans",
-  name: "Vans Old Skool",
-  photos: [
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-  ],
-  purchase: "04-01-2024",
-  storeName: "Sneaker Street",
-  condition: "New",
-  otherNote: "",
-  authenticity: "",
-};
+const ItemDetailModal = ({ isOpen, onClose, item }) => {
+  const [itemDetails, setItemDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({ authenticity: '' });
 
-const ItemDetailModal = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState(initialData);
+  useEffect(() => {
+    console.log('Modal opened with item:', item);
+    if (isOpen && item?.case_code) {
+      setLoading(true);
+      fetchDetailListLegit(item.case_code)
+        .then((data) => {
+          setLoading(false);
+          if (data && data.status && data.data.length > 0) {
+            console.log('Data fetched successfully:', data.data[0]);
+            setItemDetails(data.data[0]);
+          } else {
+            throw new Error('Failed to fetch item details');
+          }
+        })
+        .catch((err) => {
+          setLoading(false);
+          setError('Error fetching details: ' + err.message);
+          console.error('Error on fetching:', err);
+        });
+    } else {
+      setItemDetails(null);
+    }
+  }, [isOpen, item?.case_code]);
 
   if (!isOpen) return null;
 
@@ -36,23 +47,20 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  // Asumsi fungsi ini akan dipanggil ketika form disubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // POST data ke API
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black bg-opacity-50 flex"
-      style={{ overflowY: "auto" }}
+      className="fixed inset-0 z-50 flex bg-black bg-opacity-50"
+      style={{ overflowY: 'auto' }}
     >
       <div
         className="relative bg-white w-full max-w-[800px] m-auto flex-col flex rounded-lg shadow-lg"
-        style={{ maxHeight: "90vh", overflowY: "auto" }}
+        style={{ maxHeight: '90vh', overflowY: 'auto' }}
       >
-        <div className="ml-4 flex flex-row justify-between items-center border-b-2 p-4">
+        <div className="flex flex-row items-center justify-between p-4 ml-4 border-b-2">
           <p className="text-2xl font-bold text-sans text-secondary">
             Legit Check Detail
           </p>
@@ -60,201 +68,244 @@ const ItemDetailModal = ({ isOpen, onClose }) => {
             <FontAwesomeIcon icon={faTimes} className="text-[16px]" />
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="p-8">
-          {/* Item Category */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[20px] ">
-              ITEM CATEGORY
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
-            />
-          </div>
 
-          {/* Item Brand */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              ITEM BRAND
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
-            />
+        {loading && (
+          <div className="flex items-center justify-center p-8 text-center min-h-[550px]">
+            <p>Loading details...</p>
           </div>
+        )}
 
-          {/* Item Name */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              ITEM NAME{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
-            />
+        {error && (
+          <div className="flex items-center justify-center p-8 text-center min-h-[550px]">
+            <p>No detailed information available.</p>
           </div>
+        )}
 
-          {/* Item Photos */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              ITEM PHOTOS{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <div className="flex space-x-2">
-              {formData.photos.map((photo, index) => (
-                <Zoom key={index}>
-                  <img
-                    src={photo}
-                    alt={`Item ${index}`}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                </Zoom>
-              ))}
+        {!loading && !error && itemDetails && (
+          <form onSubmit={handleSubmit} className="p-8">
+            <InputModal
+              label="Item Category"
+              name="item-category"
+              id="item-category"
+              htmlFor="item-category"
+              isRequired="none"
+              value={itemDetails.kategori_name}
+              readOnly={true}
+            />
+            <InputModal
+              label="Item Brand"
+              name="item-brand"
+              id="item-brand"
+              htmlFor="item-brand"
+              isRequired="none"
+              value={itemDetails.brand_name}
+              readOnly={true}
+            />
+            <InputModal
+              label="Item Name"
+              name="item-name"
+              id="item-name"
+              htmlFor="item-name"
+              isRequired="none"
+              value={itemDetails.nama_item}
+              readOnly={true}
+            />
+            <div className="mb-4">
+              <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+                ITEM PHOTOS{' '}
+              </label>
+              <div className="flex space-x-2">
+                {itemDetails.image_list.map((image, index) => (
+                  <Zoom key={index}>
+                    <img
+                      src={image.file_path}
+                      alt={`Item Photo ${index}`}
+                      className="object-cover w-20 h-20 rounded"
+                    />
+                  </Zoom>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Purchase Date */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              PURCHASE{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
+            {/* <InputModal
+              label="Purchase"
               name="purchase"
-              value={formData.purchase}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
+              id="purchase"
+              htmlFor="purchase"
+              isRequired="optional"
+              value={itemDetails.purchase}
+            /> */}
+            <InputModal
+              label="Store Name"
+              name="store-name"
+              id="store-name"
+              htmlFor="store-name"
+              isRequired="optional"
+              value={itemDetails.toko_pembelian}
+              readOnly={true}
             />
-          </div>
 
-          {/* Store Name */}
-          <div className="mb-4">
-            <label className="font-semibold block  text-sans text-secondary uppercase font-sans text-[17px]">
-              STORE NAME{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
-              name="storeName"
-              value={formData.storeName}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
+            <InputModal
+              label="Item Condition"
+              name="item-condition"
+              id="item-condition"
+              htmlFor="item-condition"
+              isRequired="optional"
+              value={itemDetails.kondisi}
+              readOnly={true}
             />
-          </div>
 
-          {/* Item Condition */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              ITEM CONDITION{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <input
-              type="text"
-              name="condition"
-              value={formData.condition}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
+            <InputModal
+              label="Other Notes"
+              name="other-notes"
+              id="other-notes"
+              htmlFor="other-notes"
+              isRequired="optional"
+              value={itemDetails.catatan}
+              readOnly={true}
             />
-          </div>
-
-          {/* Other Note */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              OTHER NOTE{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Optional)
-              </span>
-            </label>
-            <textarea
-              name="otherNote"
-              value={formData.otherNote}
-              onChange={handleChange}
-              className="w-full p-3 border-2 rounded border-secondary text-[14px] h-[100px]"
-            />
-          </div>
-
-          {/* Authenticity */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-              AUTHENTICITY{" "}
-              <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                (Required)
-              </span>
-            </label>
-            <div className="w-full p-3  border-secondary text-[14px]">
-              <label className="flex items-center space-x-3 mb-3 ">
-                <input
-                  type="checkbox"
-                  name="authenticity"
-                  value="FAKE"
-                  checked={formData.authenticity === "FAKE"}
-                  onChange={handleChange}
-                  required
-                  className="form-radio h-6 w-6 "
-                 
-                />
-                <span>FAKE</span>
-              </label>
-              <label className="flex items-center space-x-3 mb-3">
-                <input
-                  type="checkbox"
-                  name="authenticity"
-                  value="ORIGINAL"
-                  checked={formData.authenticity === "ORIGINAL"}
-                  onChange={handleChange}
-                  required
-                  className="form-radio h-6 w-6"
-                />
-                <span>ORIGINAL</span>
-              </label>
+            <div className="w-full p-4 mt-8 text-lg font-semibold text-center uppercase">
+              Feed Validator Form
             </div>
-          </div>
+            <div className="mb-4">
+              <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+                Authenticity
+                <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
+                  (Required)
+                </span>
+              </label>
+            <label className="flex items-center mb-3 space-x-3 ">
+              <input
+                type="checkbox"
+                name="authenticity"
+                value="declined"
+                checked={formData.authenticity === 'declined'}
+                onChange={handleChange}
+                required
+                className="w-6 h-6 form-radio"
+              />
+              <span className="text-red-400 uppecase">Decline</span>
+            </label>
+            </div>
+            <div className="mb-4">
+              <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+                Authenticity
+                <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
+                  (Required)
+                </span>
+              </label>
+              <div className="w-full p-3  border-secondary text-[14px]">
+                <label className="flex items-center mb-3 space-x-3">
+                  <input
+                    type="checkbox"
+                    name="authenticity"
+                    value="original"
+                    checked={formData.authenticity === 'original'}
+                    onChange={handleChange}
+                    required
+                    className="w-6 h-6 form-radio"
+                  />
+                  <span className="text-green-700 uppecase">Original</span>
+                </label>
+                <label className="flex items-center mb-3 space-x-3">
+                  <input
+                    type="checkbox"
+                    name="authenticity"
+                    value="fake"
+                    checked={formData.authenticity === 'fake'}
+                    onChange={handleChange}
+                    required
+                    className="w-6 h-6 form-radio"
+                  />
+                  <span className="text-yellow-700 uppecase">Fake</span>
+                </label>
+              </div>
+            </div>
+            {formData.authenticity === 'declined' && (
+              <>
+                <div className="mb-4">
+                  <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+                    Status Decline
+                    <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
+                      (Required)
+                    </span>
+                  </label>
+                  <select
+                    name="status"
+                    id="status"
+                    className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
+                  >
+                    <option value="none">None</option>
+                    <option value="no_brand_information">
+                      No Brand Information
+                    </option>
+                    <option value="no_details_pictures">
+                      No Details Pictures
+                    </option>
+                    <option value="no_product_information">
+                      No Product Information
+                    </option>
+                  </select>
+                </div>
+                <InputModal
+                  label="Detail Description"
+                  placeholder="Input Result Information"
+                  name="detail-description"
+                  id="detail-description"
+                  htmlFor="detail-description"
+                  isRequired="required"
+                  value={formData['detail-description'] || ''}
+                  onChange={handleChange}
+                  readOnly={false}
+                />
+              </>
+            )}
 
-          <div className="flex justify-end pt-2">
+            {(formData.authenticity === 'original' ||
+              formData.authenticity === 'fake') && (
+              <InputModal
+                label="Detail Description"
+                placeholder="Input Result Information"
+                name="detail-description"
+                id="detail-description"
+                htmlFor="detail-description"
+                isRequired="required"
+                value={formData['detail-description'] || ''}
+                onChange={handleChange}
+                readOnly={false}
+              />
+            )}
+
+            <div className="flex w-full pt-2">
+              <button
+                type="submit"
+                className="w-full py-4 text-lg text-white rounded bg-secondary hover:bg-gray-900"
+              >
+                Send Information
+              </button>
+            </div>
+          </form>
+        )}
+
+        {!loading && !error && !itemDetails && (
+          <div className="p-8 text-center">
+            <p>Error to get detail Information</p>
             <button
-              type="submit"
-              className="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
+              onClick={onClose}
+              className="px-4 py-2 mt-4 font-bold text-black bg-gray-300 rounded hover:bg-gray-400"
             >
-              Save Information
+              Close
             </button>
           </div>
-        </form>
+        )}
       </div>
     </div>
   );
+};
+
+ItemDetailModal.propTypes = {
+  isOpen: Proptypes.bool.isRequired,
+  onClose: Proptypes.func.isRequired,
+  item: Proptypes.object.isRequired,
 };
 
 export default ItemDetailModal;
