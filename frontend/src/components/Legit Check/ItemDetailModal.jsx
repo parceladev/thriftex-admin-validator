@@ -8,33 +8,43 @@ import InputModal from './InputModal';
 import { fetchDetailListLegit } from '../../utils/legit-api-service';
 
 const ItemDetailModal = ({ isOpen, onClose, item }) => {
+  const [formData, setFormData] = useState({
+    status: '', // 'accept' or 'decline'
+    authenticity: '', // 'original', 'fake', or ''
+    detailDescription: '', // Detail description text
+    declineReason: '', // Selected reason if declined
+  });
+
   const [itemDetails, setItemDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({ authenticity: '' });
 
   useEffect(() => {
-    console.log('Modal opened with item:', item);
-    if (isOpen && item?.case_code) {
-      setLoading(true);
-      fetchDetailListLegit(item.case_code)
-        .then((data) => {
-          setLoading(false);
+    const fetchDetails = async () => {
+      if (isOpen && item?.case_code) {
+        console.log('Modal opened with item:', item);
+        setLoading(true);
+        try {
+          const data = await fetchDetailListLegit(item.case_code);
+          console.log('Response:', data);
           if (data && data.status && data.data.length > 0) {
             console.log('Data fetched successfully:', data.data[0]);
             setItemDetails(data.data[0]);
           } else {
             throw new Error('Failed to fetch item details');
           }
-        })
-        .catch((err) => {
-          setLoading(false);
+        } catch (err) {
           setError('Error fetching details: ' + err.message);
           console.error('Error on fetching:', err);
-        });
-    } else {
-      setItemDetails(null);
-    }
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setItemDetails(null);
+      }
+    };
+
+    fetchDetails();
   }, [isOpen, item?.case_code]);
 
   if (!isOpen) return null;
@@ -131,7 +141,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               name="purchase"
               id="purchase"
               htmlFor="purchase"
-              isRequired="optional"
+              isRequired="none"
               value={itemDetails.purchase}
             /> */}
             <InputModal
@@ -139,7 +149,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               name="store-name"
               id="store-name"
               htmlFor="store-name"
-              isRequired="optional"
+              isRequired="none"
               value={itemDetails.toko_pembelian}
               readOnly={true}
             />
@@ -149,7 +159,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               name="item-condition"
               id="item-condition"
               htmlFor="item-condition"
-              isRequired="optional"
+              isRequired="none"
               value={itemDetails.kondisi}
               readOnly={true}
             />
@@ -159,82 +169,116 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               name="other-notes"
               id="other-notes"
               htmlFor="other-notes"
-              isRequired="optional"
+              isRequired="none"
               value={itemDetails.catatan}
               readOnly={true}
             />
-            <div className="w-full p-4 mt-8 text-lg font-semibold text-center uppercase">
-              Feed Validator Form
+
+            <div className="w-full p-4 mt-10 mb-4 text-2xl font-bold text-center uppercase">
+              Feedback Validator Form
             </div>
             <div className="mb-4">
               <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-                Authenticity
+                Status Information
                 <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                   (Required)
                 </span>
               </label>
-            <label className="flex items-center mb-3 space-x-3 ">
-              <input
-                type="checkbox"
-                name="authenticity"
-                value="declined"
-                checked={formData.authenticity === 'declined'}
-                onChange={handleChange}
-                required
-                className="w-6 h-6 form-radio"
-              />
-              <span className="text-red-400 uppecase">Decline</span>
-            </label>
-            </div>
-            <div className="mb-4">
-              <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-                Authenticity
-                <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
-                  (Required)
-                </span>
-              </label>
-              <div className="w-full p-3  border-secondary text-[14px]">
+              <div className="p-3">
                 <label className="flex items-center mb-3 space-x-3">
                   <input
                     type="checkbox"
-                    name="authenticity"
-                    value="original"
-                    checked={formData.authenticity === 'original'}
+                    name="status"
+                    value="accept"
+                    checked={formData.status === 'accept'}
                     onChange={handleChange}
                     required
                     className="w-6 h-6 form-radio"
                   />
-                  <span className="text-green-700 uppecase">Original</span>
+                  <span className="text-green-700 uppecase">Accept</span>
                 </label>
                 <label className="flex items-center mb-3 space-x-3">
                   <input
                     type="checkbox"
-                    name="authenticity"
-                    value="fake"
-                    checked={formData.authenticity === 'fake'}
+                    name="status"
+                    value="decline"
+                    checked={formData.status === 'decline'}
                     onChange={handleChange}
-                    required
+                    required 
                     className="w-6 h-6 form-radio"
                   />
-                  <span className="text-yellow-700 uppecase">Fake</span>
+                  <span className="text-red-400 uppecase">Decline</span>
                 </label>
               </div>
             </div>
-            {formData.authenticity === 'declined' && (
+
+            {formData.status === 'accept' && (
+              <>
+                <div className="mb-4">
+                  <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+                    Authenticity
+                    <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
+                      (Required)
+                    </span>
+                  </label>
+                  <div className="w-full p-3  border-secondary text-[14px]">
+                    <label className="flex items-center mb-3 space-x-3">
+                      <input
+                        type="checkbox"
+                        name="authenticity"
+                        value="original"
+                        checked={formData.authenticity === 'original'}
+                        onChange={handleChange}
+                        required
+                        className="w-6 h-6 form-radio"
+                      />
+                      <span className="text-green-700 uppecase">Original</span>
+                    </label>
+                    <label className="flex items-center mb-3 space-x-3">
+                      <input
+                        type="checkbox"
+                        name="authenticity"
+                        value="fake"
+                        checked={formData.authenticity === 'fake'}
+                        onChange={handleChange}
+                        required
+                        className="w-6 h-6 form-radio"
+                      />
+                      <span className="text-yellow-700 uppecase">Fake</span>
+                    </label>
+                  </div>
+                </div>
+                <InputModal
+                  label="Detail Description"
+                  placeholder="Input Result Information"
+                  name="detail-description"
+                  id="detailDescription"
+                  htmlFor="detail-description"
+                  isRequired="required"
+                  value={formData.detailDescription}
+                  onChange={handleChange}
+                  readOnly={false}
+                />
+              </>
+            )}
+
+            {formData.status === 'decline' && (
               <>
                 <div className="mb-4">
                   <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-                    Status Decline
+                    Decline Reason
                     <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                       (Required)
                     </span>
                   </label>
                   <select
-                    name="status"
-                    id="status"
+                    name="declineReason"
+                    value={formData.declineReason}
+                    onChange={handleChange}
                     className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
                   >
-                    <option value="none">None</option>
+                    <option value="">Select a reason</option>
+                    <option value="none">Another</option>
                     <option value="no_brand_information">
                       No Brand Information
                     </option>
@@ -247,32 +291,17 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
                   </select>
                 </div>
                 <InputModal
-                  label="Detail Description"
-                  placeholder="Input Result Information"
+                  label="Detail Decline Description"
+                  placeholder="Input a Detail Decline"
                   name="detail-description"
-                  id="detail-description"
+                  id="detailDescription"
                   htmlFor="detail-description"
                   isRequired="required"
-                  value={formData['detail-description'] || ''}
+                  value={formData.detailDescription}
                   onChange={handleChange}
                   readOnly={false}
                 />
               </>
-            )}
-
-            {(formData.authenticity === 'original' ||
-              formData.authenticity === 'fake') && (
-              <InputModal
-                label="Detail Description"
-                placeholder="Input Result Information"
-                name="detail-description"
-                id="detail-description"
-                htmlFor="detail-description"
-                isRequired="required"
-                value={formData['detail-description'] || ''}
-                onChange={handleChange}
-                readOnly={false}
-              />
             )}
 
             <div className="flex w-full pt-2">
