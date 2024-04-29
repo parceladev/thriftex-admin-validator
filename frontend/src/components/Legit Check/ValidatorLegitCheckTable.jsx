@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
-import { fectchLegitData } from '../../utils/legit-api-service';
+import { fetchLegitData } from '../../utils/legit-api-service';
 import ItemDetailModal from './ItemDetailModal';
 
 const getStatusLabel = (legit_status) => {
@@ -69,7 +69,7 @@ const ValidatorLegitCheckTable = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      const data = await fectchLegitData();
+      const data = await fetchLegitData();
       if (data && data.status && Array.isArray(data.data.data)) {
         setFilteredData(data.data.data);
       } else {
