@@ -3,7 +3,7 @@ import { getAccessToken } from '../utils/token-utilities';
 
 const API_BASE_URL = 'http://localhost/rest.thriftex/api';
 
-export const fectchLegitData = async () => {
+export const fetchLegitData = async () => {
   const token = getAccessToken();
   if (!token) {
     alert('You are not logged in. Please log in and try again.');
