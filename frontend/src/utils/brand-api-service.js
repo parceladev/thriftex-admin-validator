@@ -48,3 +48,17 @@ export const createBrand = async (userData, onSuccess, onError) => {
     onError("Error Create Brand. Please try again.");
   }
 };
+
+export const deleteBrand = async (id) => {
+  const token = getAccessToken();
+  try {
+    const response = await axios.post(`${API_BASE_URL}/brand/delete?id=${id}`, {}, {
+      headers: { Authorization: `${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting brand:", error);
+    throw error;
+  }
+};

@@ -1,7 +1,24 @@
-import React, { useState } from 'react';
-import { IoCloseSharp } from 'react-icons/io5';
+import React from "react";
+import { IoCloseSharp } from "react-icons/io5";
+import { deleteBrand } from "../../utils/brand-api-service";
 
-const ModalDeleteBrand = ({ isOpen, onClose, onDeleteAccount }) => {
+const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
+  const handleDelete = async () => {
+    try {
+      const response = await deleteBrand(brandId);
+      if (response.message === "data berhasil dihapus") {
+        onDeleteAccount(brandId); // Ini akan mengupdate state di parent component
+        onClose(); // Menutup modal
+      } else {
+        console.error("Response message:", response.message);
+      }
+    } catch (error) {
+      console.error("Failed to delete brand:", error);
+    }
+  };
+
+  
+
   if (!isOpen) return null;
 
   return (
@@ -11,45 +28,47 @@ const ModalDeleteBrand = ({ isOpen, onClose, onDeleteAccount }) => {
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex  justify-center items-end min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
         ></div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-          &#8203;
-        </span>
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white pb-4 sm:pb-4">
+          <div className="bg-white ">
             <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 w-full sm:text-left">
-                <div className="w-full flex justify-between border-b p-3">
+              <div className=" text-center sm:mt-0 w-full sm:text-left">
+                <div className="w-full flex justify-between  border-b p-3 items-center">
                   <h3
-                    className="text-xl px-6 py-1 leading-6 font-medium text-gray-900"
+                    className="text-xl leading-6 font-medium text-gray-900"
                     id="modal-title"
                   >
                     Friendly Reminder
                   </h3>
                   <button
-                    onClick={onClose}
+                    onClick={onClose} // Ini adalah tombol close yang akan menutup modal
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5  inline-flex items-center"
+                    data-modal-toggle="popup-modal"
                   >
-                    <IoCloseSharp />
+                    <IoCloseSharp size={24} />
                   </button>
                 </div>
-                <div className="mt-2"></div>
+                <div className="p-3 text-center mt-3">
+                  <p className="font-sans font-thin text-[16px] max-w-[340px] mx-auto mb-5">Once you delete the data, it can’t be restored again, are you sure to delete the data?</p>
+                  <button
+                    onClick={handleDelete}
+                    type="button"
+                    className=" bg-secondary text-white rounded-sm mt-3 w-full h-[40px] hover:bg-black"
+                  >
+                    Yes, confirm
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+          {/* Ini adalah footer modal yang sebelumnya berisi tombol konfirmasi */}
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              onClick={onDeleteAccount}
-              type="button"
-              className="py-3 w-full mb-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
-            >
-              Yes, confirm
-            </button>
+            {/* Tombol konfirmasi sekarang dipindahkan ke dalam isi modal */}
           </div>
         </div>
       </div>

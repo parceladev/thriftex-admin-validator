@@ -1,6 +1,11 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { deleteToken, saveToken, validateToken } from "./token-utilities";
+import {
+  deleteToken,
+  saveToken,
+  validateToken,
+  getAccessToken,
+} from "./token-utilities";
 
 const API_BASE_URL = "http://localhost/rest.thriftex/api";
 
@@ -73,4 +78,32 @@ export const useLogout = () => {
   };
 
   return logout;
+};
+
+export const blockUser = async (userId, isActive) => {
+  const formData = new FormData();
+  formData.append("user_id", userId);
+  formData.append("is_active", isActive);
+
+  console.log("user id", userId);
+  console.log("isActive", isActive);
+
+  const token = getAccessToken(); 
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/users/blockuser`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: ` ${token}`, 
+        },
+      }
+    );
+    console.log("Block user API response:", response);
+    return response.data;
+  } catch (error) {
+    console.error("Error blocking/unblocking user:", error.response || error);
+    return { error: "Failed to update user status.", details: error.message };
+  }
 };

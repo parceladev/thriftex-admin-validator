@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { SearchValidatorIcon } from "../../../public/icons/legitcheck";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAngleLeft,
-  faAngleRight,
   faSpinner,
+  faEllipsisVertical,
+  faBan,
+  faUnlockAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { FaTrashCan } from "react-icons/fa6";
-import ModalDeleteUser from "./ModalDeleteUser";
+import ModalBlockUser from "./ModalBlockUser";
 import { fetchAllUsers } from "../../utils/users_api-service";
-import { SearchTable, TablePagination } from "../generals";
-import { getAccessToken } from "../../utils/token-utilities";
+import {
+  BlockButton,
+  EllipsisButton,
+  SearchTable,
+  TablePagination,
+} from "../generals";
 
 const UserTable = () => {
   const [data, setData] = useState([]);
@@ -23,6 +24,9 @@ const UserTable = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [modalType, setModalType] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     fetchUserData();
@@ -99,6 +103,22 @@ const UserTable = () => {
     setIsModalDeleteOpen(false);
   };
 
+  const renderUserStatus = (isActive) => {
+    if (isActive) {
+      return (
+        <span className="ml-2 text-sm font-sans  font-light text-green-500">
+          (Active)
+        </span>
+      );
+    } else {
+      return (
+        <span className="ml-2 text-sm font-sans font-light text-red-500">
+          (Blocked)
+        </span>
+      );
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
@@ -107,12 +127,23 @@ const UserTable = () => {
     )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
+  const toggleDropdown = (index) => {
+    setOpenDropdownId(openDropdownId === index ? null : index);
+  };
+
+  const blockUser = (userId, isActive) => {
+    setSelectedUserId(userId);
+    setIsModalDeleteOpen(true);
+    setOpenDropdownId(null);
+  };
+
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
   const showingFrom = (currentPage - 1) * itemsPerPage + 1;
   const showingTo =
     currentPage * itemsPerPage < totalRecords
       ? currentPage * itemsPerPage
       : totalRecords;
+
   return (
     <section>
       <div className="flex items-center justify-center mb-4">
@@ -166,28 +197,37 @@ const UserTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.username}</td>
+                <td className="px-6 py-4">
+                  {item.username}
+                  {renderUserStatus(item.is_active)}
+                </td>
                 <td className="px-6 py-4">{item.email}</td>
                 <td className="px-6 py-4">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  <button
-                    type="button"
-                    className=""
-                    onClick={openModalDelete}
-                    aria-label="Delete"
-                  >
-                    <FaTrashCan className="w-5 h-5 text-gray-500" />
-                  </button>
+                  <div className="relative">
+                    <EllipsisButton onClick={() => toggleDropdown(index)} />
+                    {openDropdownId === index && (
+                      <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                        <ul className="text-gray-700">
+                          <BlockButton
+                            isActive={item.is_active}
+                            onClick={() => blockUser(item.id, item.is_active)}
+                          />
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </td>
-                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
         </table>
-        <ModalDeleteUser
+        <ModalBlockUser
           isOpen={isModalDeleteOpen}
-          onClose={closeModalDelete}
-          onCreateAccount={() => console.log("Create Account")}
+          onClose={() => {
+            setIsModalDeleteOpen(false);
+          }}
+          userId={selectedUserId}
         />
       </div>
       <TablePagination

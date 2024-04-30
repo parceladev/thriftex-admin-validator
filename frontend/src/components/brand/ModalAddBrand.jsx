@@ -23,6 +23,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form Submission Started");
 
     if (!brandName || !selectedFile) {
       alert("Harap isi semua bidang yang diperlukan.");
@@ -34,10 +35,13 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
       foto: selectedFile,
     };
 
+    console.log("Creating Brand", userData);
     createBrand(
       userData,
       (data) => {
-        console.log("Registration Successful", data);
+        alert("Registration Successful", data);
+        navigate("/admin-role/brands", { replace: true });
+        window.location.reload();
       },
       (message) => {
         console.log("Registration Failed:", message);
@@ -55,20 +59,18 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
       aria-modal="true"
     >
       <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* Background overlay */}
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
         ></div>
 
-        {/* Modal content */}
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="bg-white p-4">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                <div className="w-full flex justify-between border-b p-3">
+                <div className="w-full flex justify-between border-b py-3 items-center">
                   <h3
-                    className="text-xl leading-6 font-medium text-gray-900"
+                    className="text-xl leading-6 font-medium text-secondary"
                     id="modal-title"
                   >
                     Add Brand
@@ -76,18 +78,17 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   <button
                     onClick={onClose}
                     type="button"
-                    className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
+                    className="text-secondary hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
                   >
                     <IoCloseSharp size={24} />
                   </button>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="mt-2 space-y-6">
+                <form onSubmit={handleSubmit} className=" space-y-6 mt-5">
                   <div>
                     <label
                       htmlFor="brand-name"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-secondary"
                     >
                       Brand Name (Required)
                     </label>
@@ -99,7 +100,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         autoComplete="brand-name"
                         required
                         onChange={handleBrandNameChange}
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                       />
                     </div>
                   </div>
@@ -125,7 +126,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   <div className="px-4 py-3 text-right sm:px-6">
                     <button
                       type="submit"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
                     >
                       Create Brand
                     </button>
