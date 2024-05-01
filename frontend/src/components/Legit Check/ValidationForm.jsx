@@ -48,6 +48,7 @@ const ValidationForm = ({ legitId }) => {
       setIsSubmitting(true);
       await fetchValidationLegit(formData);
       alert('Submission result successful');
+      window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');
@@ -73,6 +74,7 @@ const ValidationForm = ({ legitId }) => {
       setIsSubmitting(true);
       await fetchValidationLegit(formData);
       alert('Submission Decline successful');
+      window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');
