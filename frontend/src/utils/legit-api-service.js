@@ -50,7 +50,7 @@ export const fetchValidationLegit = async (legit_id) => {
   }
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/legits/validation`, {
+    const response = await axios.post(`${API_BASE_URL}/legits/validation`, {
       params: { legit_id },
       headers: { Authorization: `${token}` },
     });

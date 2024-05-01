@@ -3,14 +3,16 @@ import Proptypes from 'prop-types';
 import InputModal from './InputModal';
 
 const ValidationForm = (props) => {
-  const {
-    handleChange,
-    handleSubmit,
-    status,
-    detailDescription,
-    declineReason,
-    authenticity,
-  } = props;
+  const [detailDescription, setDetailDescription] = React.useState('');
+
+  const { handleChange, handleSubmit, status, declineReason, authenticity } =
+    props;
+
+  const handleChangeResponse = (event) => {
+    const { name, value } = event.target;
+    setDetailDescription(value);
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="w-full p-4 mt-10 mb-4 text-2xl font-bold text-center uppercase">
@@ -31,7 +33,6 @@ const ValidationForm = (props) => {
               value="accept"
               checked={status === 'accept'}
               onChange={handleChange}
-              required
               className="w-6 h-6 form-radio"
             />
             <span className="text-green-700 uppecase">Accept</span>
@@ -43,7 +44,6 @@ const ValidationForm = (props) => {
               value="decline"
               checked={status === 'decline'}
               onChange={handleChange}
-              required
               className="w-6 h-6 form-radio"
             />
             <span className="text-red-400 uppecase">Decline</span>
@@ -68,7 +68,6 @@ const ValidationForm = (props) => {
                   value="original"
                   checked={authenticity === 'original'}
                   onChange={handleChange}
-                  required
                   className="w-6 h-6 form-radio"
                 />
                 <span className="text-green-700 uppecase">Original</span>
@@ -80,7 +79,6 @@ const ValidationForm = (props) => {
                   value="fake"
                   checked={authenticity === 'fake'}
                   onChange={handleChange}
-                  required
                   className="w-6 h-6 form-radio"
                 />
                 <span className="text-yellow-700 uppecase">Fake</span>
@@ -95,7 +93,7 @@ const ValidationForm = (props) => {
             htmlFor="detail-description"
             isRequired="required"
             value={detailDescription}
-            onChange={handleChange}
+            onChange={handleChangeResponse}
             readOnly={false}
           />
         </>
@@ -133,7 +131,7 @@ const ValidationForm = (props) => {
             htmlFor="detail-description"
             isRequired="required"
             value={detailDescription}
-            onChange={handleChange}
+            onChange={handleChangeResponse}
             readOnly={false}
           />
         </>
