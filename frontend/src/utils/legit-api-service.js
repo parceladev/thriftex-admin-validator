@@ -17,7 +17,7 @@ export const fetchLegitData = async () => {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching brands:', error);
+    console.error('Error fetching List Legit:', error);
     return null;
   }
 };
@@ -37,7 +37,27 @@ export const fetchDetailListLegit = async (case_code) => {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching brands:', error);
+    console.error('Error fetching details Legit:', error);
+    return null;
+  }
+};
+
+export const fetchValidationLegit = async (legit_id) => {
+  const token = getAccessToken();
+  if (!token) {
+    alert('You are not logged in. Please log in and try again.');
+    return { success: false, message: 'Not logged in' };
+  }
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/legits/validation`, {
+      params: { legit_id },
+      headers: { Authorization: `${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching Validation Legit:', error);
     return null;
   }
 };
