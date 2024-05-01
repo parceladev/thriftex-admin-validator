@@ -70,7 +70,6 @@ const ValidatorLegitCheckTable = () => {
     const loadData = async () => {
       setLoading(true);
       const data = await fetchLegitData();
-      console.log('data list legit:', data);
       if (data.status) {
         setFilteredData(data.data.data);
       } else {

@@ -17,19 +17,18 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
   });
 
   const [itemDetails, setItemDetails] = useState(null);
+  const [legitId, setLegitId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchDetails = async () => {
       if (isOpen && item?.case_code) {
-        console.log('Modal opened with item:', item);
         setLoading(true);
         try {
           const data = await fetchDetailListLegit(item.case_code);
-          console.log('Response:', data);
           if (data && data.status && data.data.length > 0) {
-            console.log('Data fetched successfully:', data.data[0]);
+            setLegitId(data.data[0].id);
             setItemDetails(data.data[0]);
           } else {
             throw new Error('Failed to fetch item details');
@@ -56,10 +55,6 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
       ...prevFormData,
       [name]: value,
     }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
   };
 
   return (
@@ -175,11 +170,11 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
             <ValidationForm
               formData={formData}
               handleChange={handleChange}
-              handleSubmit={handleSubmit}
               status={formData.status}
               detailDescription={formData.detailDescription}
               declineReason={formData.declineReason}
               authenticity={formData.authenticity}
+              legitId={legitId}
             />
           </div>
         )}

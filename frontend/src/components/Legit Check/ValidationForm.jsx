@@ -1,20 +1,88 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import InputModal from './InputModal';
+import { useState } from 'react';
+import { fetchValidationLegit } from '../../utils/legit-api-service';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
-const ValidationForm = (props) => {
-  const [detailDescription, setDetailDescription] = React.useState('');
-
-  const { handleChange, handleSubmit, status, declineReason, authenticity } =
-    props;
+const ValidationForm = ({ legitId }) => {
+  const [status, setStatus] = useState('');
+  const [authenticity, setAuthenticity] = useState('');
+  const [declineReason, setDeclineReason] = useState('');
+  const [detailDescription, setDetailDescription] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChangeResponse = (event) => {
-    const { name, value } = event.target;
+    const { value } = event.target;
     setDetailDescription(value);
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    if (name === 'status') {
+      setStatus(value);
+    } else if (name === 'authenticity') {
+      setAuthenticity(value);
+    } else if (name === 'declineReason') {
+      setDeclineReason(value);
+    }
+  };
+
+  const handleAccept = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('processing_status', status);
+    formData.append('check_result', authenticity);
+    formData.append('check_note', detailDescription);
+    formData.append('legit_id', legitId);
+
+    // console.log('processing status', status);
+    // console.log('check result', authenticity);
+    // console.log('Legit Id', legitId);
+    // console.log('Detail description', detailDescription);
+
+    try {
+      setIsSubmitting(true);
+      await fetchValidationLegit(formData);
+      alert('Submission result successful');
+    } catch (error) {
+      console.error('Error submitting acceptance:', error);
+      alert('Error when submitting');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDecline = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('processing_status', declineReason);
+    formData.append('check_result', 'none');
+    formData.append('check_note', detailDescription);
+    formData.append('legit_id', legitId);
+
+    // console.log('processing status', declineReason);
+    // console.log('Legit Id', legitId);
+    // console.log('Detail description', detailDescription);
+
+    try {
+      setIsSubmitting(true);
+      await fetchValidationLegit(formData);
+      alert('Submission Decline successful');
+    } catch (error) {
+      console.error('Error submitting acceptance:', error);
+      alert('Error when submitting');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <div className="w-full p-4 mt-10 mb-4 text-2xl font-bold text-center uppercase">
         Feedback Validator Form
       </div>
@@ -30,8 +98,8 @@ const ValidationForm = (props) => {
             <input
               type="checkbox"
               name="status"
-              value="accept"
-              checked={status === 'accept'}
+              value="none"
+              checked={status === 'none'}
               onChange={handleChange}
               className="w-6 h-6 form-radio"
             />
@@ -51,8 +119,9 @@ const ValidationForm = (props) => {
         </div>
       </div>
 
-      {status === 'accept' && (
-        <>
+      {/* form for accept  */}
+      {status === 'none' && (
+        <form onSubmit={handleAccept}>
           <div className="mb-4">
             <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               Authenticity
@@ -96,11 +165,21 @@ const ValidationForm = (props) => {
             onChange={handleChangeResponse}
             readOnly={false}
           />
-        </>
+          <div className="flex w-full pt-2">
+            <button
+              type="submit"
+              className="flex items-center justify-center w-full gap-3 py-4 text-lg text-white rounded bg-secondary hover:bg-gray-900"
+            >
+              {isSubmitting && <FontAwesomeIcon icon={faCircleNotch} spin />}
+              <span>{isSubmitting ? 'Submitting...' : 'Send Information'}</span>
+            </button>
+          </div>
+        </form>
       )}
 
+      {/* form for decline  */}
       {status === 'decline' && (
-        <>
+        <form onSubmit={handleDecline}>
           <div className="mb-4">
             <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
               Decline Reason
@@ -134,28 +213,28 @@ const ValidationForm = (props) => {
             onChange={handleChangeResponse}
             readOnly={false}
           />
-        </>
+          <div className="flex w-full pt-2">
+            <button
+              type="submit"
+              className="flex items-center justify-center w-full gap-3 py-4 text-lg text-white rounded bg-secondary hover:bg-gray-900"
+            >
+              {isSubmitting && <FontAwesomeIcon icon={faCircleNotch} spin />}
+              <span>{isSubmitting ? 'Submitting...' : 'Send Information'}</span>
+            </button>
+          </div>
+        </form>
       )}
-
-      <div className="flex w-full pt-2">
-        <button
-          type="submit"
-          className="w-full py-4 text-lg text-white rounded bg-secondary hover:bg-gray-900"
-        >
-          Send Information
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 
 ValidationForm.propTypes = {
-  handleChange: Proptypes.func.isRequired,
-  handleSubmit: Proptypes.func.isRequired,
-  status: Proptypes.string.isRequired,
-  authenticity: Proptypes.string.isRequired,
+  handleChange: Proptypes.func,
+  status: Proptypes.string,
+  authenticity: Proptypes.string,
   detailDescription: Proptypes.string,
   declineReason: Proptypes.string,
+  legitId: Proptypes.string,
 };
 
 export default ValidationForm;
