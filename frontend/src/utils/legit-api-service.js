@@ -30,7 +30,7 @@ export const fetchDetailListLegit = async (case_code) => {
   }
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/legits/validdatadetail`, {
+    const response = await axios.get(`${API_BASE_URL}/legits/datadetail`, {
       params: { case_code },
       headers: { Authorization: `${token}` },
     });

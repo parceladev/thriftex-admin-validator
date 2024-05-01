@@ -70,7 +70,8 @@ const ValidatorLegitCheckTable = () => {
     const loadData = async () => {
       setLoading(true);
       const data = await fetchLegitData();
-      if (data && data.status && Array.isArray(data.data.data)) {
+      console.log('data list legit:', data);
+      if (data.status) {
         setFilteredData(data.data.data);
       } else {
         setError('Failed to fetch data or data format incorrect');
@@ -168,7 +169,7 @@ const ValidatorLegitCheckTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -180,7 +181,7 @@ const ValidatorLegitCheckTable = () => {
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
                 <td
-                  className="px-6 py-4 cursor-pointer"
+                  className="px-6 py-4 text-blue-400 underline cursor-pointer"
                   onClick={() => openModal(item)}
                 >
                   {item.case_code}

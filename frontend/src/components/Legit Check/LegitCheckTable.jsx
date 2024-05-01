@@ -107,34 +107,6 @@ const LegitCheckTable = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  // const handleSearchChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   setFilteredData(
-  //     initialData.filter((item) =>
-  //       item.id.toLowerCase().includes(searchTerm.toLowerCase())
-  //     )
-  //   );
-  // };
-
-  // const handleItemsPerPageChange = (event) => {
-  //   setItemsPerPage(Number(event.target.value));
-  //   setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
-  // };
-
-  // const handleNextPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  // };
-
-  // const handlePreviousPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  // };
-
-  // const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  // const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSearch();
