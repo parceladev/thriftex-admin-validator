@@ -39,11 +39,6 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
-    // console.log('processing status', status);
-    // console.log('check result', authenticity);
-    // console.log('Legit Id', legitId);
-    // console.log('Detail description', detailDescription);
-
     try {
       setIsSubmitting(true);
       await fetchValidationLegit(formData);
@@ -65,10 +60,6 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_result', 'none');
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
-
-    // console.log('processing status', declineReason);
-    // console.log('Legit Id', legitId);
-    // console.log('Detail description', detailDescription);
 
     try {
       setIsSubmitting(true);
