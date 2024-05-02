@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
-import { fectchLegitData } from '../../utils/legit-api-service';
+import { fetchLegitData } from '../../utils/legit-api-service';
 
 const getStatusLabel = (legit_status) => {
   switch (legit_status) {
@@ -66,7 +66,7 @@ const LegitCheckTable = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      const data = await fectchLegitData();
+      const data = await fetchLegitData();
       if (data && data.status && Array.isArray(data.data.data)) {
         setFilteredData(data.data.data);
       } else {
@@ -106,34 +106,6 @@ const LegitCheckTable = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-
-  // const handleSearchChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // const handleSearch = () => {
-  //   setFilteredData(
-  //     initialData.filter((item) =>
-  //       item.id.toLowerCase().includes(searchTerm.toLowerCase())
-  //     )
-  //   );
-  // };
-
-  // const handleItemsPerPageChange = (event) => {
-  //   setItemsPerPage(Number(event.target.value));
-  //   setCurrentPage(1); // Reset ke halaman pertama setelah perubahan jumlah item per halaman
-  // };
-
-  // const handleNextPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
-  // };
-
-  // const handlePreviousPage = () => {
-  //   setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
-  // };
-
-  // const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  // const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
