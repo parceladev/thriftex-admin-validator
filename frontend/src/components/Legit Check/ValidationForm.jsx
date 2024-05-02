@@ -127,8 +127,8 @@ const ValidationForm = ({ legitId }) => {
                 <input
                   type="checkbox"
                   name="authenticity"
-                  value="original"
-                  checked={authenticity === 'original'}
+                  value="real"
+                  checked={authenticity === 'real'}
                   onChange={handleChange}
                   className="w-6 h-6 form-radio"
                 />
@@ -188,11 +188,9 @@ const ValidationForm = ({ legitId }) => {
             >
               <option value="">Select a reason</option>
               <option value="none">none</option>
-              <option value="no_brand_information">No Brand Information</option>
-              <option value="no_details_pictures">No Details Pictures</option>
-              <option value="no_product_information">
-                No Product Information
-              </option>
+              <option value="no_brand_info">No Brand Information</option>
+              <option value="no_detail_picture">No Details Pictures</option>
+              <option value="no_product_info">No Product Information</option>
             </select>
           </div>
           <InputModal

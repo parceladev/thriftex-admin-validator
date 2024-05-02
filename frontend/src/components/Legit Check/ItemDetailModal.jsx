@@ -104,7 +104,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               id="item-brand"
               htmlFor="item-brand"
               isRequired="none"
-              value={itemDetails.brand_name}
+              value={itemDetails.nama_brand}
               readOnly={true}
             />
             <InputModal

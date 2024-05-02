@@ -25,7 +25,7 @@ const InputPassword = (props) => {
         className="absolute inset-y-0 right-0 px-3 py-2"
         type="button"
       >
-        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+        <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
       </button>
     </div>
   );
