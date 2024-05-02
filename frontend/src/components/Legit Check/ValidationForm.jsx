@@ -57,7 +57,7 @@ const ValidationForm = ({ legitId }) => {
 
     const formData = new FormData();
     formData.append('processing_status', declineReason);
-    formData.append('check_result', 'none');
+    formData.append('check_result', 'processing');
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
