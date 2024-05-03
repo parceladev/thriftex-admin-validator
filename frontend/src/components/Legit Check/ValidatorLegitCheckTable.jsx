@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { SearchTable, TablePagination } from '../generals';
-import { fetchLegitData } from '../../utils/legit-api-service';
-import ItemDetailModal from './ItemDetailModal';
+import { useState, useEffect } from "react";
+import { SearchTable, TablePagination } from "../generals";
+import { fetchLegitData } from "../../utils/legit-api-service";
+import ItemDetailModal from "./ItemDetailModal";
 
 const getStatusLabel = (legit_status) => {
   switch (legit_status) {
-    case 'legited':
-      return 'DONE';
-    case 'posted':
-      return 'PENDING';
+    case "legited":
+      return "DONE";
+    case "posted":
+      return "PENDING";
     default:
       return legit_status;
   }
@@ -16,40 +16,40 @@ const getStatusLabel = (legit_status) => {
 
 const getStatusClasses = (legit_status) => {
   switch (legit_status) {
-    case 'done':
-      return 'bg-secondary text-primary';
-    case 'posted':
-      return 'bg-buttonpending text-primary';
+    case "done":
+      return "bg-secondary text-primary";
+    case "posted":
+      return "bg-buttonpending text-primary";
     default:
-      return 'bg-gray-200 text-gray-800';
+      return "bg-gray-200 text-gray-800";
   }
 };
 
 const getAuthenticityLabel = (legit_status, check_result) => {
-  if (legit_status === 'posted') {
-    return '-';
-  } else if (legit_status === 'Done' && check_result === 'ORIGINAL') {
-    return 'ORIGINAL';
-  } else if (check_result === 'FAKE') {
-    return 'FAKE';
+  if (legit_status === "posted") {
+    return "-";
+  } else if (legit_status === "Done" && check_result === "ORIGINAL") {
+    return "ORIGINAL";
+  } else if (check_result === "FAKE") {
+    return "FAKE";
   }
 
-  return '-';
+  return "-";
 };
 
 const getAuthenticityClasses = (check_result) => {
   switch (check_result) {
-    case 'FAKE':
-      return 'bg-primary text-secondary border-[1px] border-secondary';
-    case 'ORIGINAL':
-      return 'bg-secondary text-primary';
+    case "FAKE":
+      return "bg-primary text-secondary border-[1px] border-secondary";
+    case "ORIGINAL":
+      return "bg-secondary text-primary";
     default:
-      return 'bg-gray-200 text-gray-800';
+      return "bg-gray-200 text-gray-800";
   }
 };
 
 const ValidatorLegitCheckTable = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filteredData, setFilteredData] = useState([]);
@@ -73,7 +73,7 @@ const ValidatorLegitCheckTable = () => {
       if (data.status) {
         setFilteredData(data.data.data);
       } else {
-        setError('Failed to fetch data or data format incorrect');
+        setError("Failed to fetch data or data format incorrect");
         setFilteredData([]);
       }
       setLoading(false);
@@ -133,7 +133,7 @@ const ValidatorLegitCheckTable = () => {
             typeButton="button"
             altIcon="Search Legit Check"
             onKeyPress={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 handleSearch();
               }
             }}

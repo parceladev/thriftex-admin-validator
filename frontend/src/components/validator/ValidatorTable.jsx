@@ -10,7 +10,7 @@ import {
 } from "../generals";
 import { fetchAllValidator } from "../../utils/users_api-service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare} from "@fortawesome/free-solid-svg-icons";
 import ModalEditValidatorBrand from "./ModalEditValidatorBrand";
 
 const ValidatorTable = () => {
@@ -28,11 +28,11 @@ const ValidatorTable = () => {
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
-    setIsLoading(true);
     try {
       const response = await fetchAllValidator(
         currentPage,
@@ -61,7 +61,7 @@ const ValidatorTable = () => {
   };
 
   if (isLoading) {
-    <FontAwesomeIcon icon={faSpinner} />;
+    if (isLoading) return <p>Loading...</p>;
   }
 
   const handleSearchChange = (event) => {

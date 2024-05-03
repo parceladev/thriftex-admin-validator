@@ -25,11 +25,11 @@ const UserTable = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
-    setIsLoading(true);
     try {
       const response = await fetchAllUsers(
         currentPage,
@@ -59,7 +59,7 @@ const UserTable = () => {
   };
 
   if (isLoading) {
-    <FontAwesomeIcon icon={faSpinner} />;
+    if (isLoading) return <p>Loading...</p>;
   }
 
   const handleSearchChange = (event) => {

@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSpinner,
-  faPenToSquare,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import ModalAddBrand from "./ModalAddBrand";
 import ModalDeleteBrand from "./ModalDeleteBrand";
 import { SearchTable, TablePagination, AddButton } from "../generals";
@@ -26,11 +22,11 @@ const BrandTable = () => {
   const [brandToEdit, setBrandToEdit] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
-    setIsLoading(true);
     try {
       const response = await fetchBrands(currentPage, itemsPerPage, searchTerm);
       if (response.data && response.data.data) {
@@ -51,7 +47,7 @@ const BrandTable = () => {
   };
 
   if (isLoading) {
-    <FontAwesomeIcon icon={faSpinner} />;
+    if (isLoading) return <p>Loading...</p>;
   }
 
   const handleSearchChange = (event) => {
@@ -238,10 +234,10 @@ const BrandTable = () => {
           onDeleteAccount={onDeleteAccount}
         />
         <ModalEditBrand
-        isOpen={isModalEditOpen}
-        onClose={closeModalEditBrand}
-        brandData={brandToEdit}
-      />
+          isOpen={isModalEditOpen}
+          onClose={closeModalEditBrand}
+          brandData={brandToEdit}
+        />
       </div>
       <TablePagination
         htmlFor="itemsPerPage"
