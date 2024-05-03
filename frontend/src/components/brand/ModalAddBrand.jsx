@@ -1,12 +1,52 @@
-import React, { useState } from 'react';
-import { IoCloseSharp } from 'react-icons/io5';
-import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import React, { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
+import { createBrand } from "../../utils/brand-api-service";
+import { useNavigate } from "react-router-dom";
 
-const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
-  const [showPassword, setShowPassword] = useState(false);
+const ModalAddBrand = ({ isOpen, onClose }) => {
+  const [brandName, setBrandName] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
+  const handleBrandNameChange = (e) => {
+    setBrandName(e.target.value);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file && /^image\/(svg\+xml|png|jpeg)$/.test(file.type)) {
+      setSelectedFile(file);
+    } else {
+      alert("Hanya file SVG, PNG, dan JPG yang diizinkan.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form Submission Started");
+
+    if (!brandName || !selectedFile) {
+      alert("Harap isi semua bidang yang diperlukan.");
+      return;
+    }
+
+    const userData = {
+      brand_name: brandName,
+      foto: selectedFile,
+    };
+
+    console.log("Creating Brand", userData);
+    createBrand(
+      userData,
+      (data) => {
+        alert("Registration Successful", data);
+        navigate("/admin-role/brands", { replace: true });
+        window.location.reload();
+      },
+      (message) => {
+        console.log("Registration Failed:", message);
+      }
+    );
   };
 
   if (!isOpen) return null;
@@ -23,16 +63,14 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
         ></div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-          &#8203;
-        </span>
+
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white pb-4 sm:pb-4">
+          <div className="bg-white p-4">
             <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 w-full sm:text-left">
-                <div className="w-full flex justify-between border-b p-3">
+              <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                <div className="w-full flex justify-between border-b py-3 items-center">
                   <h3
-                    className="text-xl px-6 py-1 leading-6 font-medium text-gray-900"
+                    className="text-xl leading-6 font-medium text-secondary"
                     id="modal-title"
                   >
                     Add Brand
@@ -40,97 +78,62 @@ const ModalAddBrand = ({ isOpen, onClose, onCreateAccount }) => {
                   <button
                     onClick={onClose}
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="text-secondary hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
                   >
-                    <IoCloseSharp />
+                    <IoCloseSharp size={24} />
                   </button>
                 </div>
-                <div className="mt-2">
-                  <form>
-                    <div className="flex flex-wrap w-full sm:items-center p-6">
-                      <label
-                        htmlFor="full-name"
-                        className="block w-full text-md font-medium text-gray-700"
-                      >
-                        Brand Name <span className="text-gray-300">(Required)</span>
-                      </label>
-                      <div className="mt-1 w-full">
-                        <input
-                          id="full-name"
-                          name="full-name"
-                          type="text"
-                          autoComplete="name"
-                          required
-                          className="appearance-none block w-full px-3 py-2 border-b-2 border-gray-600 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-600 focus:border-gray-500 sm:text-sm"
-                          placeholder="Enter full name"
-                        />
-                      </div>
+
+                <form onSubmit={handleSubmit} className=" space-y-6 mt-5">
+                  <div>
+                    <label
+                      htmlFor="brand-name"
+                      className="block text-sm font-medium text-secondary"
+                    >
+                      Brand Name (Required)
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="brand-name"
+                        name="brand-name"
+                        type="text"
+                        autoComplete="brand-name"
+                        required
+                        onChange={handleBrandNameChange}
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                      />
                     </div>
-                    <div className="flex flex-wrap w-full sm:items-center p-6">
-                      <label
-                        htmlFor="confirm-password"
-                        className="block w-full text-md font-medium text-gray-700"
-                      >
-                        Brand logo <span className="text-gray-300">(Required)</span>
-                      </label>
-                      <div className="mt-1 relative w-full">
-                        <p className="text-gray-600">
-                          Make sure to your logo with tarnsparrent <br />
-                          background image.
-                        </p>
-                        <div className="mt-1 relative w-full">
-                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                            <div className="space-y-1 text-center">
-                              <svg
-                                className="mx-auto h-12 w-12 text-gray-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M3 7v6a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7m-7 4V3H3v12a1 1 0 001 1h3m10 0h3a1 1 0 001-1V3h-7v8z"
-                                />
-                              </svg>
-                              <div className="flex text-sm text-gray-600">
-                                <label
-                                  htmlFor="file-upload"
-                                  className="relative cursor-pointer rounded-md font-medium text-indigo-600 hover:text-indigo-500"
-                                >
-                                  <span className="focus:outline-none focus:border focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                    Upload a file
-                                  </span>
-                                  <input
-                                    id="file-upload"
-                                    name="file-upload"
-                                    type="file"
-                                    className="sr-only"
-                                  />
-                                </label>
-                                <p className="pl-1">or drag and drop</p>
-                              </div>
-                              <p className="text-xs text-gray-500">PNG up to 10MB</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="file-upload"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Brand Logo (Required)
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="file-upload"
+                        name="file-upload"
+                        type="file"
+                        onChange={handleFileChange}
+                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                      />
                     </div>
-                  </form>
-                </div>
+                  </div>
+
+                  <div className="px-4 py-3 text-right sm:px-6">
+                    <button
+                      type="submit"
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+                    >
+                      Create Brand
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              onClick={onCreateAccount}
-              type="button"
-              className="py-3 w-full mb-3 text-center text-white bg-black dark:bg-gray-300 dark:text-black flex justify-center items-center"
-            >
-              CREATE ACCOUNT
-            </button>
           </div>
         </div>
       </div>

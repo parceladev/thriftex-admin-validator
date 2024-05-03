@@ -1,41 +1,41 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   getAccessToken,
   getRefreshToken,
   decodeToken,
   saveToken,
-} from './token-utilities';
+} from "./token-utilities";
 
-const API_BASE_URL = 'http://localhost/rest.thriftex/api';
+const API_BASE_URL = "http://localhost/rest.thriftex/api";
 
 const updateProfile = async (updatedUserData) => {
   const tokenValid = getRefreshToken();
   if (!tokenValid) {
-    alert('Session has expired. Please log in again.');
-    return { success: false, message: 'Session expired' };
+    alert("Session has expired. Please log in again.");
+    return { success: false, message: "Session expired" };
   }
 
   const token = getAccessToken();
   if (!token) {
-    console.error('No access token available after refresh.');
-    alert('You are not logged in. Please log in and try again.');
-    return { success: false, message: 'Not logged in' };
+    console.error("No access token available after refresh.");
+    alert("You are not logged in. Please log in and try again.");
+    return { success: false, message: "Not logged in" };
   }
 
   const formData = new FormData();
 
   const sanitizeInput = (input) => {
-    if (typeof input === 'string') {
+    if (typeof input === "string") {
       // eslint-disable-next-line no-control-regex
-      return input.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+      return input.replace(/[\x00-\x1F\x7F-\x9F]/g, "");
     }
     return input;
   };
 
   Object.keys(updatedUserData).forEach((key) => {
     const value = updatedUserData[key];
-    if (key === 'foto' && value instanceof File) {
-      formData.append('foto', value, value.name);
+    if (key === "foto" && value instanceof File) {
+      formData.append("foto", value, value.name);
     } else if (value !== undefined && value !== null) {
       const sanitizedValue = sanitizeInput(value);
       formData.append(key, sanitizedValue);
@@ -48,7 +48,7 @@ const updateProfile = async (updatedUserData) => {
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           Authorization: `${token}`,
         },
       }
@@ -65,7 +65,7 @@ const updateProfile = async (updatedUserData) => {
       return { success: false, message: response.data.message };
     }
   } catch (error) {
-    alert('Failed to get new data, Something Wrong!');
+    alert("Failed to get new data, Something Wrong!");
     return { success: false, error };
   }
 };

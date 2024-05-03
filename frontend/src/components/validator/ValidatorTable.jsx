@@ -1,11 +1,17 @@
-import { FaTrashCan } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import ModalValidator from "./ModalValidator";
-import ModalDelete from "./ModalDelete";
-import { SearchTable, TablePagination, AddButton } from "../generals";
+import ModalBlock from "./ModalBlock";
+import {
+  SearchTable,
+  TablePagination,
+  AddButton,
+  EllipsisButton,
+  BlockButton,
+} from "../generals";
 import { fetchAllValidator } from "../../utils/users_api-service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import ModalEditValidatorBrand from "./ModalEditValidatorBrand";
 
 const ValidatorTable = () => {
   const [data, setData] = useState([]);
@@ -14,9 +20,12 @@ const ValidatorTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [isModalBlockOpen, setIsModalBlockOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
     fetchUserData();
@@ -34,7 +43,6 @@ const ValidatorTable = () => {
       if (response.data && response.data.data) {
         const apiData = response.data;
         setData(apiData.data);
-        // console.log(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
@@ -85,12 +93,29 @@ const ValidatorTable = () => {
     }
   };
 
-  const openModalDelete = () => {
-    setIsModalDeleteOpen(true);
+  const openModalBlock = () => {
+    setIsModalBlockOpen(true);
   };
 
-  const closeModalDelete = () => {
-    setIsModalDeleteOpen(false);
+  const closeModalBlock = () => {
+    setIsModalBlockOpen(false);
+  };
+
+  const openModalEdit = () => {
+    setIsModalEditOpen(true);
+  };
+
+  const closeModalEdit = () => {
+    setIsModalEditOpen(false);
+  };
+
+  const toggleDropdown = (index) => {
+    setOpenDropdownId(openDropdownId === index ? null : index);
+  };
+  const blockValidator = (validatorId, isActive) => {
+    setSelectedUserId(validatorId);
+    setIsModalBlockOpen(true);
+    setOpenDropdownId(null);
   };
 
   const formatDate = (dateString) => {
@@ -99,6 +124,22 @@ const ValidatorTable = () => {
       2,
       "0"
     )}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+
+  const renderUserStatus = (isActive) => {
+    if (isActive) {
+      return (
+        <span className="ml-2 text-sm font-sans  font-light text-green-500">
+          (Active)
+        </span>
+      );
+    } else {
+      return (
+        <span className="ml-2 text-sm font-sans font-light text-red-500">
+          (Blocked)
+        </span>
+      );
+    }
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -140,7 +181,6 @@ const ValidatorTable = () => {
             />
           </div>
         </div>
-        {/* Render ModalValidator component */}
         <ModalValidator
           isOpen={isModalAddOpen}
           onClose={closeModalAdd}
@@ -180,30 +220,55 @@ const ValidatorTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.username}</td>
+                <td className="px-6 py-4">
+                  {item.username} {renderUserStatus(item.is_active)}
+                </td>
                 <td className="px-6 py-4">{item.email}</td>
                 <td className="px-6 py-4">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  <button
-                    type="button"
-                    className=""
-                    onClick={openModalDelete}
-                    aria-label="Delete"
-                  >
-                    <FaTrashCan className="w-5 h-5 text-gray-500" />
-                  </button>
+                  <div className="relative">
+                    <EllipsisButton onClick={() => toggleDropdown(index)} />
+                    {openDropdownId === index && (
+                      <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg p-2">
+                        <ul className="text-gray-700 flex flex-col items-start ">
+                          <li className="w-full">
+                            <BlockButton
+                              isActive={item.is_active}
+                              onClick={() =>
+                                blockValidator(item.id, item.is_active)
+                              }
+                            />
+                          </li>
+                          <li className="w-full">
+                            <button
+                              onClick={openModalEdit}
+                              className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-[14px] font-light text-blue-500"
+                            >
+                              <FontAwesomeIcon
+                                className="w-5 h-5"
+                                icon={faPenToSquare}
+                              />
+                              Edit Brand
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </td>
-                {/* <td className="px-6 py-4">{item.validator}</td> */}
               </tr>
             ))}
           </tbody>
         </table>
-        <ModalDelete
-          isOpen={isModalDeleteOpen}
-          onClose={closeModalDelete}
-          onCreateAccount={() => console.log("Create Account")}
+        <ModalBlock
+          isOpen={isModalBlockOpen}
+          onClose={() => {
+            setIsModalBlockOpen(false);
+          }}
+          userId={selectedUserId}
         />
       </div>
+      <ModalEditValidatorBrand isOpen={isModalEditOpen} onClose={closeModalEdit} />
       <TablePagination
         htmlFor="itemsPerPage"
         label="Display"

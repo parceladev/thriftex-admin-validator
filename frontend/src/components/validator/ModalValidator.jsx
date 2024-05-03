@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoCloseSharp } from "react-icons/io5";
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
+import { fetchAddValidator } from "../../utils/auth-api-service";
+import { fetchBrands } from "../../utils/brand-api-service";
 
 const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,7 +11,26 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadBrands = async () => {
+      try {
+        const result = await fetchBrands(1, 100); 
+        if (result && result.data && result.data.data) {
+          setBrands(result.data.data)
+        }
+      } catch (error) {
+        console.error("Failed to load brands:", error);
+      }
+    };
+
+    if (isOpen) {
+      loadBrands();
+    }
+  }, [isOpen]);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -23,32 +44,25 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
       alert("Passwords do not match!");
       return;
     }
-    const formData = new FormData();
-    formData.append("nama", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("passconf", confirmPassword);
-    formData.append("role", "validator");
+    const userData = {
+      nama: name,
+      email: email,
+      password: password,
+      passconf: confirmPassword,
+      role: "validator",
+      brandname: selectedBrand,
+    };
 
-    try {
-      const response = await fetch(
-        "http://localhost/rest.thriftex/api/users/register",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const data = await response.json();
-
-      if (data.status) {
+    fetchAddValidator(
+      userData,
+      (data) => {
         console.log("Registration Successful", data);
         navigate("/auth/sign-in");
-      } else {
-        console.log("Registration Failed:", data.message);
+      },
+      (message) => {
+        console.log("Registration Failed:", message);
       }
-    } catch (error) {
-      console.error("Registration Error:", error);
-    }
+    );
   };
 
   return (
@@ -95,7 +109,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="full-name"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Full name{" "}
+                        Full name
                         <span className="text-gray-300">(Required)</span>
                       </label>
                       <div className="mt-1 w-full">
@@ -177,7 +191,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="confirm-password"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Confirm Password{" "}
+                        Confirm Password
                         <span className="text-gray-300">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">
@@ -209,6 +223,32 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                             />
                           )}
                         </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap w-full sm:items-center p-6">
+                      <label
+                        htmlFor="brand"
+                        className="block w-full text-md font-medium text-gray-700"
+                      >
+                        Brand <span className="text-gray-300">(Required)</span>
+                      </label>
+                      <div className="mt-1 w-full">
+                        <select
+                          id="brand"
+                          name="brand"
+                          required
+                          className="block w-full pl-3 pr-10 py-2 text-base border-b-2 border-gray-600 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          // value={brand}
+                          onChange={(e) => setSelectedBrand(e.target.value)}
+                        >
+                          <option value="">Select a brand</option>
+                          {brands.map((brand) => (
+                            <option key={brand.id} value={brand.brand_name}>
+                              {brand.brand_name}
+                            </option>
+                          ))}
+                          {/* Dan seterusnya... */}
+                        </select>
                       </div>
                     </div>
                   </div>
