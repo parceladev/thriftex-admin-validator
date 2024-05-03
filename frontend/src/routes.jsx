@@ -5,84 +5,84 @@ import {
   BrandsPage,
   ValidatorPage,
   SettingsPage,
-} from './pages/admin';
+} from "./pages/admin";
 
 import {
-  legitCheckIcon,
-  brandIcon,
-  dashboardIcon,
-  settingsIcon,
-  userIcon,
-  validatorIcon,
-} from '../public/icons/sidebar';
+  faChartPie,
+  faCheckDouble,
+  faFileInvoice,
+  faGear,
+  faUserCheck,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 import {
   DashboardValidatorPage,
   LegitCheckValidatorPage,
   SettingsValidatorPage,
-} from './pages/validator';
+} from "./pages/validator";
 
-import { SignInPage } from './pages/auth';
+import { SignInPage } from "./pages/auth";
 
 export const routes = [
   {
-    title: 'Pages',
-    layout: 'DashboardLayout',
+    title: "Pages",
+    layout: "DashboardLayout",
     sidebarAdmin: [
       {
-        icon: dashboardIcon,
-        name: 'Dashboard',
-        path: '/dashboard',
+        icon: faChartPie,
+        name: "Dashboard",
+        path: "/dashboard",
         element: <DashboardPage />,
       },
       {
-        icon: legitCheckIcon,
-        name: 'Legit Check',
-        path: '/legit-check',
+        icon: faCheckDouble,
+        name: "Legit Check",
+        path: "/legit-check",
         element: <LegitCheckPage />,
       },
       {
-        icon: userIcon,
-        name: 'Users',
-        path: '/users',
+        icon: faUsers,
+        name: "Users",
+        path: "/users",
         element: <UsersPage />,
       },
       {
-        icon: brandIcon,
-        name: 'Brands',
-        path: '/brands',
+        icon: faFileInvoice,
+        name: "Brands",
+        path: "/brands",
         element: <BrandsPage />,
       },
       {
-        icon: validatorIcon,
-        name: 'Validator',
-        path: '/validators',
+        icon: faUserCheck,
+        name: "Validator",
+        path: "/validators",
         element: <ValidatorPage />,
       },
       {
-        icon: settingsIcon,
-        name: 'Settings',
-        path: '/settings',
+        icon: faGear,
+        name: "Settings",
+        path: "/settings",
         element: <SettingsPage />,
       },
     ],
     sidebarValidator: [
       {
-        icon: dashboardIcon,
-        name: 'Dashboard',
-        path: '/dashboard',
+        icon: faChartPie,
+        name: "Dashboard",
+        path: "/dashboard",
         element: <DashboardValidatorPage />,
       },
       {
-        icon: legitCheckIcon,
-        name: 'Legit Check',
-        path: '/legit-check',
+        icon: faCheckDouble,
+        name: "Legit Check",
+        path: "/legit-check",
         element: <LegitCheckValidatorPage />,
       },
       {
-        icon: settingsIcon,
-        name: 'Settings',
-        path: '/settings',
+        icon: faGear,
+        name: "Settings",
+        path: "/settings",
         element: <SettingsValidatorPage />,
       },
     ],
@@ -90,12 +90,12 @@ export const routes = [
     pagesRoleValidator: [],
   },
   {
-    title: 'Auth Pages',
-    layout: 'AuthLayout',
+    title: "Auth Pages",
+    layout: "AuthLayout",
     pages: [
       {
-        name: 'Sign In',
-        path: '/sign-in',
+        name: "Sign In",
+        path: "/sign-in",
         element: <SignInPage />,
       },
     ],
