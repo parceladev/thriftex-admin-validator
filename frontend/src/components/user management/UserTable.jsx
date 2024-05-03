@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -10,10 +11,11 @@ import {
   TablePagination,
 } from "../generals";
 
+
 const UserTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -42,13 +44,13 @@ const UserTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error("Error fetching data:", response.data.message);
+        console.error('Error fetching data:', response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -117,8 +119,8 @@ const UserTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const toggleDropdown = (index) => {
@@ -151,7 +153,7 @@ const UserTable = () => {
             typeButton="button"
             altIcon="Search User"
             onKeyPress={(event) => {
-              if (event.key === "Enter") {
+              if (event.key === 'Enter') {
                 handleSearch();
               }
             }}
@@ -198,6 +200,7 @@ const UserTable = () => {
                 <td className="px-6 py-4">{item.email}</td>
                 <td className="px-6 py-4">{formatDate(item.created_at)}</td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
+
                   <div className="relative">
                     <EllipsisButton onClick={() => toggleDropdown(index)} />
                     {openDropdownId === index && (
@@ -213,6 +216,7 @@ const UserTable = () => {
                       </div>
                     )}
                   </div>
+
                 </td>
               </tr>
             ))}

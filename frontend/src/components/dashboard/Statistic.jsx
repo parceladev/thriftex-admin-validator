@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchSummaryData } from '../../utils/total-api-service';
 import CardStatistic from './CardStatistic';
-import CardTotalUser from './CardTotalUser';
+import CardLongStatistic from './CardLongStatistic';
 import {
+  TotalLegitCheckIcon,
   TotalUserIcon,
   TotalValidatorIcon,
   TotalCheckedIcon,
@@ -18,6 +19,8 @@ const Statistic = () => {
     total_progress: 0,
   });
   const navigate = useNavigate();
+
+  console.log(summaryData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,17 +38,23 @@ const Statistic = () => {
   return (
     <section>
       <div>
-        <CardTotalUser
-          src={TotalUserIcon}
+        <CardLongStatistic
+          src={TotalLegitCheckIcon}
           alt="Total Legit Check"
-          content={summaryData.total_user}
-          title="Total Users"
+          content={summaryData.total_legit_check}
+          title="Total Legit Check"
         />
       </div>
       <div className="grid grid-cols-2 gap-3 mt-3">
         <CardStatistic
+          src={TotalUserIcon}
+          alt="Total User"
+          content={summaryData.total_user}
+          title="Total User"
+        />
+        <CardStatistic
           src={TotalValidatorIcon}
-          alt="Total Validator"
+          alt="Total Validators"
           content={summaryData.total_validator}
           title="Total Validators"
         />
@@ -53,13 +62,13 @@ const Statistic = () => {
           src={TotalCheckedIcon}
           alt="Total Checked"
           content={summaryData.total_checked}
-          title="Checked"
+          title="Total Checked"
         />
         <CardStatistic
           src={PendingIcon}
-          alt="Total Progress"
-          content={summaryData.total_progress}
-          title="On Progress"
+          alt="Total Pending"
+          content={summaryData.total_pending}
+          title="Total Pending"
         />
       </div>
     </section>

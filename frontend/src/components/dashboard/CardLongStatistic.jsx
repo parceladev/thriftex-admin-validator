@@ -1,6 +1,6 @@
 import Proptypes from 'prop-types';
 
-const CardTotalUser = (props) => {
+const CardLongStatistic = (props) => {
   const { title, src, alt, content } = props;
 
   return (
@@ -16,11 +16,11 @@ const CardTotalUser = (props) => {
   );
 };
 
-CardTotalUser.propTypes = {
+CardLongStatistic.propTypes = {
   title: Proptypes.string,
   src: Proptypes.string,
   alt: Proptypes.string,
   content: Proptypes.number,
 };
 
-export default CardTotalUser;
+export default CardLongStatistic;
