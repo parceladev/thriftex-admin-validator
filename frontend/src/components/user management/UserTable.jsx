@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSpinner,
-  faEllipsisVertical,
-  faBan,
-  faUnlockAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ModalBlockUser from "./ModalBlockUser";
 import { fetchAllUsers } from "../../utils/users_api-service";
 import {
@@ -22,10 +17,9 @@ const UserTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalBlockOpen, setIsModalBlockOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
-  const [modalType, setModalType] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
@@ -95,12 +89,12 @@ const UserTable = () => {
     }
   };
 
-  const openModalDelete = () => {
-    setIsModalDeleteOpen(true);
+  const openModalBlock = () => {
+    setIsModalBlockOpen(true);
   };
 
-  const closeModalDelete = () => {
-    setIsModalDeleteOpen(false);
+  const closeModalBlock = () => {
+    setIsModalBlockOpen(false);
   };
 
   const renderUserStatus = (isActive) => {
@@ -133,7 +127,7 @@ const UserTable = () => {
 
   const blockUser = (userId, isActive) => {
     setSelectedUserId(userId);
-    setIsModalDeleteOpen(true);
+    setIsModalBlockOpen(true);
     setOpenDropdownId(null);
   };
 
@@ -209,10 +203,12 @@ const UserTable = () => {
                     {openDropdownId === index && (
                       <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
                         <ul className="text-gray-700">
-                          <BlockButton
-                            isActive={item.is_active}
-                            onClick={() => blockUser(item.id, item.is_active)}
-                          />
+                          <li className="flex justify-center">
+                            <BlockButton
+                              isActive={item.is_active}
+                              onClick={() => blockUser(item.id, item.is_active)}
+                            />
+                          </li>
                         </ul>
                       </div>
                     )}
@@ -223,9 +219,9 @@ const UserTable = () => {
           </tbody>
         </table>
         <ModalBlockUser
-          isOpen={isModalDeleteOpen}
+          isOpen={isModalBlockOpen}
           onClose={() => {
-            setIsModalDeleteOpen(false);
+            setIsModalBlockOpen(false);
           }}
           userId={selectedUserId}
         />

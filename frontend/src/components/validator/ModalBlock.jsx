@@ -1,17 +1,20 @@
 import React from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { blockUser } from "../../utils/auth-api-service";
-import { useNavigate } from "react-router-dom";
 
-const ModalBlockUser = ({ isOpen, onClose, userId, isActive, actionType }) => {
+const ModalBlock = ({ isOpen, onClose, userId, isActive, actionType }) => {
   if (!isOpen) return null;
-  const navigate = useNavigate();
+  console.log(blockUser(userId, isActive));
 
   const handleAction = async (action) => {
     try {
       const response = await blockUser(userId, action);
-      // console.log("response:", response);
-      alert("User has been successfully blocked.");
+      console.log("response:", response);
+      if (action) {
+        alert("User has been successfully unblocked.");
+      } else {
+        alert("User has been successfully blocked.");
+      }
       window.location.reload();
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -62,4 +65,4 @@ const ModalBlockUser = ({ isOpen, onClose, userId, isActive, actionType }) => {
   );
 };
 
-export default ModalBlockUser;
+export default ModalBlock;

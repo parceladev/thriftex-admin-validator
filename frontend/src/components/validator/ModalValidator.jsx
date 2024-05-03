@@ -109,7 +109,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="full-name"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Full name{" "}
+                        Full name
                         <span className="text-gray-300">(Required)</span>
                       </label>
                       <div className="mt-1 w-full">
@@ -191,7 +191,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                         htmlFor="confirm-password"
                         className="block w-full text-md font-medium text-gray-700"
                       >
-                        Confirm Password{" "}
+                        Confirm Password
                         <span className="text-gray-300">(Required)</span>
                       </label>
                       <div className="mt-1 relative w-full">

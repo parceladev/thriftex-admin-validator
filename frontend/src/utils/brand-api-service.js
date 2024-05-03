@@ -52,13 +52,41 @@ export const createBrand = async (userData, onSuccess, onError) => {
 export const deleteBrand = async (id) => {
   const token = getAccessToken();
   try {
-    const response = await axios.post(`${API_BASE_URL}/brand/delete?id=${id}`, {}, {
-      headers: { Authorization: `${token}` },
-    });
+    const response = await axios.post(
+      `${API_BASE_URL}/brand/delete?id=${id}`,
+      {},
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
 
     return response.data;
   } catch (error) {
     console.error("Error deleting brand:", error);
     throw error;
+  }
+};
+
+export const updateValidatorBrand = async (brandId) => {
+  const token = getAccessToken();
+  const formData = new FormData();
+  formData.append("validator_brand_id", brandId);
+  try {
+    console.log("Update Validator Brand - brandId:", brandId);
+    const response = await axios.post(
+      `${API_BASE_URL}/users/updatevalidator`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `${token}`,
+        },
+      }
+    );
+    console.log("Update Validator Brand - Response Data:", response.data); // Logging untuk memeriksa respons dari server
+    return response.data;
+  } catch (error) {
+    console.error("Error blocking/unblocking user:", error.response || error);
+    return { error: "Failed to update user status.", details: error.message };
   }
 };
