@@ -1,11 +1,12 @@
 import Proptypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const CardStatistic = (props) => {
-  const { title, src, alt, content } = props;
+  const { title, icon, alt, content } = props;
   return (
     <div className="p-8 flex justify-between items-center border-[#13A9D9] border-2 rounded-md">
       <div className="flex flex-col gap-3">
-        <img src={src} alt={alt} />
+        <FontAwesomeIcon icon={icon} alt={alt} className='w-9 h-9 text-secondary' />
         <h2 className="text-[18px]">{content}</h2>
       </div>
       <div className="flex self-end">
@@ -17,7 +18,7 @@ const CardStatistic = (props) => {
 
 CardStatistic.propTypes = {
   title: Proptypes.string,
-  src: Proptypes.string,
+  icon: Proptypes.string,
   alt: Proptypes.string,
   content: Proptypes.number,
 };
