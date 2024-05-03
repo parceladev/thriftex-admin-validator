@@ -27,7 +27,6 @@ const Statistic = () => {
     fetchData();
   }, [navigate]);
 
-  // Daftar informasi untuk ditampilkan dengan CardStatistic
   const statisticInfo = [
     {
       icon: faUsers,
@@ -66,7 +65,6 @@ const Statistic = () => {
         />
       </div>
       <div className="grid grid-cols-2 gap-3 mt-3">
-        {/* Mapping untuk membuat CardStatistic secara dinamis */}
         {statisticInfo.map((info, index) => (
           <CardStatistic
             key={index}
