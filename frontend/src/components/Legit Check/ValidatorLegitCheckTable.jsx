@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
 import { fetchLegitData } from '../../utils/legit-api-service';
 import ItemDetailModal from './ItemDetailModal';
+import { debounce } from 'lodash';
 
 const getStatusLabel = (legit_status) => {
   switch (legit_status) {
@@ -49,38 +50,55 @@ const getAuthenticityClasses = (check_result) => {
 };
 
 const ValidatorLegitCheckTable = () => {
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filteredData, setFilteredData] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
+  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
+  const showingTo =
+    currentPage * itemsPerPage < totalRecords
+      ? currentPage * itemsPerPage
+      : totalRecords;
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const totalRecords = filteredData.length;
-  const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      const data = await fetchLegitData();
+    loadData();
+  }, [currentPage, itemsPerPage]);
+
+  const debouncedLoadData = debounce(() => {
+    loadData();
+  }, 300);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchLegitData(currentPage, itemsPerPage, searchTerm);
       if (data.status) {
+        setData(data.data.data);
+        setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
       } else {
         setError('Failed to fetch data or data format incorrect');
+        setData([]);
         setFilteredData([]);
+        setTotalRecords(0);
       }
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
+    } catch (error) {
+      console.error('Error with fetching table data:', error);
+      setData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+    }
+    setLoading(false);
+  };
 
   const openModal = (item) => {
     setSelectedItem(item);
@@ -94,14 +112,11 @@ const ValidatorLegitCheckTable = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    debouncedLoadData();
   };
 
   const handleSearch = () => {
-    setFilteredData(
-      filteredData.filter((item) =>
-        item.id.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    loadData();
   };
 
   const handleItemsPerPageChange = (event) => {
@@ -110,11 +125,15 @@ const ValidatorLegitCheckTable = () => {
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+    if (currentPage < Math.ceil(totalRecords / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -131,7 +150,7 @@ const ValidatorLegitCheckTable = () => {
             onChange={handleSearchChange}
             onClick={handleSearch}
             typeButton="button"
-            altIcon="Search Legit Check"
+            altIcon="Search User"
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
                 handleSearch();

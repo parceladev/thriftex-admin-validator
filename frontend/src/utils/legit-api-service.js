@@ -3,7 +3,7 @@ import { decodeToken, getAccessToken } from '../utils/token-utilities';
 
 const API_BASE_URL = 'http://localhost/rest.thriftex/api';
 
-export const fetchLegitData = async () => {
+export const fetchLegitData = async (page, limit, search = "") => {
   const token = getAccessToken();
   if (!token) {
     alert('You are not logged in. Please log in and try again.');
@@ -12,6 +12,7 @@ export const fetchLegitData = async () => {
 
   try {
     const response = await axios.get(`${API_BASE_URL}/legits/validatordo`, {
+      params: { page, limit, search },
       headers: { Authorization: `${token}` },
     });
 
