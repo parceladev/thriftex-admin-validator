@@ -53,10 +53,10 @@ const FormSignIn = () => {
       return;
     }
 
-    if (password.length < 8) {
-      handleError('Password must be at least 8 characters long.');
-      return;
-    }
+    // if (password.length < 8) {
+    //   handleError('Password must be at least 8 characters long.');
+    //   return;
+    // }
 
     const response = await signIn(email, password);
     if (response.data) {
@@ -69,7 +69,11 @@ const FormSignIn = () => {
   return (
     <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
       <a href="/" className="flex justify-center mb-4">
-        <img src="../../../public/generals/logo.png" alt="Logo" />
+        <img
+          src="../../../public/generals/thriftex-logo-text.jpg"
+          alt="Logo"
+          className="h-10 w-44"
+        />
       </a>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
@@ -89,7 +93,7 @@ const FormSignIn = () => {
         </a>
         <button
           type="submit"
-          className="w-full p-3 text-center text-white rounded-md bg-black/30"
+          className="w-full p-3 text-center text-white rounded-md bg-secondary"
         >
           Sign In
         </button>

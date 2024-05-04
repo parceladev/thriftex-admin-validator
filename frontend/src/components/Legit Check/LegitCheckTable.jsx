@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
-import { fetchLegitData } from '../../utils/legit-api-service';
+import { fetchListLegitAdmin } from '../../utils/legit-api-service';
 
 const getStatusLabel = (legit_status) => {
   switch (legit_status) {
@@ -66,7 +66,7 @@ const LegitCheckTable = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      const data = await fetchLegitData();
+      const data = await fetchListLegitAdmin();
       if (data && data.status && Array.isArray(data.data.data)) {
         setFilteredData(data.data.data);
       } else {
