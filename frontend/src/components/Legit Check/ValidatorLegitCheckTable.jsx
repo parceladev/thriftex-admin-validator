@@ -62,6 +62,7 @@ const ValidatorLegitCheckTable = () => {
     currentPage * itemsPerPage < totalRecords
       ? currentPage * itemsPerPage
       : totalRecords;
+  const [cache, setCache] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -79,12 +80,29 @@ const ValidatorLegitCheckTable = () => {
 
   const loadData = async () => {
     setLoading(true);
+    const cacheKey = `${currentPage}-${itemsPerPage}-${searchTerm}`;
+    if (cache[cacheKey]) {
+      const cachedData = cache[cacheKey];
+      setData(cachedData.data);
+      setTotalRecords(cachedData.totalRecords);
+      setFilteredData(cachedData.data);
+      setLoading(false);
+      return;
+    }
+
     try {
       const data = await fetchLegitData(currentPage, itemsPerPage, searchTerm);
       if (data.status) {
         setData(data.data.data);
         setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
+        setCache((prev) => ({
+          ...prev,
+          [cacheKey]: {
+            data: data.data.data,
+            totalRecords: data.data.total_data,
+          },
+        }));
       } else {
         setError('Failed to fetch data or data format incorrect');
         setData([]);
