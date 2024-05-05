@@ -4,46 +4,60 @@ import { fetchLegitData } from '../../utils/legit-api-service';
 import ItemDetailModal from './ItemDetailModal';
 import { debounce } from 'lodash';
 
-const getStatusLabel = (legit_status) => {
-  switch (legit_status) {
-    case 'legited':
+const getStatusLabel = (check_result) => {
+  switch (check_result) {
+    case 'Original':
       return 'DONE';
-    case 'posted':
+    case 'fake':
+      return 'DONE';
+    case 'Waiting':
       return 'PENDING';
+    case 'Canceled':
+      return 'DECLINED';
     default:
-      return legit_status;
+      return check_result;
   }
 };
 
-const getStatusClasses = (legit_status) => {
-  switch (legit_status) {
-    case 'done':
+const getStatusClasses = (check_result) => {
+  switch (check_result) {
+    case 'Original':
       return 'bg-secondary text-primary';
-    case 'posted':
+    case 'fake':
       return 'bg-buttonpending text-primary';
+    case 'Waiting':
+      return 'bg-gray-200 text-gray-800';
+    case 'Canceled':
+      return 'bg-red-200 text-white-800';
     default:
       return 'bg-gray-200 text-gray-800';
   }
 };
 
-const getAuthenticityLabel = (legit_status, check_result) => {
-  if (legit_status === 'posted') {
+const getAuthenticityLabel = (check_result) => {
+  if (check_result === 'Waiting') {
     return '-';
-  } else if (legit_status === 'Done' && check_result === 'ORIGINAL') {
+  } else if (check_result === 'Original') {
     return 'ORIGINAL';
-  } else if (check_result === 'FAKE') {
+  } else if (check_result === 'fake') {
     return 'FAKE';
+  } else if (check_result === 'Canceled') {
+    return '-';
+  } else {
+    return '-';
   }
-
-  return '-';
 };
 
 const getAuthenticityClasses = (check_result) => {
   switch (check_result) {
-    case 'FAKE':
+    case 'fake':
       return 'bg-primary text-secondary border-[1px] border-secondary';
-    case 'ORIGINAL':
+    case 'Original':
       return 'bg-secondary text-primary';
+    case 'Waiting':
+      return 'bg-gray-200 text-gray-800';
+    case 'Canceled':
+      return 'bg-gray-200 text-gray-800';
     default:
       return 'bg-gray-200 text-gray-800';
   }
@@ -93,6 +107,7 @@ const ValidatorLegitCheckTable = () => {
     try {
       const data = await fetchLegitData(currentPage, itemsPerPage, searchTerm);
       if (data.status) {
+        console.log(data.data);
         setData(data.data.data);
         setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
@@ -226,10 +241,10 @@ const ValidatorLegitCheckTable = () => {
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
-                      item.legit_status
+                      item.check_result
                     )}`}
                   >
-                    {getStatusLabel(item.legit_status)}
+                    {getStatusLabel(item.check_result)}
                   </span>
                 </td>
                 <td className="px-5 py-2 whitespace-no-wrap">
@@ -238,7 +253,7 @@ const ValidatorLegitCheckTable = () => {
                       item.check_result
                     )}`}
                   >
-                    {getAuthenticityLabel(item.legit_status, item.check_result)}
+                    {getAuthenticityLabel(item.check_result)}
                   </span>
                 </td>
                 <td className="px-6 py-4">{item.submit_time}</td>
