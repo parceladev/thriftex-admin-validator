@@ -28,7 +28,7 @@ const getStatusClasses = (check_result) => {
     case 'Waiting':
       return 'bg-gray-200 text-gray-800';
     case 'Canceled':
-      return 'bg-red-200 text-white-800';
+      return 'bg-red-200 text-gray-800';
     default:
       return 'bg-gray-200 text-gray-800';
   }
@@ -90,7 +90,7 @@ const ValidatorLegitCheckTable = () => {
 
   const debouncedLoadData = debounce(() => {
     loadData();
-  }, 300);
+  }, 3000);
 
   const loadData = async () => {
     setLoading(true);
@@ -107,10 +107,10 @@ const ValidatorLegitCheckTable = () => {
     try {
       const data = await fetchLegitData(currentPage, itemsPerPage, searchTerm);
       if (data.status) {
-        console.log(data.data);
         setData(data.data.data);
         setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
+        console.log(data.data.data.case_code);
         setCache((prev) => ({
           ...prev,
           [cacheKey]: {
