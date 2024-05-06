@@ -1,8 +1,11 @@
-import { NavLink, useLocation } from 'react-router-dom'; // Pastikan untuk mengimpor useLocation
-import routes from '../../routes'; // Pastikan path ini benar
+import { NavLink, useLocation } from 'react-router-dom';
+import routes from '../../routes';
+import { useNavigate } from 'react-router-dom';
+import { deleteToken } from '../../utils/token-utilities';
 
 const Sidebar = () => {
-  const location = useLocation(); // Digunakan untuk mendapatkan lokasi/path saat ini
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const baseLinkClasses =
     'flex items-center px-4 py-2 transition-colors duration-200 transform';
@@ -10,16 +13,21 @@ const Sidebar = () => {
   const activeLinkClasses = `${baseLinkClasses} bg-gray-700 text-white`;
 
   const isValidator = location.pathname.includes('/validator-role');
-  const basePath = isValidator ? '/validator-role' : '/admin-role'; // Tentukan basePath berdasarkan role
+  const basePath = isValidator ? '/validator-role' : '/admin-role';
   const sidebarType = isValidator ? 'sidebarValidator' : 'sidebarAdmin';
+
+  const handleLogout = () => {
+    deleteToken();
+    navigate('/auth/sign-in');
+  };
 
   return (
     <aside
       className="fixed h-screen p-5 border border-gray-200 bg-primary w-72"
       aria-label="Sidebar"
     >
-      <div className="flex flex-col h-full gap-10">
-        <div>
+      <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col h-full">
           <div className="pl-2 mb-12">
             <img src="../../../public/generals/logo.png" alt="Logo" />
           </div>
@@ -34,7 +42,7 @@ const Sidebar = () => {
                     {route[sidebarType].map(({ icon, name, path }) => (
                       <NavLink
                         key={name}
-                        to={`${basePath}${path}`} // Gunakan basePath untuk menentukan awalan jalur
+                        to={`${basePath}${path}`}
                         className={({ isActive }) =>
                           isActive ? activeLinkClasses : linkClasses
                         }
@@ -49,6 +57,16 @@ const Sidebar = () => {
                   </nav>
                 )
             )}
+        </div>
+
+        <div className="px-4">
+          <button onClick={handleLogout} className="flex w-full gap-3">
+            <img
+              src="../../../public/icons/sidebar/logout-icon.svg"
+              alt="logout-icon"
+            />
+            <span>Log Out</span>
+          </button>
         </div>
       </div>
     </aside>

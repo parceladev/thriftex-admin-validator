@@ -1,28 +1,15 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deleteToken } from '../../utils/token-utilities';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const role = location.pathname.includes('/admin')
     ? 'Admin'
     : location.pathname.includes('/validator')
     ? 'Validator'
     : 'Unknown';
-
-  const toggleLogoutPopup = () => {
-    setShowLogoutPopup(!showLogoutPopup);
-  };
-
-  const handleLogout = () => {
-    deleteToken();
-    setShowLogoutPopup(false);
-    navigate('/auth/sign-in');
-  };
 
   return (
     <header className="flex flex-col w-full">
@@ -35,21 +22,13 @@ const Header = () => {
         <div className="flex gap-4">
           <img
             src="../../../public/icons/header/notification-icon.svg"
-            alt="profile-image"
+            alt="notification-icon"
           />
           <div className="relative w-6 h-full rounded-full bg-slate-200">
             <img
               src="../../../public/icons/header/alif-lakipadada-profile.png"
-              alt=""
-              onClick={toggleLogoutPopup}
+              alt="profile"
             />
-            {showLogoutPopup && (
-              <div className="absolute right-0 w-48 px-4 py-2 mt-2 bg-white border border-gray-300 shadow-lg">
-                <button onClick={handleLogout} className="w-full text-left">
-                  Logout
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -61,7 +40,7 @@ const Header = () => {
           <div className="flex">
             <img
               src="../../../public/icons/header/language-icon.svg"
-              alt=""
+              alt="language-icon"
               className="w-6 h-6"
             />
             <select
@@ -76,7 +55,7 @@ const Header = () => {
           <div className="flex">
             <img
               src="../../../public/icons/header/light-mode-icon.svg"
-              alt=""
+              alt="light-mode-icon"
             />
             <select name="themes" id="theme-select" className="cursor-pointer">
               <option value="LIGHT">LIGHT</option>
