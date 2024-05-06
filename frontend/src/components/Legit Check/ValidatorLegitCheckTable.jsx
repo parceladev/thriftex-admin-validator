@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
-import { fetchLegitData } from '../../utils/legit-api-service';
+import { fetchLegitDataValidator } from '../../utils/legit-api-service';
 import ItemDetailModal from './ItemDetailModal';
 import { debounce } from 'lodash';
 
@@ -105,7 +105,7 @@ const ValidatorLegitCheckTable = () => {
     }
 
     try {
-      const data = await fetchLegitData(currentPage, itemsPerPage, searchTerm);
+      const data = await fetchLegitDataValidator(currentPage, itemsPerPage, searchTerm);
       if (data.status) {
         setData(data.data.data);
         setTotalRecords(data.data.total_data);

@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSpinner,
   faPenToSquare,
   faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
-import ModalAddBrand from "./ModalAddBrand";
-import ModalDeleteBrand from "./ModalDeleteBrand";
-import { SearchTable, TablePagination, AddButton } from "../generals";
-import { fetchBrands } from "../../utils/brand-api-service";
-import ModalEditBrand from "./ModalEditBrand";
+} from '@fortawesome/free-solid-svg-icons';
+import ModalAddBrand from './ModalAddBrand';
+import ModalDeleteBrand from './ModalDeleteBrand';
+import { SearchTable, TablePagination, AddButton } from '../generals';
+import { fetchBrands } from '../../utils/brand-api-service';
+import ModalEditBrand from './ModalEditBrand';
 
 const BrandTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -39,10 +39,10 @@ const BrandTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        throw new Error("No data received");
+        throw new Error('No data received');
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -122,8 +122,8 @@ const BrandTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -146,7 +146,7 @@ const BrandTable = () => {
               typeButton="button"
               altIcon="Search Validator"
               onKeyPress={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                   handleSearch();
                 }
               }}
@@ -161,7 +161,7 @@ const BrandTable = () => {
         <ModalAddBrand
           isOpen={isModalAddOpen}
           onClose={closeModalAddbrand}
-          onCreateAccount={() => console.log("Create Account")}
+          onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -170,6 +170,9 @@ const BrandTable = () => {
             <tr>
               <th scope="col" className="px-6 py-3">
                 No.
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Brand Logo
               </th>
               <th scope="col" className="px-6 py-3">
                 Brand Name
@@ -194,7 +197,7 @@ const BrandTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4 flex justify-start gap-2 items-center">
+                <td className="px-6 py-4 ">
                   <img
                     src={item.foto}
                     alt=""
@@ -202,10 +205,10 @@ const BrandTable = () => {
                     height={34}
                     className="bg-cover"
                   />
-                  {item.brand_name}
                 </td>
+                <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-6 py-4 ">{formatDate(item.created_at)}</td>
-                <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap flex gap-2 justify-center">
+                <td className="flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     onClick={() => openModalDeleteBrand(item.id)}
@@ -238,10 +241,10 @@ const BrandTable = () => {
           onDeleteAccount={onDeleteAccount}
         />
         <ModalEditBrand
-        isOpen={isModalEditOpen}
-        onClose={closeModalEditBrand}
-        brandData={brandToEdit}
-      />
+          isOpen={isModalEditOpen}
+          onClose={closeModalEditBrand}
+          brandData={brandToEdit}
+        />
       </div>
       <TablePagination
         htmlFor="itemsPerPage"
