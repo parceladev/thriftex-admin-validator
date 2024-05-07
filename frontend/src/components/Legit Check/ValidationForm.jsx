@@ -39,11 +39,18 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
+    console.log('handle accept :');
+    console.log('processing_status', status);
+    console.log('check_result', authenticity);
+    console.log('check_note', detailDescription);
+    console.log('legit_id', legitId);
+
     try {
       setIsSubmitting(true);
-      await fetchValidationLegit(formData);
+      const successData = await fetchValidationLegit(formData);
       alert('Submission result successful');
-      window.location.reload();
+      console.log('Success Submitting Accept', successData);
+      // window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');
@@ -61,11 +68,18 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
+    console.log('handle Decline :');
+    console.log('processing_status', declineReason);
+    console.log('check_result', 'processing');
+    console.log('check_note', detailDescription);
+    console.log('legit_id', legitId);
+
     try {
       setIsSubmitting(true);
-      await fetchValidationLegit(formData);
+      const declineData = await fetchValidationLegit(formData);
       alert('Submission Decline successful');
-      window.location.reload();
+      console.log('Success Submitting Decline', declineData);
+      // window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');
@@ -127,8 +141,8 @@ const ValidationForm = ({ legitId }) => {
                 <input
                   type="checkbox"
                   name="authenticity"
-                  value="original"
-                  checked={authenticity === 'original'}
+                  value="real"
+                  checked={authenticity === 'real'}
                   onChange={handleChange}
                   className="w-6 h-6 form-radio"
                 />

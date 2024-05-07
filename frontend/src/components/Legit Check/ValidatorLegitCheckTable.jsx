@@ -105,12 +105,15 @@ const ValidatorLegitCheckTable = () => {
     }
 
     try {
-      const data = await fetchLegitDataValidator(currentPage, itemsPerPage, searchTerm);
+      const data = await fetchLegitDataValidator(
+        currentPage,
+        itemsPerPage,
+        searchTerm
+      );
       if (data.status) {
         setData(data.data.data);
         setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
-        console.log(data.data.data.case_code);
         setCache((prev) => ({
           ...prev,
           [cacheKey]: {

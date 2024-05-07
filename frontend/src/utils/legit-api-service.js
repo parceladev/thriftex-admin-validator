@@ -16,8 +16,6 @@ export const fetchLegitAdmin = async (page, limit, search = '') => {
       headers: { Authorization: `${token}` },
     });
 
-    console.log(response.data);
-
     return response.data;
   } catch (error) {
     console.error('Error fetching List Legit:', error);
@@ -37,8 +35,6 @@ export const fetchLegitDataValidator = async (page, limit, search = '') => {
       params: { page, limit, search },
       headers: { Authorization: `${token}` },
     });
-
-    console.log(response.data);
 
     return response.data;
   } catch (error) {
