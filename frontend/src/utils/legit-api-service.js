@@ -11,6 +11,11 @@ export const fetchLegitAdmin = async (page, limit, search = '') => {
   }
 
   try {
+    const params = { page, limit };
+    if (search.trim() !== '') {
+      params.search = search;
+    }
+
     const response = await axios.get(`${API_BASE_URL}/legits/data`, {
       params: { page, limit, search },
       headers: { Authorization: `${token}` },
@@ -31,6 +36,11 @@ export const fetchLegitDataValidator = async (page, limit, search = '') => {
   }
 
   try {
+    const params = { page, limit };
+    if (search.trim() !== '') {
+      params.search = search;
+    }
+
     const response = await axios.get(`${API_BASE_URL}/legits/validatordo`, {
       params: { page, limit, search },
       headers: { Authorization: `${token}` },
