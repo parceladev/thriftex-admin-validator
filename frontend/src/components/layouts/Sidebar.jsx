@@ -9,8 +9,8 @@ const Sidebar = () => {
 
   const baseLinkClasses =
     'flex items-center px-4 py-2 transition-colors duration-200 transform';
-  const linkClasses = `${baseLinkClasses} text-black hover:bg-gray-700 hover:text-white`;
-  const activeLinkClasses = `${baseLinkClasses} bg-gray-700 text-white`;
+  const linkClasses = `${baseLinkClasses} text-black hover:bg-black hover:text-white`;
+  const activeLinkClasses = `${baseLinkClasses} bg-black text-white`;
 
   const isValidator = location.pathname.includes('/validator-role');
   const basePath = isValidator ? '/validator-role' : '/admin-role';
