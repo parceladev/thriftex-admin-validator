@@ -6,7 +6,7 @@ const LegitCheckPage = () => {
     <section className="w-full">
       <div className="flex flex-col w-full">
         <Header />
-        <div className="p-8">
+        <div className="pt-40 p-8">
           <LegitCheckTable />
         </div>
       </div>

@@ -5,7 +5,7 @@ const UsersPage = () => {
   return (
     <section className="w-full">
       <Header />
-      <div className="flex flex-col w-full p-8">
+      <div className="flex flex-col w-full pt-40 p-8">
         <UserTable />
       </div>
     </section>

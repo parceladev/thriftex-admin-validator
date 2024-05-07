@@ -12,7 +12,7 @@ const Header = () => {
     : 'Unknown';
 
   return (
-    <header className="flex flex-col w-full">
+    <header className=" fixed flex flex-col w-full z-50 bg-white">
       <div className="flex justify-between px-8 py-5 border-b-2 border-gray-200">
         <div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
