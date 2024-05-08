@@ -3,7 +3,7 @@ import { decodeToken, getAccessToken } from '../utils/token-utilities';
 
 const API_BASE_URL = 'http://localhost/rest.thriftex/api';
 
-export const fetchLegitData = async () => {
+export const fetchLegitAdmin = async (page, limit, search = '') => {
   const token = getAccessToken();
   if (!token) {
     alert('You are not logged in. Please log in and try again.');
@@ -11,7 +11,38 @@ export const fetchLegitData = async () => {
   }
 
   try {
+    const params = { page, limit };
+    if (search.trim() !== '') {
+      params.search = search;
+    }
+
+    const response = await axios.get(`${API_BASE_URL}/legits/data`, {
+      params: { page, limit, search },
+      headers: { Authorization: `${token}` },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching List Legit:', error);
+    return null;
+  }
+};
+
+export const fetchLegitDataValidator = async (page, limit, search = '') => {
+  const token = getAccessToken();
+  if (!token) {
+    alert('You are not logged in. Please log in and try again.');
+    return { success: false, message: 'Not logged in' };
+  }
+
+  try {
+    const params = { page, limit };
+    if (search.trim() !== '') {
+      params.search = search;
+    }
+
     const response = await axios.get(`${API_BASE_URL}/legits/validatordo`, {
+      params: { page, limit, search },
       headers: { Authorization: `${token}` },
     });
 

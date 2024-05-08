@@ -1,94 +1,141 @@
 import { useState, useEffect } from 'react';
 import { SearchTable, TablePagination } from '../generals';
-import { fetchLegitData } from '../../utils/legit-api-service';
+import { fetchLegitAdmin } from '../../utils/legit-api-service';
+import { debounce } from 'lodash';
 
-const getStatusLabel = (legit_status) => {
-  switch (legit_status) {
-    case 'legited':
+const getStatusLabel = (check_result) => {
+  switch (check_result) {
+    case 'Original':
       return 'DONE';
-    case 'posted':
+    case 'fake':
+      return 'DONE';
+    case 'Waiting':
       return 'PENDING';
+    case 'Canceled':
+      return 'DECLINED';
     default:
-      return legit_status;
+      return check_result;
   }
 };
 
-const getStatusClasses = (legit_status) => {
-  switch (legit_status) {
-    case 'done':
+const getStatusClasses = (check_result) => {
+  switch (check_result) {
+    case 'Original':
       return 'bg-secondary text-primary';
-    case 'posted':
+    case 'fake':
       return 'bg-buttonpending text-primary';
+    case 'Waiting':
+      return 'bg-gray-200 text-gray-800';
+    case 'Canceled':
+      return 'bg-red-200 text-gray-800';
     default:
       return 'bg-gray-200 text-gray-800';
   }
 };
 
-const getAuthenticityLabel = (legit_status, check_result) => {
-  if (legit_status === 'posted') {
+const getAuthenticityLabel = (check_result) => {
+  if (check_result === 'Waiting') {
     return '-';
-  } else if (legit_status === 'Done' && check_result === 'ORIGINAL') {
+  } else if (check_result === 'Original') {
     return 'ORIGINAL';
-  } else if (check_result === 'FAKE') {
+  } else if (check_result === 'fake') {
     return 'FAKE';
+  } else if (check_result === 'Canceled') {
+    return '-';
+  } else {
+    return '-';
   }
-
-  return '-';
 };
 
 const getAuthenticityClasses = (check_result) => {
   switch (check_result) {
-    case 'FAKE':
+    case 'fake':
       return 'bg-primary text-secondary border-[1px] border-secondary';
-    case 'ORIGINAL':
+    case 'Original':
       return 'bg-secondary text-primary';
+    case 'Waiting':
+      return 'bg-gray-200 text-gray-800';
+    case 'Canceled':
+      return 'bg-gray-200 text-gray-800';
     default:
       return 'bg-gray-200 text-gray-800';
   }
 };
 
 const LegitCheckTable = () => {
+  const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filteredData, setFilteredData] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+
+  const [cache, setCache] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const totalRecords = filteredData.length;
+  const totalPages = Math.ceil(totalRecords / itemsPerPage);
   const showingFrom = (currentPage - 1) * itemsPerPage + 1;
-  const showingTo = Math.min(showingFrom + itemsPerPage - 1, totalRecords);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const showingTo =
+    currentPage * itemsPerPage < totalRecords
+      ? currentPage * itemsPerPage
+      : totalRecords;
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      const data = await fetchLegitData();
-      if (data && data.status && Array.isArray(data.data.data)) {
+    loadData();
+  }, [currentPage, itemsPerPage]);
+
+  const debouncedLoadData = debounce(() => {
+    loadData();
+  }, 3000);
+
+  const loadData = async () => {
+    setLoading(true);
+    const cacheKey = `${currentPage}-${itemsPerPage}-${searchTerm}`;
+    if (cache[cacheKey]) {
+      const cachedData = cache[cacheKey];
+      setData(cachedData.data);
+      setTotalRecords(cachedData.totalRecords);
+      setFilteredData(cachedData.data);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const data = await fetchLegitAdmin(currentPage, itemsPerPage, searchTerm);
+      if (data.status) {
+        setData(data.data.data);
+        setTotalRecords(data.data.total_data);
         setFilteredData(data.data.data);
+        setCache((prev) => ({
+          ...prev,
+          [cacheKey]: {
+            data: data.data.data,
+            totalRecords: data.data.total_data,
+          },
+        }));
       } else {
         setError('Failed to fetch data or data format incorrect');
+        setData([]);
         setFilteredData([]);
+        setTotalRecords(0);
       }
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
+    } catch (error) {
+      console.error('Error with fetching table data:', error);
+      setData([]);
+      setFilteredData([]);
+      setTotalRecords(0);
+    }
+    setLoading(false);
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    debouncedLoadData();
   };
 
   const handleSearch = () => {
-    setFilteredData(
-      filteredData.filter((item) =>
-        item.id.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    loadData();
   };
 
   const handleItemsPerPageChange = (event) => {
@@ -97,21 +144,20 @@ const LegitCheckTable = () => {
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
+    if (currentPage < Math.ceil(totalRecords / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
   return (
     <section>
       <div className="flex items-center justify-center mb-4">
@@ -123,7 +169,7 @@ const LegitCheckTable = () => {
             onChange={handleSearchChange}
             onClick={handleSearch}
             typeButton="button"
-            altIcon="Search Legit Check"
+            altIcon="Search User"
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
                 handleSearch();
@@ -160,7 +206,7 @@ const LegitCheckTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr
                 key={index}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
@@ -176,10 +222,10 @@ const LegitCheckTable = () => {
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
-                      item.legit_status
+                      item.check_result
                     )}`}
                   >
-                    {getStatusLabel(item.legit_status)}
+                    {getStatusLabel(item.check_result)}
                   </span>
                 </td>
                 <td className="px-5 py-2 whitespace-no-wrap">

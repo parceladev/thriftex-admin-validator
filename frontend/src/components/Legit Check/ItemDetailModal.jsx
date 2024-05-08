@@ -27,6 +27,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
         setLoading(true);
         try {
           const data = await fetchDetailListLegit(item.case_code);
+          console.log('detail legit:', data);
           if (data && data.status && data.data.length > 0) {
             setLegitId(data.data[0].id);
             setItemDetails(data.data[0]);
@@ -90,6 +91,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
         {!loading && !error && itemDetails && (
           <div className="p-8">
             <InputModal
+              onChange={handleChange}
               label="Item Category"
               name="item-category"
               id="item-category"
@@ -99,15 +101,17 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               readOnly={true}
             />
             <InputModal
+              onChange={handleChange}
               label="Item Brand"
               name="item-brand"
               id="item-brand"
               htmlFor="item-brand"
               isRequired="none"
-              value={itemDetails.brand_name}
+              value={itemDetails.nama_brand}
               readOnly={true}
             />
             <InputModal
+              onChange={handleChange}
               label="Item Name"
               name="item-name"
               id="item-name"
@@ -133,14 +137,17 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               </div>
             </div>
             <InputModal
+              onChange={handleChange}
               label="Purchase"
               name="purchase"
               id="purchase"
               htmlFor="purchase"
               isRequired="none"
               value={itemDetails.purchase}
+              readOnly={true}
             />
             <InputModal
+              onChange={handleChange}
               label="Store Name"
               name="store-name"
               id="store-name"
@@ -150,6 +157,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               readOnly={true}
             />
             <InputModal
+              onChange={handleChange}
               label="Item Condition"
               name="item-condition"
               id="item-condition"
@@ -159,6 +167,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               readOnly={true}
             />
             <InputModal
+              onChange={handleChange}
               label="Other Notes"
               name="other-notes"
               id="other-notes"

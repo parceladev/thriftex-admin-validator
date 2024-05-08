@@ -14,13 +14,21 @@ const Sidebar = () => {
   const basePath = isValidator ? "/validator-role" : "/admin-role";
   const sidebarType = isValidator ? "sidebarValidator" : "sidebarAdmin";
 
+
+  const handleLogout = () => {
+    deleteToken();
+    navigate('/auth/sign-in');
+  };
+
   return (
     <aside
       className="fixed h-screen p-5 border border-gray-200 bg-primary w-72"
       aria-label="Sidebar"
     >
+
       <div className="flex flex-col h-full">
         <div className="flex flex-col">
+
           <div className="pl-2 mb-12">
             <img src="../../../public/generals/logo.png" alt="Logo" />
           </div>
@@ -34,10 +42,12 @@ const Sidebar = () => {
                   <nav key={key} className="flex flex-col gap-2 mt-2">
                     {route[sidebarType].map((item) => (
                       <NavLink
+
                         key={item.name}
                         to={`${basePath}${item.path}`}
                         className={linkClasses}
                         activeClassName={activeLinkClasses} // Gunakan activeClassName untuk menentukan kelas untuk tautan aktif
+
                         end
                       >
                         <div className="flex items-center gap-3">
@@ -52,6 +62,16 @@ const Sidebar = () => {
                   </nav>
                 )
             )}
+        </div>
+
+        <div className="px-4">
+          <button onClick={handleLogout} className="flex w-full gap-3">
+            <img
+              src="../../../public/icons/sidebar/logout-icon.svg"
+              alt="logout-icon"
+            />
+            <span>Log Out</span>
+          </button>
         </div>
       </div>
     </aside>
