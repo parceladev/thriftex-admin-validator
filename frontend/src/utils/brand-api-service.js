@@ -90,3 +90,40 @@ export const updateValidatorBrand = async (brandId) => {
     return { error: "Failed to update user status.", details: error.message };
   }
 };
+
+export const updateBrand = async (brandId, brandName, selectedFile) => {
+  try {
+    const token = getAccessToken();
+    const formData = new FormData();
+  
+    // Append data to FormData
+    formData.append("id", brandId);
+    formData.append("brand_name", brandName);
+    if (selectedFile) {
+      formData.append("foto", selectedFile);
+    }
+
+    // Log form data
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+    }
+  
+    const response = await axios.post(
+      `${API_BASE_URL}/brand/update?id=${brandId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `${token}`,
+        },
+      }
+    );
+  
+    return response.data;
+  } catch (error) {
+    console.error("Error updating brand:", error);
+    throw error;
+  }
+};
+
+

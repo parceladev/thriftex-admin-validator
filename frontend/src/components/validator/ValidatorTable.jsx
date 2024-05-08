@@ -10,7 +10,7 @@ import {
 } from "../generals";
 import { fetchAllValidator } from "../../utils/users_api-service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare} from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import ModalEditValidatorBrand from "./ModalEditValidatorBrand";
 
 const ValidatorTable = () => {
@@ -25,6 +25,7 @@ const ValidatorTable = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [brandToEdit, setBrandToEdit] = useState(null);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
@@ -101,8 +102,9 @@ const ValidatorTable = () => {
     setIsModalBlockOpen(false);
   };
 
-  const openModalEdit = () => {
+  const openModalEditBrand = (id) => {
     setIsModalEditOpen(true);
+    setBrandToEdit(id);
   };
 
   const closeModalEdit = () => {
@@ -241,7 +243,9 @@ const ValidatorTable = () => {
                           </li>
                           <li className="w-full">
                             <button
-                              onClick={openModalEdit}
+                              type="button"
+                              onClick={() => openModalEditBrand(item.id)}
+                              aria-label="Edit"
                               className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-[14px] font-light text-blue-500"
                             >
                               <FontAwesomeIcon
@@ -268,7 +272,11 @@ const ValidatorTable = () => {
           userId={selectedUserId}
         />
       </div>
-      <ModalEditValidatorBrand isOpen={isModalEditOpen} onClose={closeModalEdit} />
+      <ModalEditValidatorBrand
+        isOpen={isModalEditOpen}
+        onClose={closeModalEdit}
+        brandId={brandToEdit}
+      />
       <TablePagination
         htmlFor="itemsPerPage"
         label="Display"

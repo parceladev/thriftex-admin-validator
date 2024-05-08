@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { fetchSummaryData } from "../../utils/total-api-service";
 import CardStatistic from "./CardStatistic";
 import CardLongStatistic from "./CardLongStatistic";
-import { faCheckDouble, faClock, faSquareCheck, faUserCheck, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckDouble,
+  faClock,
+  faSquareCheck,
+  faUserCheck,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Statistic = () => {
   const [summaryData, setSummaryData] = useState({

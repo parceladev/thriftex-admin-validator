@@ -16,10 +16,10 @@ const BrandTable = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [brandToDelete, setBrandToDelete] = useState(null);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [brandToDelete, setBrandToDelete] = useState(null);
   const [brandToEdit, setBrandToEdit] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -92,13 +92,13 @@ const BrandTable = () => {
     setBrandToDelete(id);
   };
 
-  const closeModalDeleteBrand = () => {
-    setIsModalDeleteOpen(false);
+  const openModalEditBrand = (id) => {
+    setIsModalEditOpen(true);
+    setBrandToEdit(id);
   };
 
-  const openModalEditBrand = (brand) => {
-    setBrandToEdit(brand);
-    setIsModalEditOpen(true);
+  const closeModalDeleteBrand = () => {
+    setIsModalDeleteOpen(false);
   };
 
   const closeModalEditBrand = () => {
@@ -214,7 +214,7 @@ const BrandTable = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => openModalEditBrand(item)}
+                    onClick={() => openModalEditBrand(item.id)}
                     aria-label="Edit"
                   >
                     <FontAwesomeIcon
@@ -236,7 +236,7 @@ const BrandTable = () => {
         <ModalEditBrand
           isOpen={isModalEditOpen}
           onClose={closeModalEditBrand}
-          brandData={brandToEdit}
+          brandId={brandToEdit}
         />
       </div>
       <TablePagination

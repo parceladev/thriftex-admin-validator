@@ -5,13 +5,7 @@ const API_BASE_URL = 'http://localhost/rest.thriftex/api';
 
 export const fetchSummaryData = async (navigate) => {
   let token = getAccessToken();
-  if (!token) {
-    alert('You are not logged in. Please log in and try again.');
-    deleteToken();
-    navigate('/user/auth');
-    return { success: false, message: 'Not logged in' };
-  }
-
+  
   try {
     const response = await axios.get(`${API_BASE_URL}/legits/summaryadmin`, {
       headers: {
@@ -39,3 +33,4 @@ export const fetchSummaryData = async (navigate) => {
     };
   }
 };
+
