@@ -13,11 +13,12 @@ const getStatusLabel = (check_result) => {
     case 'Waiting':
       return 'PENDING';
     case 'Canceled':
-      return 'DECLINED';
+      return 'DECLINED
     default:
       return check_result;
   }
 };
+
 
 const getStatusClasses = (check_result) => {
   switch (check_result) {
@@ -30,9 +31,10 @@ const getStatusClasses = (check_result) => {
     case 'Canceled':
       return 'bg-red-200 text-gray-800';
     default:
-      return 'bg-gray-200 text-gray-800';
+      return "bg-gray-200 text-gray-800";
   }
 };
+
 
 const getAuthenticityLabel = (check_result) => {
   if (check_result === 'Waiting') {
@@ -50,6 +52,7 @@ const getAuthenticityLabel = (check_result) => {
 
 const getAuthenticityClasses = (check_result) => {
   switch (check_result) {
+
     case 'fake':
       return 'bg-primary text-secondary border-[1px] border-secondary';
     case 'Original':
@@ -59,11 +62,12 @@ const getAuthenticityClasses = (check_result) => {
     case 'Canceled':
       return 'bg-gray-200 text-gray-800';
     default:
-      return 'bg-gray-200 text-gray-800';
+      return "bg-gray-200 text-gray-800";
   }
 };
 
 const ValidatorLegitCheckTable = () => {
+
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -122,8 +126,10 @@ const ValidatorLegitCheckTable = () => {
           },
         }));
       } else {
+
         setError('Failed to fetch data or data format incorrect');
         setData([]);
+
         setFilteredData([]);
         setTotalRecords(0);
       }
@@ -188,14 +194,14 @@ const ValidatorLegitCheckTable = () => {
             typeButton="button"
             altIcon="Search User"
             onKeyPress={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === "Enter") {
                 handleSearch();
               }
             }}
           />
         </div>
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto max-h-[300px] shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

@@ -6,7 +6,7 @@ import {
 } from "../../utils/brand-api-service";
 
 const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
-  const [newBrandId, setNewBrandId] = useState(currentBrandId);
+  const [brandId, setBrandId] = useState(currentBrandId);
   const [brands, setBrands] = useState([]);
   const [updateStatus, setUpdateStatus] = useState(null);
 
@@ -86,8 +86,8 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
                     Brand ID Saat Ini
                   </label>
                   <select
-                    value={newBrandId}
-                    onChange={(e) => setNewBrandId(e.target.value)}
+                    value={brandId}
+                    onChange={(e) => setBrandId(e.target.value)}
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                   >
                     <option value="">Select a brand</option>

@@ -10,7 +10,7 @@ import {
 } from "../generals";
 import { fetchAllValidator } from "../../utils/users_api-service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import ModalEditValidatorBrand from "./ModalEditValidatorBrand";
 
 const ValidatorTable = () => {
@@ -25,14 +25,15 @@ const ValidatorTable = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [brandToEdit, setBrandToEdit] = useState(null);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
-    setIsLoading(true);
     try {
       const response = await fetchAllValidator(
         currentPage,
@@ -61,7 +62,7 @@ const ValidatorTable = () => {
   };
 
   if (isLoading) {
-    <FontAwesomeIcon icon={faSpinner} />;
+    if (isLoading) return <p>Loading...</p>;
   }
 
   const handleSearchChange = (event) => {
@@ -101,8 +102,9 @@ const ValidatorTable = () => {
     setIsModalBlockOpen(false);
   };
 
-  const openModalEdit = () => {
+  const openModalEditBrand = (id) => {
     setIsModalEditOpen(true);
+    setBrandToEdit(id);
   };
 
   const closeModalEdit = () => {
@@ -187,7 +189,7 @@ const ValidatorTable = () => {
           onCreateAccount={() => console.log("Create Account")}
         />
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto max-h-[300px] shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -241,7 +243,9 @@ const ValidatorTable = () => {
                           </li>
                           <li className="w-full">
                             <button
-                              onClick={openModalEdit}
+                              type="button"
+                              onClick={() => openModalEditBrand(item.id)}
+                              aria-label="Edit"
                               className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-[14px] font-light text-blue-500"
                             >
                               <FontAwesomeIcon
@@ -268,7 +272,11 @@ const ValidatorTable = () => {
           userId={selectedUserId}
         />
       </div>
-      <ModalEditValidatorBrand isOpen={isModalEditOpen} onClose={closeModalEdit} />
+      <ModalEditValidatorBrand
+        isOpen={isModalEditOpen}
+        onClose={closeModalEdit}
+        brandId={brandToEdit}
+      />
       <TablePagination
         htmlFor="itemsPerPage"
         label="Display"
