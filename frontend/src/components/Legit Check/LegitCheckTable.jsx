@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import { SearchTable, TablePagination } from '../generals';
-import { fetchLegitAdmin } from '../../utils/legit-api-service';
 import { debounce } from 'lodash';
+
+import { fetchLegitAdmin } from '../../utils/legit-api-service';
+
+import { SearchTable, TablePagination } from '../generals';
+import ItemDetailModal from './ItemDetailModal';
 
 const getStatusLabel = (check_result) => {
   switch (check_result) {
@@ -73,6 +76,8 @@ const LegitCheckTable = () => {
   const [cache, setCache] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
   const showingFrom = (currentPage - 1) * itemsPerPage + 1;
@@ -138,6 +143,16 @@ const LegitCheckTable = () => {
     loadData();
   };
 
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedItem(null);
+  };
+
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(1);
@@ -178,7 +193,7 @@ const LegitCheckTable = () => {
           />
         </div>
       </div>
-      <div className="relative overflow-x-auto max-h-[380px] shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto max-h-[340px] shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -217,7 +232,12 @@ const LegitCheckTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4">{item.case_code}</td>
+                <td
+                  className="px-6 py-4 text-blue-400 underline cursor-pointer"
+                  onClick={() => openModal(item)}
+                >
+                  {item.case_code}
+                </td>
                 <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-5 py-2 whitespace-no-wrap">
                   <span
@@ -243,6 +263,13 @@ const LegitCheckTable = () => {
             ))}
           </tbody>
         </table>
+        {selectedItem && (
+          <ItemDetailModal
+            isOpen={modalOpen}
+            onClose={closeModal}
+            item={selectedItem}
+          />
+        )}
       </div>
       <TablePagination
         htmlFor="itemsPerPage"
