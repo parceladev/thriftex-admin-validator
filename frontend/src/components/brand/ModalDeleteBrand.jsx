@@ -23,23 +23,23 @@ const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
 
   return (
     <div
-      className="fixed z-10 inset-0 overflow-y-auto"
+      className="fixed inset-0 z-50 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex  justify-center items-end min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
         <div
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
           aria-hidden="true"
         ></div>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="bg-white ">
             <div className="sm:flex sm:items-start">
-              <div className=" text-center sm:mt-0 w-full sm:text-left">
-                <div className="w-full flex justify-between  border-b p-3 items-center">
+              <div className="w-full text-center sm:mt-0 sm:text-left">
+                <div className="flex items-center justify-between w-full p-3 border-b">
                   <h3
-                    className="text-xl leading-6 font-medium text-gray-900"
+                    className="text-xl font-medium leading-6 text-gray-900"
                     id="modal-title"
                   >
                     Friendly Reminder
@@ -53,7 +53,7 @@ const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
                     <IoCloseSharp size={24} />
                   </button>
                 </div>
-                <div className="p-3 text-center mt-3">
+                <div className="p-3 mt-3 text-center">
                   <p className="font-sans font-thin text-[16px] max-w-[340px] mx-auto mb-5">Once you delete the data, it can’t be restored again, are you sure to delete the data?</p>
                   <button
                     onClick={handleDelete}
@@ -67,7 +67,7 @@ const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
             </div>
           </div>
           {/* Ini adalah footer modal yang sebelumnya berisi tombol konfirmasi */}
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
             {/* Tombol konfirmasi sekarang dipindahkan ke dalam isi modal */}
           </div>
         </div>

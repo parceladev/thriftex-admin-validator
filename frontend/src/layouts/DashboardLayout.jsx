@@ -15,13 +15,13 @@ export function DashboardLayout() {
             {routes.map(
               ({ layout, sidebarAdmin, sidebarValidator }) =>
                 layout === 'DashboardLayout' &&
-                (isValidator ? sidebarValidator : sidebarAdmin) // Memilih sidebar berdasarkan role
+                (isValidator ? sidebarValidator : sidebarAdmin) 
                   ? (isValidator ? sidebarValidator : sidebarAdmin).map(
                       ({ path, element }) => (
                         <Route key={path} path={path} element={element} />
                       )
                     )
-                  : null // Tambahkan kondisi null untuk menghindari error
+                  : null 
             )}
           </Routes>
         </div>

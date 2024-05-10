@@ -1,10 +1,12 @@
-import AccountSettings from "../../components/settings/AccountSettings";
-import Header from "../../components/layouts/Header";
+import AccountSettings from '../../components/settings/AccountSettings';
+import Header from '../../components/layouts/Header';
 const SettingsValidatorPage = () => {
   return (
     <div>
       <Header />
-      <div className="p-8"><AccountSettings/></div>
+      <div className="p-8 pt-40">
+        <AccountSettings />
+      </div>
     </div>
   );
 };

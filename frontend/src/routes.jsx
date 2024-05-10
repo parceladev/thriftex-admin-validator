@@ -43,19 +43,19 @@ export const routes = [
       },
       {
         icon: faUsers,
-        name: "Users",
+        name: "Users Manage",
         path: "/users",
         element: <UsersPage />,
       },
       {
         icon: faFileInvoice,
-        name: "Brands",
+        name: "Brands Hub",
         path: "/brands",
         element: <BrandsPage />,
       },
       {
         icon: faUserCheck,
-        name: "Validator",
+        name: "Validators",
         path: "/validators",
         element: <ValidatorPage />,
       },

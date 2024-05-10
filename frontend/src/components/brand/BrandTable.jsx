@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import ModalAddBrand from "./ModalAddBrand";
-import ModalDeleteBrand from "./ModalDeleteBrand";
-import { SearchTable, TablePagination, AddButton } from "../generals";
-import { fetchBrands } from "../../utils/brand-api-service";
-import ModalEditBrand from "./ModalEditBrand";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import ModalAddBrand from './ModalAddBrand';
+import ModalDeleteBrand from './ModalDeleteBrand';
+import { SearchTable, TablePagination, AddButton } from '../generals';
+import { fetchBrands } from '../../utils/brand-api-service';
+import ModalEditBrand from './ModalEditBrand';
 const BrandTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -21,11 +21,11 @@ const BrandTable = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
+    // setIsLoading(true);
     try {
       const response = await fetchBrands(currentPage, itemsPerPage, searchTerm);
       if (response.data && response.data.data) {
@@ -109,7 +109,6 @@ const BrandTable = () => {
     setFilteredData(
       filteredData.filter((brand) => brand.id !== deletedBrandId)
     );
-    // Segarkan data dari server untuk mendapatkan daftar terkini
     fetchUserData();
   };
 
@@ -159,7 +158,7 @@ const BrandTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="relative  overflow-x-auto max-h-[300px] shadow-md sm:rounded-lg">
+      <div className="relative  overflow-x-auto max-h-[380px] shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
