@@ -1,12 +1,12 @@
-import Header from "../../components/layouts/Header";
-import { StatisticValidator } from "../../components/validator";
+import Header from '../../components/layouts/Header';
+import { StatisticValidator } from '../../components/validator';
 const DashboardValidatorPage = () => {
   return (
-      <section className="w-full">
+    <section className="w-full">
       <div className="flex flex-col w-full">
         <Header />
-        <div className="p-8">
-          <StatisticValidator/>
+        <div className="p-8 pt-40">
+          <StatisticValidator />
         </div>
       </div>
     </section>
