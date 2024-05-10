@@ -85,8 +85,6 @@ export const fetchValidationLegit = async (formData) => {
 
   formData.append('validator_user_id', validatorId);
 
-  console.log('validator_user_id', validatorId);
-
   try {
     const response = await axios.post(
       `${API_BASE_URL}/legits/validation`,

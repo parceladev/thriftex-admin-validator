@@ -30,9 +30,7 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
 
   const handleUpdate = async () => {
     try {
-      console.log("Updating brand ID:", newBrandId);
-      const updateResult = await updateValidatorBrand(newBrandId);
-      console.log("Update Success:", updateResult);
+      await updateValidatorBrand(newBrandId);
       setUpdateStatus({
         success: true,
         message: "Brand ID berhasil diperbarui.",

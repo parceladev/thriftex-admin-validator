@@ -25,7 +25,6 @@ export const fetchAllValidator = async (page, limit, search = "") => {
       params: { page, limit, search, role: "validator" },
       headers: { Authorization: `${token}` },
     });
-    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching users:", error);

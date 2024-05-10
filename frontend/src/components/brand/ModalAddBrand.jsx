@@ -17,16 +17,15 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
     if (file && /^image\/(svg\+xml|png|jpeg)$/.test(file.type)) {
       setSelectedFile(file);
     } else {
-      alert("Hanya file SVG, PNG, dan JPG yang diizinkan.");
+      alert("Only SVG, PNG, and JPG files are allowed.");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submission Started");
 
     if (!brandName || !selectedFile) {
-      alert("Harap isi semua bidang yang diperlukan.");
+      alert("Please fill in all required fields.");
       return;
     }
 

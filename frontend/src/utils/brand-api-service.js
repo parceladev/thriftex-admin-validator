@@ -72,7 +72,6 @@ export const updateValidatorBrand = async (brandId) => {
   const formData = new FormData();
   formData.append("validator_brand_id", brandId);
   try {
-    console.log("Update Validator Brand - brandId:", brandId);
     const response = await axios.post(
       `${API_BASE_URL}/users/updatevalidator`,
       formData,

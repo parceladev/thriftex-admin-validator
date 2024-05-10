@@ -85,9 +85,6 @@ export const blockUser = async (userId, isActive) => {
   formData.append("user_id", userId);
   formData.append("is_active", isActive);
 
-  console.log("user id", userId);
-  console.log("isActive", isActive);
-
   const token = getAccessToken(); 
   try {
     const response = await axios.post(

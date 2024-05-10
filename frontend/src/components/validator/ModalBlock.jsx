@@ -8,8 +8,7 @@ const ModalBlock = ({ isOpen, onClose, userId, isActive, actionType }) => {
 
   const handleAction = async (action) => {
     try {
-      const response = await blockUser(userId, action);
-      console.log("response:", response);
+      await blockUser(userId, action);
       if (action) {
         alert("User has been successfully unblocked.");
       } else {

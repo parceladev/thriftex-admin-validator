@@ -27,7 +27,6 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
         setLoading(true);
         try {
           const data = await fetchDetailListLegit(item.case_code);
-          console.log('detail legit:', data);
           if (data && data.status && data.data.length > 0) {
             setLegitId(data.data[0].id);
             setItemDetails(data.data[0]);
