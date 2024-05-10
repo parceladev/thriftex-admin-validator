@@ -1,19 +1,21 @@
-import { NavLink, useLocation } from "react-router-dom";
-import routes from "../../routes";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink, useLocation } from 'react-router-dom';
+import routes from '../../routes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
+import { deleteToken } from '../../utils/token-utilities';
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const baseLinkClasses =
-    "flex items-center py-4 px-3 transition-colors duration-200 transform max-w-[200px] rounded-md";
+    'flex items-center py-3 px-3 transition-colors duration-200 transform max-w-[200px] rounded-md';
   const linkClasses = `${baseLinkClasses} text-secondary hover:bg-secondary hover:text-white`;
   const activeLinkClasses = `${baseLinkClasses} bg-secondary text-white`;
 
-  const isValidator = location.pathname.includes("/validator-role");
-  const basePath = isValidator ? "/validator-role" : "/admin-role";
-  const sidebarType = isValidator ? "sidebarValidator" : "sidebarAdmin";
-
+  const isValidator = location.pathname.includes('/validator-role');
+  const basePath = isValidator ? '/validator-role' : '/admin-role';
+  const sidebarType = isValidator ? 'sidebarValidator' : 'sidebarAdmin';
 
   const handleLogout = () => {
     deleteToken();
@@ -25,29 +27,26 @@ const Sidebar = () => {
       className="fixed h-screen p-5 border border-gray-200 bg-primary w-72"
       aria-label="Sidebar"
     >
-
       <div className="flex flex-col h-full">
         <div className="flex flex-col">
-
           <div className="pl-2 mb-12">
             <img src="../../../public/generals/logo.png" alt="Logo" />
           </div>
-          <p className="pl-5 text-black text-md text-sans text-[15px]">
-            {isValidator ? "Menu Validator" : "Menu Admin"}
+          <p className="pl-3 text-black text-md text-sans text-[15px]">
+            {isValidator ? 'Menu Validator' : 'Menu Admin'}
           </p>
           {routes &&
             routes.map(
               (route, key) =>
                 route[sidebarType] && (
-                  <nav key={key} className="flex flex-col gap-2 mt-2">
+                  <nav key={key} className="flex flex-col mt-4">
                     {route[sidebarType].map((item) => (
                       <NavLink
-
                         key={item.name}
                         to={`${basePath}${item.path}`}
-                        className={linkClasses}
-                        activeClassName={activeLinkClasses} // Gunakan activeClassName untuk menentukan kelas untuk tautan aktif
-
+                        className={({ isActive }) =>
+                          isActive ? activeLinkClasses : linkClasses
+                        }
                         end
                       >
                         <div className="flex items-center gap-3">
@@ -55,7 +54,9 @@ const Sidebar = () => {
                             icon={item.icon}
                             className="w-6 h-6"
                           />
-                          <p className="text-sans text-[15px] text-bold">{item.name}</p>
+                          <p className="text-sans text-[15px] text-bold">
+                            {item.name}
+                          </p>
                         </div>
                       </NavLink>
                     ))}
@@ -64,12 +65,28 @@ const Sidebar = () => {
             )}
         </div>
 
-        <div className="px-4">
-          <button onClick={handleLogout} className="flex w-full gap-3">
-            <img
-              src="../../../public/icons/sidebar/logout-icon.svg"
-              alt="logout-icon"
-            />
+        <div className="flex h-full px-3">
+          <button
+            onClick={handleLogout}
+            className="flex self-end w-full gap-3 px-2 py-3 rounded-md hover:text-white hover:bg-secondary"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5 5H11C11.55 5 12 4.55 12 4C12 3.45 11.55 3 11 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H11C11.55 21 12 20.55 12 20C12 19.45 11.55 19 11 19H5V5Z"
+                fill="currentColor"
+              />
+              <path
+                d="M20.65 11.65L17.86 8.86C17.7905 8.78855 17.7012 8.73948 17.6036 8.71907C17.506 8.69866 17.4045 8.70783 17.3121 8.74542C17.2198 8.783 17.1408 8.84729 17.0851 8.93005C17.0295 9.01282 16.9999 9.11029 17 9.21V11H10C9.45 11 9 11.45 9 12C9 12.55 9.45 13 10 13H17V14.79C17 15.24 17.54 15.46 17.85 15.14L20.64 12.35C20.84 12.16 20.84 11.84 20.65 11.65Z"
+                fill="currentColor"
+              />
+            </svg>
+
             <span>Log Out</span>
           </button>
         </div>

@@ -131,13 +131,13 @@ const ValidatorTable = () => {
   const renderUserStatus = (isActive) => {
     if (isActive) {
       return (
-        <span className="ml-2 text-sm font-sans  font-light text-green-500">
+        <span className="ml-2 font-sans text-sm font-light text-green-500">
           (Active)
         </span>
       );
     } else {
       return (
-        <span className="ml-2 text-sm font-sans font-light text-red-500">
+        <span className="ml-2 font-sans text-sm font-light text-red-500">
           (Blocked)
         </span>
       );
@@ -189,7 +189,7 @@ const ValidatorTable = () => {
           onCreateAccount={() => console.log("Create Account")}
         />
       </div>
-      <div className="relative overflow-x-auto max-h-[300px] shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto max-h-[380px] shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -231,8 +231,8 @@ const ValidatorTable = () => {
                   <div className="relative">
                     <EllipsisButton onClick={() => toggleDropdown(index)} />
                     {openDropdownId === index && (
-                      <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg p-2">
-                        <ul className="text-gray-700 flex flex-col items-start ">
+                      <div className="absolute right-0 z-10 w-48 p-2 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                        <ul className="flex flex-col items-start text-gray-700 ">
                           <li className="w-full">
                             <BlockButton
                               isActive={item.is_active}

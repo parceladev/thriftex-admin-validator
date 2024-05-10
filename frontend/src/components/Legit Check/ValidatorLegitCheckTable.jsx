@@ -13,7 +13,7 @@ const getStatusLabel = (check_result) => {
     case 'Waiting':
       return 'PENDING';
     case 'Canceled':
-      return 'DECLINED
+      return 'DECLINED'
     default:
       return check_result;
   }

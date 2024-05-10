@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import ModalBlockUser from "./ModalBlockUser";
-import { fetchAllUsers } from "../../utils/users_api-service";
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import ModalBlockUser from './ModalBlockUser';
+import { fetchAllUsers } from '../../utils/users_api-service';
 import {
   BlockButton,
   EllipsisButton,
   SearchTable,
   TablePagination,
-} from "../generals";
+} from '../generals';
 
 const UserTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -42,13 +42,13 @@ const UserTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error("Error fetching data:", response.data.message);
+        console.error('Error fetching data:', response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -100,13 +100,13 @@ const UserTable = () => {
   const renderUserStatus = (isActive) => {
     if (isActive) {
       return (
-        <span className="ml-2 text-sm font-sans  font-light text-green-500">
+        <span className="ml-2 font-sans text-sm font-light text-green-500">
           (Active)
         </span>
       );
     } else {
       return (
-        <span className="ml-2 text-sm font-sans font-light text-red-500">
+        <span className="ml-2 font-sans text-sm font-light text-red-500">
           (Blocked)
         </span>
       );
@@ -117,8 +117,8 @@ const UserTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const toggleDropdown = (index) => {
@@ -151,14 +151,14 @@ const UserTable = () => {
             typeButton="button"
             altIcon="Search User"
             onKeyPress={(event) => {
-              if (event.key === "Enter") {
+              if (event.key === 'Enter') {
                 handleSearch();
               }
             }}
           />
         </div>
       </div>
-      <div className="relative overflow-x-auto max-h-[300px]">
+      <div className="relative overflow-x-auto max-h-[380px]">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>

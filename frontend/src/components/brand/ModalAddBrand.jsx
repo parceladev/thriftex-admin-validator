@@ -53,24 +53,24 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed z-10 inset-0 overflow-y-auto"
+      className="fixed inset-0 z-50 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
     >
       <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
         <div
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
           aria-hidden="true"
         ></div>
 
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white p-4">
+        <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div className="p-4 bg-white">
             <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                <div className="w-full flex justify-between border-b py-3 items-center">
+              <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
+                <div className="flex items-center justify-between w-full py-3 border-b">
                   <h3
-                    className="text-xl leading-6 font-medium text-secondary"
+                    className="text-xl font-medium leading-6 text-secondary"
                     id="modal-title"
                   >
                     Add Brand
@@ -84,7 +84,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className=" space-y-6 mt-5">
+                <form onSubmit={handleSubmit} className="mt-5 space-y-6 ">
                   <div>
                     <label
                       htmlFor="brand-name"
@@ -100,7 +100,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         autoComplete="brand-name"
                         required
                         onChange={handleBrandNameChange}
-                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                        className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                       />
                     </div>
                   </div>
@@ -126,7 +126,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   <div className="px-4 py-3 text-right sm:px-6">
                     <button
                       type="submit"
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
                     >
                       Create Brand
                     </button>
