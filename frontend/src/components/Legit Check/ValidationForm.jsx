@@ -39,12 +39,6 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
-    console.log('handle accept :');
-    console.log('processing_status', status);
-    console.log('check_result', authenticity);
-    console.log('check_note', detailDescription);
-    console.log('legit_id', legitId);
-
     try {
       setIsSubmitting(true);
       const successData = await fetchValidationLegit(formData);
@@ -68,18 +62,11 @@ const ValidationForm = ({ legitId }) => {
     formData.append('check_note', detailDescription);
     formData.append('legit_id', legitId);
 
-    console.log('handle Decline :');
-    console.log('processing_status', declineReason);
-    console.log('check_result', 'processing');
-    console.log('check_note', detailDescription);
-    console.log('legit_id', legitId);
-
     try {
       setIsSubmitting(true);
       const declineData = await fetchValidationLegit(formData);
       alert('Submission Decline successful');
-      console.log('Success Submitting Decline', declineData);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');

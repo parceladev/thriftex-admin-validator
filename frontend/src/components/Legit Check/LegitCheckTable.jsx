@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import { fetchLegitAdmin } from '../../utils/legit-api-service';
 
 import { SearchTable, TablePagination } from '../generals';
-import ItemDetailModal from './ItemDetailModal';
+import ItemDetaiLegitAdmin from './ItemDetaiLegitAdmin';
 
 const getStatusLabel = (check_result) => {
   switch (check_result) {
@@ -264,7 +264,7 @@ const LegitCheckTable = () => {
           </tbody>
         </table>
         {selectedItem && (
-          <ItemDetailModal
+          <ItemDetaiLegitAdmin
             isOpen={modalOpen}
             onClose={closeModal}
             item={selectedItem}
