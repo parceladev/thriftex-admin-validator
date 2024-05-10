@@ -5,10 +5,24 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
-  const role = location.pathname.includes('/admin')
-    ? 'Admin'
-    : location.pathname.includes('/validator')
-    ? 'Validator'
+  const routeActive = location.pathname.includes('/admin-role/dashboard')
+    ? 'Dashboard (Admin)'
+    : location.pathname.includes('/admin-role/users')
+    ? 'Users Management (Admin)'
+    : location.pathname.includes('/admin-role/brands')
+    ? 'Brands Management (Admin)'
+    : location.pathname.includes('/admin-role/validators')
+    ? 'Validators Management (Admin)'
+    : location.pathname.includes('/admin-role/legit-check')
+    ? 'Legit Check (Admin)'
+    : location.pathname.includes('/admin-role/settings')
+    ? 'Settings (Admin)'
+    : location.pathname.includes('/validator-role/dashboard')
+    ? 'Dashboard (Validator)'
+    : location.pathname.includes('/validator-role/legit-check')
+    ? 'Legit Check (Validator)'
+    : location.pathname.includes('/validator-role/settings')
+    ? 'Settings (Validator)'
     : 'Unknown';
 
   return (
@@ -16,10 +30,18 @@ const Header = () => {
       <div className="flex justify-between px-8 py-5 border-b-2 border-gray-200">
         <div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <img
-              src="../../../public/icons/header/menu-bar-icon.svg"
-              alt="menu-icon"
-            />
+            <svg
+              width="20"
+              height="16"
+              viewBox="0 0 20 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 0.857117V3.71426H20V0.857117H0ZM0 6.5714V9.42854H20V6.5714H0ZM0 12.2857V15.1428H20V12.2857H0Z"
+                fill="currentColor"
+              />
+            </svg>
           </button>
         </div>
         <div className="flex gap-4">
@@ -45,7 +67,7 @@ const Header = () => {
       </div>
       <div className="flex justify-between px-8 py-3 border-b-2 border-gray-200 shadow-md">
         <div>
-          <p>{role}</p>
+          <p>{routeActive}</p>
         </div>
         <div className="flex gap-6">
           <div className="flex">
