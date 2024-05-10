@@ -50,7 +50,7 @@ const ValidationForm = ({ legitId }) => {
       const successData = await fetchValidationLegit(formData);
       alert('Submission result successful');
       console.log('Success Submitting Accept', successData);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error('Error submitting acceptance:', error);
       alert('Error when submitting');
