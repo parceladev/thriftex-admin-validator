@@ -26,7 +26,7 @@ const Header = () => {
     : 'Unknown';
 
   return (
-    <header className="fixed z-[45] flex flex-col w-full bg-primary">
+    <header className="fixed z-[45] flex flex-col w-[calc(100%-18.5%)] bg-primary">
       <div className="flex justify-between px-8 py-5 border-b-2 border-gray-200">
         <div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
