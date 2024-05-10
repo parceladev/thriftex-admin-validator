@@ -23,7 +23,7 @@ const getStatusClasses = (check_result) => {
     case 'Original':
       return 'bg-secondary text-primary';
     case 'fake':
-      return 'bg-buttonpending text-primary';
+      return 'bg-secondary text-primary';
     case 'Waiting':
       return 'bg-gray-200 text-gray-800';
     case 'Canceled':

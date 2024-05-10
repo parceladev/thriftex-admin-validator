@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import ModalBlockUser from './ModalBlockUser';
 import { fetchAllUsers } from '../../utils/users_api-service';
+import { debounce } from 'lodash';
+
 import {
   BlockButton,
   EllipsisButton,
@@ -23,11 +23,15 @@ const UserTable = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
+  const debouncedLoadData = debounce(() => {
+    loadData();
+  }, 3000);
+
   const fetchUserData = async () => {
+    // setIsLoading(true);
     try {
       const response = await fetchAllUsers(
         currentPage,
@@ -38,9 +42,9 @@ const UserTable = () => {
       if (response.data && response.data.data) {
         const apiData = response.data;
         setData(apiData.data);
-        // console.log(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
+        setIsLoading(false);
       } else {
         console.error('Error fetching data:', response.data.message);
         setData([]);
@@ -62,6 +66,7 @@ const UserTable = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+    debouncedLoadData();
   };
 
   const handleSearch = () => {

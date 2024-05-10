@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import ModalValidator from "./ModalValidator";
-import ModalBlock from "./ModalBlock";
+import { useState, useEffect } from 'react';
+import ModalValidator from './ModalValidator';
+import ModalBlock from './ModalBlock';
 import {
   SearchTable,
   TablePagination,
   AddButton,
   EllipsisButton,
   BlockButton,
-} from "../generals";
-import { fetchAllValidator } from "../../utils/users_api-service";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import ModalEditValidatorBrand from "./ModalEditValidatorBrand";
+} from '../generals';
+import { fetchAllValidator } from '../../utils/users_api-service';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import ModalEditValidatorBrand from './ModalEditValidatorBrand';
 
 const ValidatorTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -29,11 +29,11 @@ const ValidatorTable = () => {
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     fetchUserData();
   }, [currentPage, itemsPerPage, searchTerm]);
 
   const fetchUserData = async () => {
+    // setIsLoading(true);
     try {
       const response = await fetchAllValidator(
         currentPage,
@@ -47,13 +47,13 @@ const ValidatorTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        console.error("Error fetching data:", response.data.message);
+        console.error('Error fetching data:', response.data.message);
         setData([]);
         setFilteredData([]);
         setTotalRecords(0);
       }
     } catch (error) {
-      console.error("Error with fetching table data:", error);
+      console.error('Error with fetching table data:', error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -124,8 +124,8 @@ const ValidatorTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      "0"
-    )}-${String(date.getDate()).padStart(2, "0")}`;
+      '0'
+    )}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
   const renderUserStatus = (isActive) => {
@@ -171,7 +171,7 @@ const ValidatorTable = () => {
               typeButton="button"
               altIcon="Search Validator"
               onKeyPress={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                   handleSearch();
                 }
               }}
@@ -186,7 +186,7 @@ const ValidatorTable = () => {
         <ModalValidator
           isOpen={isModalAddOpen}
           onClose={closeModalAdd}
-          onCreateAccount={() => console.log("Create Account")}
+          onCreateAccount={() => console.log('Create Account')}
         />
       </div>
       <div className="relative overflow-x-auto max-h-[380px] shadow-md sm:rounded-lg">
