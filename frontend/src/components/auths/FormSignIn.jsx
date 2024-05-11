@@ -66,6 +66,8 @@ const FormSignIn = () => {
     }
   };
 
+  const isFormValid = email.trim() !== '' && password.trim() !== '';
+
   return (
     <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
       <a href="/" className="flex justify-center mb-4">
@@ -89,7 +91,10 @@ const FormSignIn = () => {
         </a>
         <button
           type="submit"
-          className="w-full p-3 text-center text-white rounded-md bg-black/30"
+          className={`w-full p-3 text-center text-white rounded-md ${
+            isFormValid ? 'bg-black' : 'bg-black/30 pointer-events-none'
+          }`}
+          disabled={!isFormValid}
         >
           Sign In
         </button>
