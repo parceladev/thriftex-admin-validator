@@ -131,12 +131,9 @@ const AccountSettings = () => {
         </div>
         <button
           type="submit"
-          className="self-end p-4 mt-5 rounded-md w-fit bg-secondary"
+          className="self-end w-full px-6 py-4 rounded-md mt-14 sm:mt-5 sm:w-fit bg-secondary text-textWhite dark:bg-darkButton dark:text-textWhite"
         >
-          <FontAwesomeIcon
-            icon={faFloppyDisk}
-            className="text-4xl text-white"
-          />
+          <p className="text-lg">Save Information</p>
         </button>
       </form>
     </section>

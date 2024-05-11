@@ -189,36 +189,53 @@ const ValidatorTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="relative overflow-x-auto max-h-[340px] shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="relative overflow-x-auto max-h-[360px] shadow-md">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+          <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 No.
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Username
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Email
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Date Creation
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Action
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-lightBorder dark:border-darkBorder">
             {filteredData.map((item, index) => (
               <tr
                 key={item.id}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                className={` ${
+                  index % 2 === 0 ? 'dark:bg-darkTable' : 'dark:bg-secondary'
+                }`}
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
@@ -226,12 +243,14 @@ const ValidatorTable = () => {
                   {item.username} {renderUserStatus(item.is_active)}
                 </td>
                 <td className="px-6 py-4">{item.email}</td>
-                <td className="px-6 py-4">{formatDate(item.created_at)}</td>
+                <td className="text-center px-6 py-4">
+                  {formatDate(item.created_at)}
+                </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <div className="relative">
                     <EllipsisButton onClick={() => toggleDropdown(index)} />
                     {openDropdownId === index && (
-                      <div className="absolute right-0 z-10 w-48 p-2 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                      <div className="absolute right-0 z-10 p-2 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
                         <ul className="flex flex-col items-start text-gray-700 ">
                           <li className="w-full">
                             <BlockButton
@@ -246,7 +265,7 @@ const ValidatorTable = () => {
                               type="button"
                               onClick={() => openModalEditBrand(item.id)}
                               aria-label="Edit"
-                              className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-[14px] font-light text-blue-500"
+                              className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-md font-light text-yellow-500"
                             >
                               <FontAwesomeIcon
                                 className="w-5 h-5"

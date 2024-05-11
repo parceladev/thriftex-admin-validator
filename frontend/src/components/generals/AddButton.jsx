@@ -7,7 +7,7 @@ const AddButton = (props) => {
   return (
     <button
       type={type}
-      className="flex items-center justify-center w-1/4 py-4 text-center text-white bg-black dark:bg-gray-300 dark:text-black"
+      className="flex items-center justify-center w-1/4 py-3 text-center text-textWhite dark:bg-darkButton bg-lightButton dark:text-textWhite"
       onClick={onClick}
     >
       <span className="mr-2">{label}</span>

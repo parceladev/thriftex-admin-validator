@@ -19,11 +19,14 @@ const InputModal = (props) => {
     <div className="mb-4">
       <label
         htmlFor={htmlFor}
-        className="flex items-center gap-2 mb-2 font-sans text-lg font-semibold uppercase text-sans text-secondary"
+        className="flex items-center gap-2 mb-2 font-sans text-lg font-semibold uppercase text-sans"
       >
         {label}
         {isRequired === 'optional' && (
-          <span className="text-xs font-normal text-gray-700"> (Optional)</span>
+          <span className="text-xs font-normal text-gray-700 dark:text-textWhite">
+            {' '}
+            (Optional)
+          </span>
         )}
         {isRequired === 'required' && (
           <span className="text-xs font-normal text-red-500"> (Required)</span>
@@ -37,7 +40,7 @@ const InputModal = (props) => {
         onChange={onChange}
         readOnly={readOnly}
         placeholder={placeholder}
-        className="w-full p-3 border-b-2 border-secondary text-[14px] focus:outline-none"
+        className="w-full p-3 border-b-2 bg-primary dark:bg-slate-800 border-secondary dark:border-primary text-[14px] focus:outline-none"
       />
     </div>
   );

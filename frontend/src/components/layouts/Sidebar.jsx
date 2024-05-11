@@ -9,9 +9,9 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const baseLinkClasses =
-    'flex items-center py-3 px-3 transition-colors duration-200 transform max-w-[200px] rounded-md';
-  const linkClasses = `${baseLinkClasses} text-secondary hover:bg-secondary hover:text-white`;
-  const activeLinkClasses = `${baseLinkClasses} bg-secondary text-white`;
+    'flex items-center py-3 px-3 transition-colors duration-200 transform rounded-md';
+  const linkClasses = `${baseLinkClasses} w-full hover:bg-secondary dark:hover:bg-darkButton hover:text-textWhite dark:hover:text-textWhite`;
+  const activeLinkClasses = `${baseLinkClasses} w-full bg-secondary dark:bg-darkButton text-textWhite dark:text-textWhite`;
 
   const isValidator = location.pathname.includes('/validator-role');
   const basePath = isValidator ? '/validator-role' : '/admin-role';
@@ -24,22 +24,25 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="fixed h-screen p-5 border border-gray-200 bg-primary w-72"
+      className="fixed h-screen p-5 border border-l-0 w-72 border-y-0 shadow-md dark:border-darkBorder"
       aria-label="Sidebar"
     >
-      <div className="flex flex-col h-full">
-        <div className="flex flex-col">
-          <div className="pl-2 mb-12">
-            <img src="../../../public/generals/logo.png" alt="Logo" />
+      <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full">
+          <div className="p-5 mb-12">
+            <img src="../../../public/generals/thriftex-logo.jpg" alt="Logo" />
           </div>
-          <p className="pl-3 text-black text-md text-sans text-[15px]">
+          <p className="pl-3 text-md text-sans">
             {isValidator ? 'Menu Validator' : 'Menu Admin'}
           </p>
           {routes &&
             routes.map(
               (route, key) =>
                 route[sidebarType] && (
-                  <nav key={key} className="flex flex-col mt-4">
+                  <nav
+                    key={key}
+                    className="flex w-full flex-col gap-[1px] mt-4"
+                  >
                     {route[sidebarType].map((item) => (
                       <NavLink
                         key={item.name}
@@ -54,7 +57,7 @@ const Sidebar = () => {
                             icon={item.icon}
                             className="w-6 h-6"
                           />
-                          <p className="text-sans text-[15px] text-bold">
+                          <p className="text-sans text-md text-bold">
                             {item.name}
                           </p>
                         </div>
@@ -68,7 +71,7 @@ const Sidebar = () => {
         <div className="flex h-full px-3">
           <button
             onClick={handleLogout}
-            className="flex self-end w-full gap-3 px-2 py-3 rounded-md hover:text-white hover:bg-secondary"
+            className="flex self-end w-full gap-3 px-2 py-3 rounded-md hover:text-textWhite hover:bg-darkButton"
           >
             <svg
               width="24"

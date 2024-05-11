@@ -24,15 +24,15 @@ const getStatusLabel = (check_result) => {
 const getStatusClasses = (check_result) => {
   switch (check_result) {
     case 'Original':
-      return 'bg-secondary text-primary';
+      return 'bg-secondary text-primary dark:bg-primary dark:text-textBlack';
     case 'fake':
-      return 'bg-secondary text-primary';
+      return 'bg-secondary text-primary dark:bg-primary dark:text-textBlack';
     case 'Waiting':
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-300 dark:bg-gray-700 dark:text-textWhite text-gray-800';
     case 'Canceled':
       return 'bg-red-200 text-gray-800';
     default:
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-200 text-gray-800 dark:bg-gray-200';
   }
 };
 
@@ -53,15 +53,15 @@ const getAuthenticityLabel = (check_result) => {
 const getAuthenticityClasses = (check_result) => {
   switch (check_result) {
     case 'fake':
-      return 'bg-primary text-secondary border-[1px] border-secondary';
+      return 'bg-primary text-secondary border-[1px] border-secondary dark:bg-secondary dark:border-white dark:text-textWhite';
     case 'Original':
-      return 'bg-secondary text-primary';
+      return 'bg-secondary text-primary dark:bg-primary dark:text-textBlack';
     case 'Waiting':
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-textWhite';
     case 'Canceled':
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-textWhite';
     default:
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-textWhite';
   }
 };
 
@@ -193,53 +193,76 @@ const LegitCheckTable = () => {
           />
         </div>
       </div>
-      <div className="relative overflow-x-auto max-h-[340px] shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="relative overflow-x-auto max-h-[360px] shadow-md">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+          <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 No.
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Item ID
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Brand
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Status
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Authenticity
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Date Uploaded
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Validator
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-lightBorder dark:border-darkBorder">
             {filteredData.map((item, index) => (
               <tr
                 key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                className={` ${
+                  index % 2 === 0 ? 'dark:bg-darkTable' : 'dark:bg-secondary'
+                }`}
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
                 <td
-                  className="px-6 py-4 text-blue-400 underline cursor-pointer"
+                  className="px-6 py-4 text-center text-blue-400 underline cursor-pointer"
                   onClick={() => openModal(item)}
                 >
                   {item.case_code}
                 </td>
-                <td className="px-6 py-4">{item.brand_name}</td>
-                <td className="px-5 py-2 whitespace-no-wrap">
+                <td className="text-center px-6 py-4">{item.brand_name}</td>
+                <td className="text-center px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
                       item.check_result
@@ -248,17 +271,17 @@ const LegitCheckTable = () => {
                     {getStatusLabel(item.check_result)}
                   </span>
                 </td>
-                <td className="px-5 py-2 whitespace-no-wrap">
+                <td className="text-center px-5 py-2 whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
                       item.check_result
                     )}`}
                   >
-                    {getAuthenticityLabel(item.legit_status, item.check_result)}
+                    {getAuthenticityLabel(item.check_result, item.check_result)}
                   </span>
                 </td>
-                <td className="px-6 py-4">{item.submit_time}</td>
-                <td className="px-6 py-4">{item.id}</td>
+                <td className="text-center px-6 py-4">{item.submit_time}</td>
+                <td className="text-center px-6 py-4">{item.id}</td>
               </tr>
             ))}
           </tbody>

@@ -60,15 +60,15 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex bg-opacity-50 bg-secondary dark:bg-primary dark:bg-opacity-5"
       style={{ overflowY: 'auto' }}
     >
       <div
-        className="relative bg-white w-full max-w-[800px] m-auto flex-col flex rounded-lg shadow-lg"
+        className="relative bg-white dark:bg-secondary w-full max-w-[800px] m-auto flex-col flex rounded-lg shadow-lg"
         style={{ maxHeight: '90vh', overflowY: 'auto' }}
       >
         <div className="flex flex-row items-center justify-between p-4 ml-4 border-b-2">
-          <p className="text-2xl font-bold text-sans text-secondary">
+          <p className="text-2xl font-bold text-sans text-textBlack dark:text-textWhite">
             Legit Check Detail
           </p>
           <button type="button" onClick={onClose}>
@@ -121,8 +121,8 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
               readOnly={true}
             />
             <div className="mb-4">
-              <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-                ITEM PHOTOS{' '}
+              <label className="block mb-2 font-sans text-lg font-semibold uppercase text-sans">
+                ITEM PHOTOS
               </label>
               <div className="flex space-x-2">
                 {itemDetails.image_list.map((image, index) => (

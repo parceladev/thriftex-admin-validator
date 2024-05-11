@@ -4,8 +4,10 @@ const SettingsValidatorPage = () => {
   return (
     <div>
       <Header />
-      <div className="p-8 pt-40">
-        <AccountSettings />
+      <div className="pt-36 p-6">
+        <div className="w-full p-8 border rounded shadow-md">
+          <AccountSettings />
+        </div>
       </div>
     </div>
   );

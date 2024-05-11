@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { IoCloseSharp } from "react-icons/io5";
-import { createBrand } from "../../utils/brand-api-service";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { IoCloseSharp } from 'react-icons/io5';
+import { createBrand } from '../../utils/brand-api-service';
+import { useNavigate } from 'react-router-dom';
 
 const ModalAddBrand = ({ isOpen, onClose }) => {
-  const [brandName, setBrandName] = useState("");
+  const [brandName, setBrandName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
     if (file && /^image\/(svg\+xml|png|jpeg)$/.test(file.type)) {
       setSelectedFile(file);
     } else {
-      alert("Only SVG, PNG, and JPG files are allowed.");
+      alert('Only SVG, PNG, and JPG files are allowed.');
     }
   };
 
@@ -25,7 +25,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     if (!brandName || !selectedFile) {
-      alert("Please fill in all required fields.");
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -34,16 +34,16 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
       foto: selectedFile,
     };
 
-    console.log("Creating Brand", userData);
+    console.log('Creating Brand', userData);
     createBrand(
       userData,
       (data) => {
-        alert("Registration Successful", data);
-        navigate("/admin-role/brands", { replace: true });
+        alert('Registration Successful', data);
+        navigate('/admin-role/brands', { replace: true });
         window.location.reload();
       },
       (message) => {
-        console.log("Registration Failed:", message);
+        console.log('Registration Failed:', message);
       }
     );
   };
@@ -59,17 +59,17 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
     >
       <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
         <div
-          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+          className="fixed inset-0 transition-opacity bg-secondary bg-opacity-50 dark:bg-primary dark:bg-opacity-10"
           aria-hidden="true"
         ></div>
 
         <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="p-4 bg-white">
+          <div className="p-4 bg-primary dark:bg-secondary">
             <div className="sm:flex sm:items-start">
-              <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                <div className="flex items-center justify-between w-full py-3 border-b">
+              <div className="w-full flex flex-col gap-6 text-center p-3 text-left">
+                <div className="flex items-center justify-between w-full pb-3 border-b">
                   <h3
-                    className="text-xl font-medium leading-6 text-secondary"
+                    className="text-xl font-medium text-textBlack dark:text-textWhite"
                     id="modal-title"
                   >
                     Add Brand
@@ -77,17 +77,16 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   <button
                     onClick={onClose}
                     type="button"
-                    className="text-secondary hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
+                    className="text-secondary hover:text-gray-900  text-textBlack dark:text-textWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
                   >
                     <IoCloseSharp size={24} />
                   </button>
                 </div>
-
-                <form onSubmit={handleSubmit} className="mt-5 space-y-6 ">
-                  <div>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
                     <label
                       htmlFor="brand-name"
-                      className="block text-sm font-medium text-secondary"
+                      className="block text-sm font-medium text-textBlack dark:text-textWhite text-left"
                     >
                       Brand Name (Required)
                     </label>
@@ -98,16 +97,16 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         type="text"
                         autoComplete="brand-name"
                         required
+                        placeholder="Add New Brand Name"
                         onChange={handleBrandNameChange}
-                        className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                        className="block w-full px-3 py-2 placeholder-gray-400 bg-primary dark:bg-secondary border border-lightBorder dark:darkBorder rounded-md shadow-sm appearance-none focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                       />
                     </div>
                   </div>
-
-                  <div>
+                  <div className="flex flex-col gap-2">
                     <label
                       htmlFor="file-upload"
-                      className="block text-sm font-medium text-gray-700"
+                      className="lock text-sm font-medium text-textBlack dark:text-textWhite text-left"
                     >
                       Brand Logo (Required)
                     </label>
@@ -117,15 +116,14 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         name="file-upload"
                         type="file"
                         onChange={handleFileChange}
-                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 bg-primary dark:bg-secondary border border-lightBorder dark:darkBorder rounded-md file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                       />
                     </div>
                   </div>
-
-                  <div className="px-4 py-3 text-right sm:px-6">
+                  <div className="text-right">
                     <button
                       type="submit"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
+                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary dark:bg-primary dark:text-textBlack text-textWHite hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
                     >
                       Create Brand
                     </button>

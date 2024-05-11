@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { IoCloseSharp } from "react-icons/io5";
+import React, { useState, useEffect } from 'react';
+import { IoCloseSharp } from 'react-icons/io5';
 import {
   updateValidatorBrand,
   fetchBrands,
-} from "../../utils/brand-api-service";
+} from '../../utils/brand-api-service';
 
 const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
   const [brandId, setBrandId] = useState(currentBrandId);
@@ -19,7 +19,7 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
           setNewBrandId(currentBrandId);
         }
       } catch (error) {
-        console.error("Failed to load brands:", error);
+        console.error('Failed to load brands:', error);
       }
     };
 
@@ -33,13 +33,13 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
       await updateValidatorBrand(newBrandId);
       setUpdateStatus({
         success: true,
-        message: "Brand ID berhasil diperbarui.",
+        message: 'Brand ID berhasil diperbarui.',
       });
     } catch (error) {
-      console.error("Update Failed:", error);
+      console.error('Update Failed:', error);
       setUpdateStatus({
         success: false,
-        message: "Gagal memperbarui Brand ID. Coba lagi.",
+        message: 'Gagal memperbarui Brand ID. Coba lagi.',
       });
     }
   };
@@ -59,34 +59,31 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
           aria-hidden="true"
         ></div>
         <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="pb-4 bg-white sm:pb-4">
+          <div className="bg-primary dark:bg-secondary">
             <div className="sm:flex sm:items-start">
-              <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                <div className="flex justify-between w-full p-3 border-b">
-                  <h3
-                    className="text-xl font-medium leading-6 text-gray-900"
-                    id="modal-title"
-                  >
-                    Perbarui Brand ID
+              <div className="w-full text-center sm:mt-0 sm:text-left p-5">
+                <div className="flex justify-between w-full border-darkBorder dark:border-lightBorder border-b">
+                  <h3 className="text-xl font-medium" id="modal-title">
+                    Validator Edit Brand
                   </h3>
                   <button
                     onClick={onClose}
-                    className="inline-flex justify-center px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="inline-flex justify-center bg-transparent px-4 py-2 mt-3 text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
                     <IoCloseSharp />
                   </button>
                 </div>
-                <div className="p-6 mt-2">
+                <div className="">
                   <label
                     htmlFor="brand"
-                    className="block font-medium text-gray-700 text-md"
+                    className="block font-medium text-md mt-5"
                   >
-                    Brand ID Saat Ini
+                    Select Brand
                   </label>
                   <select
                     value={brandId}
                     onChange={(e) => setBrandId(e.target.value)}
-                    className="block w-full py-2 pl-3 pr-10 mt-1 text-base border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full py-2 pl-3 bg-transparent border border-darkBorder dark:border-lightBorder pr-10 mt-1 text-base rounded-md focus:outline-none sm:text-sm"
                   >
                     <option value="">Select a brand</option>
                     {brands.map((brand) => (
@@ -97,15 +94,15 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
                   </select>
                   <button
                     onClick={handleUpdate}
-                    className="px-4 py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+                    className="py-4 mt-4 font-bold text-center w-full text-textWhite dark:textWhite bg-lightButton dark:bg-darkButton rounded"
                   >
-                    Perbarui
+                    Changes Brand Validator
                   </button>
                 </div>
                 {updateStatus && (
                   <p
                     className={`text-${
-                      updateStatus.success ? "green" : "red"
+                      updateStatus.success ? 'green' : 'red'
                     }-500`}
                   >
                     {updateStatus.message}

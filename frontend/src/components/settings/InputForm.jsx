@@ -38,7 +38,7 @@ const InputForm = (props) => {
           {label}
         </label>
         {isRequired === 'optional' && (
-          <span className="text-gray-700">(Optional)</span>
+          <span className="text-gray-700 dark:text-textWhite">(Optional)</span>
         )}
         {isRequired === 'required' && (
           <span className="text-red-500">(Required)</span>
@@ -57,7 +57,7 @@ const InputForm = (props) => {
               onChange={type === 'tel' ? handleNumericChange : onChange}
               placeholder={placeholder}
               readOnly={isRequired === 'none'}
-              className={`w-full p-2 border-b-2 rounded border-slate-800 focus:outline-none focus:ring-0 ${className}`}
+              className={`w-full p-2 border-b-2 bg-primary dark:bg-secondary rounded border-slate-800 dark:border-darkBorder focus:outline-none focus:ring-0 ${className}`}
             />
             {type === 'password' && isRequired !== 'none' && (
               <button
@@ -76,7 +76,7 @@ const InputForm = (props) => {
             value={value}
             onChange={onChange}
             disabled={isRequired === 'none'}
-            className={`w-full p-2 border-b-2 rounded border-slate-800 focus:outline-none focus:ring-0 ${className}`}
+            className={`w-full p-2 border-b-2 rounded bg-primary dark:bg-secondary border-slate-800 dark:border-darkBorder focus:outline-none focus:ring-0 ${className}`}
           >
             {children}
           </select>

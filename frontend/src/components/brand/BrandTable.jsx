@@ -158,40 +158,57 @@ const BrandTable = () => {
           onCreateAccount={() => console.log('Create Account')}
         />
       </div>
-      <div className="relative  overflow-x-auto max-h-[340px] shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="relative overflow-x-auto max-h-[360px] shadow-md">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+          <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 No.
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Brand Logo
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Brand Name
               </th>
-              <th scope="col" className="px-6 py-3 ">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center "
+              >
                 Date Creation
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th
+                scope="col"
+                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+              >
                 Action
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border border-lightBorder dark:border-darkBorder">
             {filteredData.map((item, index) => (
               <tr
                 key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                className={` ${
+                  index % 2 === 0 ? 'dark:bg-darkTable' : 'dark:bg-secondary'
+                }`}
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4 ">
+                <td className="px-6 py-4 flex justify-center">
                   <img
                     src={item.foto}
                     alt=""
@@ -200,9 +217,11 @@ const BrandTable = () => {
                     className="bg-cover"
                   />
                 </td>
-                <td className="px-6 py-4">{item.brand_name}</td>
-                <td className="px-6 py-4 ">{formatDate(item.created_at)}</td>
-                <td className="flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
+                <td className="text-center px-6 py-4">{item.brand_name}</td>
+                <td className="text-center px-6 py-4 ">
+                  {formatDate(item.created_at)}
+                </td>
+                <td className="text-center flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     onClick={() => openModalDeleteBrand(item.id)}
@@ -220,7 +239,7 @@ const BrandTable = () => {
                   >
                     <FontAwesomeIcon
                       icon={faPenToSquare}
-                      className="w-5 h-5 text-gray-500 hover:text-blue-500"
+                      className="w-5 h-5 text-gray-500 hover:text-yellow-500"
                     />
                   </button>
                 </td>

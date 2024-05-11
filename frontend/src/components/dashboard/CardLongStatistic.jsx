@@ -5,21 +5,13 @@ const CardLongStatistic = (props) => {
   const { title, icon, alt, content } = props;
 
   return (
-    <div className="flex items-center justify-between p-8 border-2 rounded-md border-secondary">
+    <div className="flex items-center justify-between p-8 border-[1px] rounded-md border-lightBorder dark:border-darkBorder">
       <div className="flex flex-col items-center gap-3">
-        <FontAwesomeIcon
-          icon={icon}
-          alt={alt}
-          className="w-8 h-8 text-secondary"
-        />
-        <h2 className="font-sans text-2xl font-bold text-secondary">
-          {content}
-        </h2>
+        <FontAwesomeIcon icon={icon} alt={alt} className="w-8 h-8" />
+        <h2 className="font-sans text-2xl font-bold">{content}</h2>
       </div>
       <div className="flex self-end">
-        <h2 className="font-sans text-2xl font-medium text-secondary">
-          {title}
-        </h2>
+        <h2 className="font-sans text-2xl font-medium">{title}</h2>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ const LegitCheckValidatorPage = () => {
   return (
     <div>
       <Header />
-      <div className="p-8 pt-40">
+      <div className="pt-36 p-6">
         <ValidatorLegitCheckTable />
       </div>
     </div>

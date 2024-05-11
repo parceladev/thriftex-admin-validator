@@ -20,7 +20,7 @@ const TablePagination = (props) => {
   } = props;
 
   return (
-    <div className="flex justify-between items-center mt-4 border-[1px] border-secondary p-3 rounded-sm">
+    <div className="flex justify-between items-center mt-4 border-[1px] border-lightBorder dark:border-darkBorder p-3 rounded-sm">
       <div className="flex items-center justify-center gap-5">
         <div>
           <label
@@ -33,7 +33,7 @@ const TablePagination = (props) => {
             id={id}
             value={value}
             onChange={onChange}
-            className="ml-2  w-[42px] h-[32px] bg-buttonangle text-secondary rounded-md text-[16px]"
+            className="ml-2  w-[42px] h-[32px] bg-buttonangle cursor-pointer dark:bg-darkButton dark:text-textWhite text-secondary rounded-md text-[16px]"
           >
             <option value="5">5</option>
             <option value="10">10</option>
@@ -49,17 +49,17 @@ const TablePagination = (props) => {
         <button
           onClick={onClickLeft}
           disabled={disabledLeft}
-          className="bg-buttonangle text-secondary w-[34px] h-[34px] rounded-md"
+          className="bg-buttonangle cursor-pointer dark:bg-darkButton dark:text-textWhite text-secondary w-[34px] h-[34px] rounded-md"
         >
           <FontAwesomeIcon className="text-[16px]" icon={faAngleLeft} />
         </button>
-        <div className="w-[40px] h-[40px] text-[18px] text-primary bg-secondary flex justify-center items-center rounded-md">
+        <div className="w-[40px] h-[40px] text-[18px] text-primary bg-secondary flex justify-center dark:border-darkBorder dark:border items-center rounded-md">
           <p>{currentPage}</p>
         </div>
         <button
           onClick={onClickRight}
           disabled={disabledRight}
-          className="bg-buttonangle text-secondary w-[34px] h-[34px] rounded-md"
+          className="bg-buttonangle cursor-pointer text-secondary w-[34px] h-[34px] rounded-md dark:bg-darkButton dark:text-textWhite"
         >
           <FontAwesomeIcon className="text-[16px]" icon={faAngleRight} />
         </button>

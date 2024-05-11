@@ -81,20 +81,19 @@ const SecurityForm = (props) => {
           <button
             onClick={toggleChangePassword}
             type="button"
-            className="px-4 py-2 text-lg text-gray-600 bg-white border rounded-sm w-fit hover:bg-gray-100"
+            className="px-4 py-2 text-lg text-gray-600 bg-white border border-lightBorder dark:border-none rounded-sm dark:text-textWhite dark:bg-darkButton w-fit hover:bg-gray-100"
           >
             Cancel
           </button>
         </>
       )}
       {!showChangePassword && (
-        <a
-          href="#"
+        <button
           onClick={toggleChangePassword}
-          className="px-4 py-3 text-lg text-white rounded-sm bg-secondary w-fit"
+          className="px-4 py-3 text-lg rounded-sm bg-secondary dark:bg-darkButton text-textWhite dark:text-textWhite w-fit"
         >
           Change Password
-        </a>
+        </button>
       )}
     </div>
   );

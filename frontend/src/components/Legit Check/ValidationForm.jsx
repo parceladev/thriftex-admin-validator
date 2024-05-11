@@ -81,9 +81,9 @@ const ValidationForm = ({ legitId }) => {
         Feedback Validator Form
       </div>
       <div className="mb-4">
-        <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+        <label className="block mb-2 font-sans text-lg font-semibold uppercase text-sans">
           Status Information
-          <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
+          <span className="ml-3 font-light text-red-600 capitalize text-sans text-md">
             (Required)
           </span>
         </label>
@@ -97,7 +97,7 @@ const ValidationForm = ({ legitId }) => {
               onChange={handleChange}
               className="w-6 h-6 form-radio"
             />
-            <span className="text-green-700 uppecase">Accept</span>
+            <span className="uppecase">Accept</span>
           </label>
           <label className="flex items-center mb-3 space-x-3">
             <input
@@ -108,7 +108,7 @@ const ValidationForm = ({ legitId }) => {
               onChange={handleChange}
               className="w-6 h-6 form-radio"
             />
-            <span className="text-red-400 uppecase">Decline</span>
+            <span className="uppecase">Decline</span>
           </label>
         </div>
       </div>
@@ -117,7 +117,7 @@ const ValidationForm = ({ legitId }) => {
       {status === 'none' && (
         <form onSubmit={handleAccept}>
           <div className="mb-4">
-            <label className="font-semibold  block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
+            <label className="font-semibold  block mb-2 text-sans uppercase font-sans text-[17px]">
               Authenticity
               <span className="text-sans text-red-600 font-light capitalize text-[14px] ml-3">
                 (Required)
@@ -133,7 +133,7 @@ const ValidationForm = ({ legitId }) => {
                   onChange={handleChange}
                   className="w-6 h-6 form-radio"
                 />
-                <span className="text-green-700 uppecase">Original</span>
+                <span className="uppecase">Original</span>
               </label>
               <label className="flex items-center mb-3 space-x-3">
                 <input
@@ -144,7 +144,7 @@ const ValidationForm = ({ legitId }) => {
                   onChange={handleChange}
                   className="w-6 h-6 form-radio"
                 />
-                <span className="text-yellow-700 uppecase">Fake</span>
+                <span className="uppecase">Fake</span>
               </label>
             </div>
           </div>
@@ -162,7 +162,7 @@ const ValidationForm = ({ legitId }) => {
           <div className="flex w-full pt-2">
             <button
               type="submit"
-              className="flex items-center justify-center w-full gap-3 py-4 text-lg text-white rounded bg-secondary hover:bg-gray-900"
+              className="flex items-center justify-center w-full gap-3 py-4 text-lg rounded text-textWhite dark:bg-primary dark:text-textBlack bg-secondary hover:bg-gray-900"
             >
               {isSubmitting && <FontAwesomeIcon icon={faCircleNotch} spin />}
               <span>{isSubmitting ? 'Submitting...' : 'Send Information'}</span>
@@ -196,17 +196,17 @@ const ValidationForm = ({ legitId }) => {
               </option>
             </select>
           </div>
-          <InputModal
-            label="Detail Decline Description"
-            placeholder="Input a Detail Decline"
-            name="detail-description"
-            id="detailDescription"
-            htmlFor="detail-description"
-            isRequired="required"
-            value={detailDescription}
-            onChange={handleChangeResponse}
-            readOnly={false}
-          />
+            <InputModal
+              label="Detail Decline Description"
+              placeholder="Input a Detail Decline"
+              name="detail-description"
+              id="detailDescription"
+              htmlFor="detail-description"
+              isRequired="required"
+              value={detailDescription}
+              onChange={handleChangeResponse}
+              readOnly={false}
+            />
           <div className="flex w-full pt-2">
             <button
               type="submit"

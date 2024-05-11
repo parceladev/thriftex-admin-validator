@@ -1,9 +1,16 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useTheme } from '../../ThemeContext';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { selectedTheme, setSelectedTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleThemeChange = (theme) => {
+    setSelectedTheme(theme);
+    document.documentElement.className = theme;
+  };
 
   const routeActive = location.pathname.includes('/admin-role/dashboard')
     ? 'Dashboard (Admin)'
@@ -26,8 +33,8 @@ const Header = () => {
     : 'Unknown';
 
   return (
-    <header className="fixed z-[45] flex flex-col w-[calc(100%-18.5%)] bg-primary">
-      <div className="flex justify-between px-8 py-5 border-b-2 border-gray-200">
+    <header className="fixed z-[45] flex flex-col w-[calc(100%-18.5%)] bg-primary dark:bg-secondary">
+      <div className="flex justify-between px-8 py-5 border-b-2 dark:border-darkBorder">
         <div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <svg
@@ -44,7 +51,7 @@ const Header = () => {
             </svg>
           </button>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <svg
             width="14"
             height="15"
@@ -65,7 +72,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between px-8 py-3 border-b-2 border-gray-200 shadow-md">
+      <div className="flex justify-between px-8 py-3 border-b-2 shadow-md dark:border-darkBorder">
         <div>
           <p>{routeActive}</p>
         </div>
@@ -86,13 +93,21 @@ const Header = () => {
             <select
               name="languages"
               id="language-select"
-              className="cursor-pointer"
+              className={`outline-none uppercase cursor-pointer ${
+                selectedTheme === 'dark'
+                  ? 'bg-transparent text-textWhite'
+                  : 'bg-primary text-textBlack'
+              }`}
             >
-              <option value="EN">EN</option>
-              <option value="ID">ID</option>
+              <option value="EN" className="dark:text-textBlack">
+                EN
+              </option>
+              <option value="ID" className="dark:text-textBlack">
+                ID
+              </option>
             </select>
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             <svg
               width="16"
               height="18"
@@ -156,10 +171,21 @@ const Header = () => {
                 stroke-linecap="round"
               />
             </svg>
-
-            <select name="themes" id="theme-select" className="cursor-pointer">
-              <option value="LIGHT">LIGHT</option>
-              <option value="DARK">DARK</option>
+            <select
+              value={selectedTheme}
+              onChange={(e) => handleThemeChange(e.target.value)}
+              className={`outline-none uppercase cursor-pointer ${
+                selectedTheme === 'dark'
+                  ? 'bg-transparent text-textWhite'
+                  : 'bg-primary text-textBlack'
+              }`}
+            >
+              <option value="light" className="dark:text-textBlack">
+                Light
+              </option>
+              <option value="dark" className="dark:text-textBlack">
+                Dark
+              </option>
             </select>
           </div>
         </div>

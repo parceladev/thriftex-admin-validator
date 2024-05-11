@@ -5,7 +5,7 @@ const DashboardValidatorPage = () => {
     <section className="w-full">
       <div className="flex flex-col w-full">
         <Header />
-        <div className="p-8 pt-40">
+        <div className="pt-36 p-6">
           <StatisticValidator />
         </div>
       </div>
