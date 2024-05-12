@@ -11,6 +11,7 @@ const Header = () => {
 
   const handleThemeChange = (theme) => {
     setSelectedTheme(theme);
+    localStorage.setItem('theme', theme);
     document.documentElement.className = theme;
   };
 
@@ -98,7 +99,7 @@ const Header = () => {
             <select
               name="languages"
               id="language-select"
-              value={i18n.language} 
+              value={i18n.language}
               onChange={(e) => handleLanguageChange(e.target.value)}
               className={`outline-none uppercase cursor-pointer ${
                 selectedTheme === 'dark'

@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme') || 'light';
     setSelectedTheme(currentTheme);
-    document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+    document.documentElement.className = currentTheme;
   }, []);
 
   return (
