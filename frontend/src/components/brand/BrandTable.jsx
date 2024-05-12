@@ -6,7 +6,10 @@ import ModalDeleteBrand from './ModalDeleteBrand';
 import { SearchTable, TablePagination, AddButton } from '../generals';
 import { fetchBrands } from '../../utils/brand-api-service';
 import ModalEditBrand from './ModalEditBrand';
+import { useTranslation } from 'react-i18next';
+
 const BrandTable = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -147,7 +150,7 @@ const BrandTable = () => {
             />
             <AddButton
               type="button"
-              label="ADD BRAND"
+              label={t('Add Brand')}
               onClick={openModalAddBrand}
             />
           </div>
@@ -159,38 +162,38 @@ const BrandTable = () => {
         />
       </div>
       <div className="relative overflow-x-auto max-h-[360px] shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+        <table className="w-full text-sm text-left text-gray-500 border dark:text-gray-400 border-lightBorder">
           <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
                 No.
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Brand Logo
+                {t('Brand Logo')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Brand Name
+                {t('Brand Name')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center "
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder "
               >
-                Date Creation
+                {t('Date Creation')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Action
+                {t('Action')}
               </th>
             </tr>
           </thead>
@@ -204,11 +207,11 @@ const BrandTable = () => {
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4 flex justify-center">
+                <td className="flex justify-center px-6 py-4">
                   <img
                     src={item.foto}
                     alt=""
@@ -217,11 +220,11 @@ const BrandTable = () => {
                     className="bg-cover"
                   />
                 </td>
-                <td className="text-center px-6 py-4">{item.brand_name}</td>
-                <td className="text-center px-6 py-4 ">
+                <td className="px-6 py-4 text-center">{item.brand_name}</td>
+                <td className="px-6 py-4 text-center ">
                   {formatDate(item.created_at)}
                 </td>
-                <td className="text-center flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
+                <td className="flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <button
                     type="button"
                     onClick={() => openModalDeleteBrand(item.id)}

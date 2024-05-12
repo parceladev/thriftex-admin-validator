@@ -12,8 +12,10 @@ import { fetchAllValidator } from '../../utils/users_api-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import ModalEditValidatorBrand from './ModalEditValidatorBrand';
+import { useTranslation } from 'react-i18next';
 
 const ValidatorTable = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -43,6 +45,7 @@ const ValidatorTable = () => {
 
       if (response.data && response.data.data) {
         const apiData = response.data;
+        console.log(apiData);
         setData(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
@@ -178,7 +181,7 @@ const ValidatorTable = () => {
             />
             <AddButton
               type="button"
-              label="ADD VALIDATOR"
+              label={t('Add Validator')}
               onClick={openModalAdd}
             />
           </div>
@@ -190,38 +193,50 @@ const ValidatorTable = () => {
         />
       </div>
       <div className="relative overflow-x-auto max-h-[360px] shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+        <table className="w-full text-sm text-left text-gray-500 border dark:text-gray-400 border-lightBorder">
           <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
                 No.
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Username
+                {t('Id')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Email
+                {t('Brand')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Date Creation
+                {t('Username')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Action
+                {t('Email')}
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
+              >
+                {t('Date Creation')}
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
+              >
+                {t('Action')}
               </th>
             </tr>
           </thead>
@@ -235,15 +250,17 @@ const ValidatorTable = () => {
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
+                  className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
+                <td className="px-6 py-4 text-center">{item.id}</td>
+                <td className="px-6 py-4 text-center">{item.brand_name}</td>
                 <td className="px-6 py-4">
                   {item.username} {renderUserStatus(item.is_active)}
                 </td>
                 <td className="px-6 py-4">{item.email}</td>
-                <td className="text-center px-6 py-4">
+                <td className="px-6 py-4 text-center">
                   {formatDate(item.created_at)}
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
@@ -265,13 +282,13 @@ const ValidatorTable = () => {
                               type="button"
                               onClick={() => openModalEditBrand(item.id)}
                               aria-label="Edit"
-                              className="p-3 hover:bg-gray-100 cursor-pointer flex justify-center gap-3 w-full font-sans text-md font-light text-yellow-500"
+                              className="flex justify-center w-full gap-3 p-3 font-sans font-light text-yellow-500 cursor-pointer hover:bg-gray-100 text-md"
                             >
                               <FontAwesomeIcon
                                 className="w-5 h-5"
                                 icon={faPenToSquare}
                               />
-                              Edit Brand
+                              {t('Edit Brand')}
                             </button>
                           </li>
                         </ul>

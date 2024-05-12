@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 import { fetchLegitAdmin } from '../../utils/legit-api-service';
 
@@ -9,13 +11,13 @@ import ItemDetaiLegitAdmin from './ItemDetaiLegitAdmin';
 const getStatusLabel = (check_result) => {
   switch (check_result) {
     case 'Original':
-      return 'DONE';
+      return i18n.t('DONE');
     case 'fake':
-      return 'DONE';
+      return i18n.t('DONE');
     case 'Waiting':
-      return 'PENDING';
+      return i18n.t('PENDING');
     case 'Canceled':
-      return 'DECLINED';
+      return i18n.t('DECLINED');
     default:
       return check_result;
   }
@@ -40,9 +42,9 @@ const getAuthenticityLabel = (check_result) => {
   if (check_result === 'Waiting') {
     return '-';
   } else if (check_result === 'Original') {
-    return 'ORIGINAL';
+    return i18n.t('ORIGINAL');
   } else if (check_result === 'fake') {
-    return 'FAKE';
+    return i18n.t('FAKE');
   } else if (check_result === 'Canceled') {
     return '-';
   } else {
@@ -66,6 +68,7 @@ const getAuthenticityClasses = (check_result) => {
 };
 
 const LegitCheckTable = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,6 +111,7 @@ const LegitCheckTable = () => {
 
     try {
       const data = await fetchLegitAdmin(currentPage, itemsPerPage, searchTerm);
+      console.log(data);
       if (data.status) {
         setData(data.data.data);
         setTotalRecords(data.data.total_data);
@@ -194,50 +198,50 @@ const LegitCheckTable = () => {
         </div>
       </div>
       <div className="relative overflow-x-auto max-h-[360px] shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+        <table className="w-full text-sm text-left text-gray-500 border dark:text-gray-400 border-lightBorder">
           <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
                 No.
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Item ID
+                {t('Item Id')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Brand
+                {t('Brand')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Status
+                {t('Status')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Authenticity
+                {t('Authenticity')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Date Uploaded
+                {t('Date Uploaded')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Validator
+                {t('Validator')}
               </th>
             </tr>
           </thead>
@@ -251,7 +255,7 @@ const LegitCheckTable = () => {
               >
                 <th
                   scope="row"
-                  className="px-6 text-center py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
@@ -261,8 +265,8 @@ const LegitCheckTable = () => {
                 >
                   {item.case_code}
                 </td>
-                <td className="text-center px-6 py-4">{item.brand_name}</td>
-                <td className="text-center px-5 py-2 whitespace-no-wrap">
+                <td className="px-6 py-4 text-center">{item.brand_name}</td>
+                <td className="px-5 py-2 text-center whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
                       item.check_result
@@ -271,7 +275,7 @@ const LegitCheckTable = () => {
                     {getStatusLabel(item.check_result)}
                   </span>
                 </td>
-                <td className="text-center px-5 py-2 whitespace-no-wrap">
+                <td className="px-5 py-2 text-center whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
                       item.check_result
@@ -280,8 +284,8 @@ const LegitCheckTable = () => {
                     {getAuthenticityLabel(item.check_result, item.check_result)}
                   </span>
                 </td>
-                <td className="text-center px-6 py-4">{item.submit_time}</td>
-                <td className="text-center px-6 py-4">{item.id}</td>
+                <td className="px-6 py-4 text-center">{item.submit_time}</td>
+                <td className="px-6 py-4 text-center">{item.user_id}</td>
               </tr>
             ))}
           </tbody>

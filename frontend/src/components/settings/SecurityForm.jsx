@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import InputForm from './InputForm';
 import { PropTypes } from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 const SecurityForm = (props) => {
   const { userData, handleInputChange } = props;
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const { t } = useTranslation();
 
   const toggleChangePassword = () => {
     setShowChangePassword(!showChangePassword);
@@ -12,9 +14,11 @@ const SecurityForm = (props) => {
 
   return (
     <div className="flex flex-col w-full gap-5">
-      <h1 className="mb-8 text-2xl font-semibold">Security</h1>
+      <h1 className="mb-8 text-2xl font-semibold">
+        {t('Security Information')}
+      </h1>
       <InputForm
-        label="Email"
+        label={t('Email')}
         type="email"
         name="email"
         id="email"
@@ -27,7 +31,7 @@ const SecurityForm = (props) => {
       />
       {!showChangePassword && (
         <InputForm
-          label="Password"
+          label={t('Password')}
           type="password"
           name="password"
           id="password"
@@ -43,7 +47,7 @@ const SecurityForm = (props) => {
       {showChangePassword && (
         <>
           <InputForm
-            label="Old Password"
+            label={t('Old Password')}
             type="password"
             name="oldPassword"
             id="old-password"
@@ -55,7 +59,7 @@ const SecurityForm = (props) => {
             readOnly={false}
           />
           <InputForm
-            label="New Password"
+            label={t('New Password')}
             type="password"
             name="newPassword"
             id="new-password"
@@ -67,7 +71,7 @@ const SecurityForm = (props) => {
             readOnly={false}
           />
           <InputForm
-            label="Confirm New Password"
+            label={t('Confirm New Password')}
             type="password"
             name="confirmNewPassword"
             id="confirm-new-password"
@@ -81,9 +85,9 @@ const SecurityForm = (props) => {
           <button
             onClick={toggleChangePassword}
             type="button"
-            className="px-4 py-2 text-lg text-gray-600 bg-white border border-lightBorder dark:border-none rounded-sm dark:text-textWhite dark:bg-darkButton w-fit hover:bg-gray-100"
+            className="px-4 py-2 text-lg text-gray-600 bg-white border rounded-sm border-lightBorder dark:border-none dark:text-textWhite dark:bg-darkButton w-fit hover:bg-gray-100"
           >
-            Cancel
+            {t('Cancel')}
           </button>
         </>
       )}
@@ -92,7 +96,7 @@ const SecurityForm = (props) => {
           onClick={toggleChangePassword}
           className="px-4 py-3 text-lg rounded-sm bg-secondary dark:bg-darkButton text-textWhite dark:text-textWhite w-fit"
         >
-          Change Password
+          {t('Change Password')}
         </button>
       )}
     </div>

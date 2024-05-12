@@ -3,10 +3,12 @@ import routes from '../../routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { deleteToken } from '../../utils/token-utilities';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const baseLinkClasses =
     'flex items-center py-3 px-3 transition-colors duration-200 transform rounded-md';
@@ -24,7 +26,7 @@ const Sidebar = () => {
 
   return (
     <aside
-      className="fixed h-screen p-5 border border-l-0 w-72 border-y-0 shadow-md dark:border-darkBorder"
+      className="fixed h-screen p-5 border border-l-0 shadow-md w-72 border-y-0 dark:border-darkBorder"
       aria-label="Sidebar"
     >
       <div className="flex flex-col w-full h-full">
@@ -58,7 +60,7 @@ const Sidebar = () => {
                             className="w-6 h-6"
                           />
                           <p className="text-sans text-md text-bold">
-                            {item.name}
+                            {t(item.name)}
                           </p>
                         </div>
                       </NavLink>
@@ -90,7 +92,7 @@ const Sidebar = () => {
               />
             </svg>
 
-            <span>Log Out</span>
+            <span>{t('Log Out')}</span>
           </button>
         </div>
       </div>

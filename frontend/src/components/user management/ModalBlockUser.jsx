@@ -1,15 +1,13 @@
 import React from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 import { blockUser } from '../../utils/auth-api-service';
-import { useNavigate } from 'react-router-dom';
 
 const ModalBlockUser = ({ isOpen, onClose, userId, isActive, actionType }) => {
   if (!isOpen) return null;
-  const navigate = useNavigate();
 
   const handleAction = async (action) => {
     try {
-      const response = await blockUser(userId, action);
+      await blockUser(userId, action);
       alert('User has been successfully blocked.');
       window.location.reload();
     } catch (error) {
@@ -44,13 +42,13 @@ const ModalBlockUser = ({ isOpen, onClose, userId, isActive, actionType }) => {
           <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse bg-primary dark:bg-secondary">
             <button
               onClick={() => handleAction(false)}
-              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium border border-transparent rounded-md shadow-sm text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
               Block User
             </button>
             <button
               onClick={() => handleAction(true)}
-              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium border border-transparent rounded-md shadow-sm text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
               Unblock User
             </button>

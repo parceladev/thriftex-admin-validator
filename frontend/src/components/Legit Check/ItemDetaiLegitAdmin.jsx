@@ -6,9 +6,11 @@ import 'react-medium-image-zoom/dist/styles.css';
 import Proptypes from 'prop-types';
 import InputModal from './InputModal';
 import { fetchDetailListLegit } from '../../utils/legit-api-service';
-import ValidationForm from './ValidationForm';
+import { useTranslation } from 'react-i18next';
 
 const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
+  const { t } = useTranslation();
+
   const [formData, setFormData] = useState({
     status: '', // 'accept' or 'decline'
     authenticity: '', // 'original', 'fake', or ''
@@ -68,30 +70,27 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
       >
         <div className="flex flex-row items-center justify-between p-4 ml-4 border-b-2">
           <p className="text-2xl font-bold text-sans text-textBlack dark:text-textWhite">
-            Legit Check Detail
+            {t('Legit Check Detail')}
           </p>
           <button type="button" onClick={onClose}>
             <FontAwesomeIcon icon={faTimes} className="text-[16px]" />
           </button>
         </div>
-
         {loading && (
           <div className="flex items-center justify-center p-8 text-center min-h-[550px]">
-            <p>Loading details...</p>
+            <p>{t('Loading Details')}...</p>
           </div>
         )}
-
         {error && (
           <div className="flex items-center justify-center p-8 text-center min-h-[550px]">
-            <p>No detailed information available.</p>
+            <p>{t('No Detailed Information Available')}.</p>
           </div>
         )}
-
         {!loading && !error && itemDetails && (
           <div className="p-8">
             <InputModal
               onChange={handleChange}
-              label="Id Legit"
+              label={t('Id Legit')}
               name="id-legit"
               id="id-legit"
               htmlFor="id-legit"
@@ -101,7 +100,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Id User"
+              label={t('Id User')}
               name="id-user"
               id="id-user"
               htmlFor="id-user"
@@ -111,7 +110,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Item Category"
+              label={t('Item Category')}
               name="item-category"
               id="item-category"
               htmlFor="item-category"
@@ -121,7 +120,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Item Brand"
+              label={t('Item Brand')}
               name="item-brand"
               id="item-brand"
               htmlFor="item-brand"
@@ -131,7 +130,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Item Name"
+              label={t('Item Name')}
               name="item-name"
               id="item-name"
               htmlFor="item-name"
@@ -141,7 +140,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <div className="mb-4">
               <label className="font-semibold block mb-2 text-sans text-secondary uppercase font-sans text-[17px]">
-                ITEM PHOTOS{' '}
+                {t('Item Photos')}
               </label>
               <div className="flex space-x-2">
                 {itemDetails.image_list.map((image, index) => (
@@ -157,7 +156,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             </div>
             <InputModal
               onChange={handleChange}
-              label="Purchase"
+              label={t('Purchase')}
               name="purchase"
               id="purchase"
               htmlFor="purchase"
@@ -167,7 +166,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Store Name"
+              label={t('Store Name')}
               name="store-name"
               id="store-name"
               htmlFor="store-name"
@@ -177,7 +176,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Item Condition"
+              label={t('Item Condition')}
               name="item-condition"
               id="item-condition"
               htmlFor="item-condition"
@@ -187,7 +186,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Other Notes"
+              label={t('Other Notes')}
               name="other-notes"
               id="other-notes"
               htmlFor="other-notes"
@@ -197,7 +196,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Authenticity"
+              label={t('Authenticity')}
               name="authenticity"
               id="authenticity"
               htmlFor="authenticity"
@@ -207,7 +206,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <InputModal
               onChange={handleChange}
-              label="Detail Description"
+              label={t('Detail Description')}
               name="detail-description"
               id="detail-description"
               htmlFor="detail-description"
@@ -222,8 +221,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             />
             <div className="flex flex-col gap-2 p-6">
               <p>
-                Contact the <span className="font-bold">Validator</span> to
-                check the items authenticity
+                {t('Contact the Validator to check the items authenticity')}
               </p>
               <div className="flex gap-2">
                 <b>Id:</b>
@@ -237,16 +235,16 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <b>Name:</b>
+                <b>{t('Name')}:</b>
                 <p>
                   {itemDetails.authentic_comment.length > 0 &&
                   itemDetails.authentic_comment[0].nama
                     ? itemDetails.authentic_comment[0].nama
-                    : 'Not yet known'}
+                    : '(-)'}
                 </p>
               </div>
               <div className="flex gap-2">
-                <b>Time Validation:</b>
+                <b>{t('Time Validation')}:</b>
                 <p>
                   (
                   {itemDetails.authentic_comment.length > 0 &&
@@ -259,15 +257,14 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
             </div>
           </div>
         )}
-
         {!loading && !error && !itemDetails && (
           <div className="p-8 text-center">
-            <p>Error to get detail Information</p>
+            <p>{t('Error to get detail Information')}</p>
             <button
               onClick={onClose}
               className="px-4 py-2 mt-4 font-bold text-black bg-gray-300 rounded hover:bg-gray-400"
             >
-              Close
+              {t('Close')}
             </button>
           </div>
         )}

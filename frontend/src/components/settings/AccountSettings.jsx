@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import PersonalForm from './PersonalForm';
 import SecurityForm from './SecurityForm';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import updateProfile from '../../utils/profile-api-service';
 import { decodeToken, getAccessToken } from '../../utils/token-utilities';
+import { useTranslation } from 'react-i18next';
 
 const AccountSettings = () => {
+  const { t } = useTranslation();
+
   const [userData, setUserData] = useState({
     userId: '',
     photo: '',
@@ -133,7 +134,7 @@ const AccountSettings = () => {
           type="submit"
           className="self-end w-full px-6 py-4 rounded-md mt-14 sm:mt-5 sm:w-fit bg-secondary text-textWhite dark:bg-darkButton dark:text-textWhite"
         >
-          <p className="text-lg">Save Information</p>
+          <p className="text-lg">{t("Save Information")}</p>
         </button>
       </form>
     </section>

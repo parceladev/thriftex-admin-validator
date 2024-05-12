@@ -1,8 +1,11 @@
 import React from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 import { blockUser } from '../../utils/auth-api-service';
+import { useTranslation } from 'react-i18next';
 
 const ModalBlock = ({ isOpen, onClose, userId, isActive, actionType }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
   console.log(blockUser(userId, isActive));
 
@@ -34,7 +37,7 @@ const ModalBlock = ({ isOpen, onClose, userId, isActive, actionType }) => {
                 className="text-lg font-medium leading-6 text-textBlack dark:text-textWhite"
                 id="modal-title"
               >
-                Friendly Reminder
+                {t('Friendly Reminder')}
               </h3>
               <button
                 onClick={onClose}
@@ -44,18 +47,18 @@ const ModalBlock = ({ isOpen, onClose, userId, isActive, actionType }) => {
               </button>
             </div>
           </div>
-          <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse bg-primary dark:bg-secondary">
+          <div className="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse bg-primary dark:bg-secondary">
             <button
               onClick={() => handleAction(false)}
-              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium border border-transparent rounded-md shadow-sm text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
-              Block User
+              {t('Block User')}
             </button>
             <button
               onClick={() => handleAction(true)}
-              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium border border-transparent rounded-md shadow-sm text-textWhite bg-darkButton dark:bg-darkButton dark:text-textWhite hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
             >
-              Unblock User
+              {t('Unblock User')}
             </button>
           </div>
         </div>

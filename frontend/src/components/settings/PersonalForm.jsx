@@ -1,16 +1,20 @@
 import { PropTypes } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 import InputForm from './InputForm';
 import IdValidator from './IdValidator';
 
 const PersonalForm = (props) => {
   const { userData, handleInputChange } = props;
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col w-full gap-5">
-      <h1 className="mb-8 text-2xl font-semibold">Personal Information</h1>
+      <h1 className="mb-8 text-2xl font-semibold">
+        {t('Personal Information')}
+      </h1>
       {userData.role === 'validator' && <IdValidator value={userData.userId} />}
       <div className="relative flex items-center justify-center w-20 h-20 border-2 border-black rounded-full cursor-pointer bg-slate-300">
         {userData.photo ? (
@@ -43,31 +47,31 @@ const PersonalForm = (props) => {
       </div>
 
       <InputForm
-        label="Username"
+        label={t('Username')}
         name="username"
         type="text"
         id="username"
         htmlFor="username"
-        placeholder="Username"
+        placeholder={t('Username')}
         isRequired="required"
         value={userData.username}
         onChange={handleInputChange}
         readOnly={false}
       />
       <InputForm
-        label="Name"
+        label={t('Your Name')}
         name="name"
         type="text"
         id="name"
         htmlFor="name"
-        placeholder="Your Name"
+        placeholder={t('Username')}
         isRequired="required"
         value={userData.name}
         onChange={handleInputChange}
         readOnly={false}
       />
       <InputForm
-        label="Phone Number"
+        label={t('Phone Number')}
         name="phoneNumber"
         type="tel"
         id="phone-number"
@@ -79,7 +83,7 @@ const PersonalForm = (props) => {
         readOnly={false}
       />
       <InputForm
-        label="Gender"
+        label={t('Gender')}
         name="gender"
         type="select"
         id="gender"
