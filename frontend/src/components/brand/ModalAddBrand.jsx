@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 import { createBrand } from '../../utils/brand-api-service';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ModalAddBrand = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const [brandName, setBrandName] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
@@ -34,7 +36,6 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
       foto: selectedFile,
     };
 
-    console.log('Creating Brand', userData);
     createBrand(
       userData,
       (data) => {
@@ -59,25 +60,25 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
     >
       <div className="flex items-end justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
         <div
-          className="fixed inset-0 transition-opacity bg-secondary bg-opacity-50 dark:bg-primary dark:bg-opacity-10"
+          className="fixed inset-0 transition-opacity bg-opacity-50 bg-secondary dark:bg-primary dark:bg-opacity-10"
           aria-hidden="true"
         ></div>
 
         <div className="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <div className="p-4 bg-primary dark:bg-secondary">
             <div className="sm:flex sm:items-start">
-              <div className="w-full flex flex-col gap-6 text-center p-3 text-left">
+              <div className="flex flex-col w-full gap-6 p-3 text-left">
                 <div className="flex items-center justify-between w-full pb-3 border-b">
                   <h3
                     className="text-xl font-medium text-textBlack dark:text-textWhite"
                     id="modal-title"
                   >
-                    Add Brand
+                    {t('Add Brand')}
                   </h3>
                   <button
                     onClick={onClose}
                     type="button"
-                    className="text-secondary hover:text-gray-900  text-textBlack dark:text-textWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
+                    className="hover:text-gray-900 text-textBlack dark:text-textWhite focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600"
                   >
                     <IoCloseSharp size={24} />
                   </button>
@@ -86,9 +87,9 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="brand-name"
-                      className="block text-sm font-medium text-textBlack dark:text-textWhite text-left"
+                      className="block text-sm font-medium text-left text-textBlack dark:text-textWhite"
                     >
-                      Brand Name (Required)
+                      {t('Brand Name')} (Required)
                     </label>
                     <div className="mt-1">
                       <input
@@ -97,18 +98,18 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         type="text"
                         autoComplete="brand-name"
                         required
-                        placeholder="Add New Brand Name"
+                        placeholder={t('Add New Brand Name')}
                         onChange={handleBrandNameChange}
-                        className="block w-full px-3 py-2 placeholder-gray-400 bg-primary dark:bg-secondary border border-lightBorder dark:darkBorder rounded-md shadow-sm appearance-none focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                        className="block w-full px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none bg-primary dark:bg-secondary border-lightBorder dark:darkBorder focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                       />
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="file-upload"
-                      className="lock text-sm font-medium text-textBlack dark:text-textWhite text-left"
+                      className="text-sm font-medium text-left lock text-textBlack dark:text-textWhite"
                     >
-                      Brand Logo (Required)
+                      {t('Brand Logo')} (Required)
                     </label>
                     <div className="mt-1">
                       <input
@@ -116,7 +117,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         name="file-upload"
                         type="file"
                         onChange={handleFileChange}
-                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 bg-primary dark:bg-secondary border border-lightBorder dark:darkBorder rounded-md file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        className="w-full text-sm text-gray-500 border rounded-md file:mr-4 file:py-2 file:px-4 bg-primary dark:bg-secondary border-lightBorder dark:darkBorder file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                       />
                     </div>
                   </div>
@@ -125,7 +126,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                       type="submit"
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary dark:bg-primary dark:text-textBlack text-textWHite hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
                     >
-                      Create Brand
+                      {t('Create brand')}
                     </button>
                   </div>
                 </form>

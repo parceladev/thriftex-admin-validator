@@ -1,8 +1,10 @@
 import Proptypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { useTranslation } from 'react-i18next';
 
 const TablePagination = (props) => {
+  const { t } = useTranslation();
   const {
     htmlFor,
     label,
@@ -41,7 +43,8 @@ const TablePagination = (props) => {
           </select>
         </div>
         <span className="font-sans font-light text-[16px]">
-          Showing {showingFrom} to {showingTo} of {totalRecords} records
+          {t('Showing')} {showingFrom} {t('to')} {showingTo} {t('of')}{' '}
+          {totalRecords} {t('records')}.
         </span>
       </div>
 

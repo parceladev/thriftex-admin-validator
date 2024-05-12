@@ -3,6 +3,7 @@ import { SearchTable, TablePagination } from '../generals';
 import { fetchLegitDataValidator } from '../../utils/legit-api-service';
 import ItemDetailModal from './ItemDetailModal';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const getStatusLabel = (check_result) => {
   switch (check_result) {
@@ -64,6 +65,7 @@ const getAuthenticityClasses = (check_result) => {
 };
 
 const ValidatorLegitCheckTable = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -197,50 +199,50 @@ const ValidatorLegitCheckTable = () => {
         </div>
       </div>
       <div className="relative overflow-x-auto max-h-[360px] shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-lightBorder">
+        <table className="w-full text-sm text-left text-gray-500 border dark:text-gray-400 border-lightBorder">
           <thead className="text-xs text-gray-700 uppercase border bg-gray-50 dark:bg-secondary dark:text-gray-400">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
                 No.
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Item ID
+                {t('Item Id')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Brand
+                {t('Brand')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Status
+                {t('Status')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Authenticity
+                {t('Authenticity')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Date Uploaded
+                {t('Date Uploaded')}
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 border border-lightBorder dark:border-darkBorder text-center"
+                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                Validator
+                {t('Validator')}
               </th>
             </tr>
           </thead>
@@ -254,18 +256,18 @@ const ValidatorLegitCheckTable = () => {
               >
                 <th
                   scope="row"
-                  className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  className="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
                 <td
-                  className="text-center px-6 py-4 text-blue-400 underline cursor-pointer"
+                  className="px-6 py-4 text-center text-blue-400 underline cursor-pointer"
                   onClick={() => openModal(item)}
                 >
                   {item.case_code}
                 </td>
-                <td className="text-center px-6 py-4">{item.brand_name}</td>
-                <td className="text-center px-5 py-2 whitespace-no-wrap">
+                <td className="px-6 py-4 text-center">{item.brand_name}</td>
+                <td className="px-5 py-2 text-center whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold mr-2 px-4 py-1 ${getStatusClasses(
                       item.check_result
@@ -274,7 +276,7 @@ const ValidatorLegitCheckTable = () => {
                     {getStatusLabel(item.check_result)}
                   </span>
                 </td>
-                <td className="text-center px-5 py-2 whitespace-no-wrap">
+                <td className="px-5 py-2 text-center whitespace-no-wrap">
                   <span
                     className={`rounded-md text-xs font-semibold px-4 py-1 ${getAuthenticityClasses(
                       item.check_result
@@ -283,8 +285,8 @@ const ValidatorLegitCheckTable = () => {
                     {getAuthenticityLabel(item.check_result)}
                   </span>
                 </td>
-                <td className="text-center px-6 py-4">{item.submit_time}</td>
-                <td className="text-center px-6 py-4">You</td>
+                <td className="px-6 py-4 text-center">{item.submit_time}</td>
+                <td className="px-6 py-4 text-center">You</td>
               </tr>
             ))}
           </tbody>

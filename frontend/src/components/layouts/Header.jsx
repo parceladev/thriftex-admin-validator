@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTheme } from '../../ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
   const { selectedTheme, setSelectedTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -12,25 +14,28 @@ const Header = () => {
     document.documentElement.className = theme;
   };
 
-  const routeActive = location.pathname.includes('/admin-role/dashboard')
-    ? 'Dashboard (Admin)'
-    : location.pathname.includes('/admin-role/users')
-    ? 'Users Management (Admin)'
-    : location.pathname.includes('/admin-role/brands')
-    ? 'Brands Management (Admin)'
-    : location.pathname.includes('/admin-role/validators')
-    ? 'Validators Management (Admin)'
-    : location.pathname.includes('/admin-role/legit-check')
-    ? 'Legit Check (Admin)'
-    : location.pathname.includes('/admin-role/settings')
-    ? 'Settings (Admin)'
-    : location.pathname.includes('/validator-role/dashboard')
-    ? 'Dashboard (Validator)'
-    : location.pathname.includes('/validator-role/legit-check')
-    ? 'Legit Check (Validator)'
-    : location.pathname.includes('/validator-role/settings')
-    ? 'Settings (Validator)'
-    : 'Unknown';
+  const handleLanguageChange = (language) => {
+    i18n.changeLanguage(language);
+    localStorage.setItem('i18nextLng', language);
+  };
+
+  const routeKeys = {
+    '/admin-role/dashboard': 'Dashboard (Admin)',
+    '/admin-role/legit-check': 'Legit Check (Admin)',
+    '/admin-role/users': 'Users Management (Admin)',
+    '/admin-role/brands': 'Brands Management (Admin)',
+    '/admin-role/validators': 'Validators Management (Admin)',
+    '/admin-role/validators': 'Validators Management (Admin)',
+    '/admin-role/settings': 'Settings (Admin)',
+
+    '/validator-role/dashboard': 'Dashboard (Validator)',
+    '/validator-role/legit-check': 'Legit Check (Validator)',
+    '/validator-role/settings': 'Settings (Validator)',
+  };
+
+  const routeActive = Object.keys(routeKeys).find((key) =>
+    location.pathname.includes(key)
+  );
 
   return (
     <header className="fixed z-[45] flex flex-col w-[calc(100%-18.5%)] bg-primary dark:bg-secondary">
@@ -51,7 +56,7 @@ const Header = () => {
             </svg>
           </button>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <svg
             width="14"
             height="15"
@@ -74,7 +79,7 @@ const Header = () => {
       </div>
       <div className="flex justify-between px-8 py-3 border-b-2 shadow-md dark:border-darkBorder">
         <div>
-          <p>{routeActive}</p>
+          <p>{t(routeKeys[routeActive] || 'Unknown')}</p>
         </div>
         <div className="flex gap-6">
           <div className="flex">
@@ -93,16 +98,18 @@ const Header = () => {
             <select
               name="languages"
               id="language-select"
+              value={i18n.language} 
+              onChange={(e) => handleLanguageChange(e.target.value)}
               className={`outline-none uppercase cursor-pointer ${
                 selectedTheme === 'dark'
                   ? 'bg-transparent text-textWhite'
                   : 'bg-primary text-textBlack'
               }`}
             >
-              <option value="EN" className="dark:text-textBlack">
+              <option value="en" className="dark:text-textBlack">
                 EN
               </option>
-              <option value="ID" className="dark:text-textBlack">
+              <option value="id" className="dark:text-textBlack">
                 ID
               </option>
             </select>
