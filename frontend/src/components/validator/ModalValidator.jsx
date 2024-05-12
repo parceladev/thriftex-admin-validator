@@ -238,7 +238,6 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                           name="brand"
                           required
                           className="block w-full py-2 pl-3 pr-10 text-base border-b-2 border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          // value={brand}
                           onChange={(e) => setSelectedBrand(e.target.value)}
                         >
                           <option value="">Select a brand</option>
@@ -247,7 +246,6 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                               {brand.brand_name}
                             </option>
                           ))}
-                          {/* Dan seterusnya... */}
                         </select>
                       </div>
                     </div>

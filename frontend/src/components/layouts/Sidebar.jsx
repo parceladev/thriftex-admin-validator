@@ -39,7 +39,7 @@ const Sidebar = () => {
             routes.map(
               (route, key) =>
                 route[sidebarType] && (
-                  <nav key={key} className="flex flex-col mt-4">
+                  <nav key={key} className="flex flex-col mt-4 gap-1">
                     {route[sidebarType].map((item) => (
                       <NavLink
                         key={item.name}

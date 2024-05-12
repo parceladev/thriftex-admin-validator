@@ -16,7 +16,7 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
         const result = await fetchBrands(1, 100);
         if (result && result.data && result.data.data) {
           setBrands(result.data.data);
-          setNewBrandId(currentBrandId);
+          setBrandId(currentBrandId);
         }
       } catch (error) {
         console.error("Failed to load brands:", error);
@@ -30,8 +30,8 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
 
   const handleUpdate = async () => {
     try {
-      console.log("Updating brand ID:", newBrandId);
-      const updateResult = await updateValidatorBrand(newBrandId);
+      console.log("Updating brand ID:", brandId);
+      const updateResult = await updateValidatorBrand(brandId);
       console.log("Update Success:", updateResult);
       setUpdateStatus({
         success: true,

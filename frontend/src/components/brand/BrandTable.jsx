@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import ModalAddBrand from './ModalAddBrand';
-import ModalDeleteBrand from './ModalDeleteBrand';
-import { SearchTable, TablePagination, AddButton } from '../generals';
-import { fetchBrands } from '../../utils/brand-api-service';
-import ModalEditBrand from './ModalEditBrand';
+import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import ModalAddBrand from "./ModalAddBrand";
+import ModalDeleteBrand from "./ModalDeleteBrand";
+import { SearchTable, TablePagination, AddButton, EllipsisButton } from "../generals";
+import { fetchBrands } from "../../utils/brand-api-service";
+import ModalEditBrand from "./ModalEditBrand";
 const BrandTable = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -19,6 +19,7 @@ const BrandTable = () => {
   const [brandToDelete, setBrandToDelete] = useState(null);
   const [brandToEdit, setBrandToEdit] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
 
   useEffect(() => {
     fetchUserData();
@@ -34,10 +35,10 @@ const BrandTable = () => {
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
       } else {
-        throw new Error('No data received');
+        throw new Error("No data received");
       }
     } catch (error) {
-      console.error('Error with fetching table data:', error);
+      console.error("Error with fetching table data:", error);
       setData([]);
       setFilteredData([]);
       setTotalRecords(0);
@@ -104,6 +105,10 @@ const BrandTable = () => {
     setIsModalEditOpen(false);
   };
 
+  const toggleDropdown = (index) => {
+    setOpenDropdownId(openDropdownId === index ? null : index);
+  };
+
   const onDeleteAccount = (deletedBrandId) => {
     setData(data.filter((brand) => brand.id !== deletedBrandId));
     setFilteredData(
@@ -116,8 +121,8 @@ const BrandTable = () => {
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
-      '0'
-    )}-${String(date.getDate()).padStart(2, '0')}`;
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
   };
 
   const totalPages = Math.ceil(totalRecords / itemsPerPage);
@@ -140,7 +145,7 @@ const BrandTable = () => {
               typeButton="button"
               altIcon="Search Validator"
               onKeyPress={(event) => {
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   handleSearch();
                 }
               }}
@@ -155,7 +160,7 @@ const BrandTable = () => {
         <ModalAddBrand
           isOpen={isModalAddOpen}
           onClose={closeModalAddbrand}
-          onCreateAccount={() => console.log('Create Account')}
+          onCreateAccount={() => console.log("Create Account")}
         />
       </div>
       <div className="relative  overflow-x-auto max-h-[380px] shadow-md sm:rounded-lg">
@@ -203,26 +208,41 @@ const BrandTable = () => {
                 <td className="px-6 py-4">{item.brand_name}</td>
                 <td className="px-6 py-4 ">{formatDate(item.created_at)}</td>
                 <td className="flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  <button
-                    type="button"
-                    onClick={() => openModalDeleteBrand(item.id)}
-                    aria-label="Delete"
-                  >
-                    <FontAwesomeIcon
-                      icon={faTrashCan}
-                      className="w-5 h-5 text-gray-500 hover:text-red-600"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openModalEditBrand(item.id)}
-                    aria-label="Edit"
-                  >
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      className="w-5 h-5 text-gray-500 hover:text-blue-500"
-                    />
-                  </button>
+                  <EllipsisButton onClick={() => toggleDropdown(index)} />
+                  {openDropdownId === index && (
+                    <div className="absolute right-0 z-10 w-48 p-2 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                      <ul className="flex flex-col items-start text-gray-700 ">
+                        <li className="w-full">
+                          <button
+                            type="button"
+                            onClick={() => openModalEditBrand(item.id)}
+                            aria-label="Edit"
+                            className="p-3 hover:bg-gray-100 cursor-pointer flex  gap-3 w-full font-sans text-[14px] font-light text-blue-500"
+                          >
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              className ="w-5 h-5  text-blue-500"
+                            />
+                            Edit Brand
+                          </button>
+                        </li>
+                        <li className="w-full">
+                          <button
+                            type="button"
+                            onClick={() => openModalDeleteBrand(item.id)}
+                            aria-label="Delete"
+                            className="p-3 hover:bg-gray-100 cursor-pointer flex  gap-3 w-full font-sans text-[14px] font-light text-red-600"
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrashCan}
+                              className="w-5 h-5 text-gray-500 text-red-600"
+                            />
+                            Delete Brand
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
