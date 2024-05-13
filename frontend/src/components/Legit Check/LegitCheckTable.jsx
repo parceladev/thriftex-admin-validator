@@ -183,7 +183,7 @@ const LegitCheckTable = () => {
         <div className="w-full ">
           <SearchTable
             typeInput="text"
-            placeholder="Search Item ID"
+            placeholder="Search Item Legit"
             value={searchTerm}
             onChange={handleSearchChange}
             onClick={handleSearch}

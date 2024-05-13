@@ -3,6 +3,13 @@ import ModalBlockUser from './ModalBlockUser';
 import { fetchAllUsers } from '../../utils/users_api-service';
 import { debounce } from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faPenToSquare,
+  faCaretRight,
+  faXmark,
+  faEllipsisVertical,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   BlockButton,
@@ -129,7 +136,11 @@ const UserTable = () => {
   };
 
   const toggleDropdown = (index) => {
-    setOpenDropdownId(openDropdownId === index ? null : index);
+    if (openDropdownId === index) {
+      setOpenDropdownId(null);
+    } else {
+      setOpenDropdownId(index);
+    }
   };
 
   const blockUser = (userId, isActive) => {
@@ -151,7 +162,7 @@ const UserTable = () => {
         <div className="w-full ">
           <SearchTable
             typeInput="text"
-            placeholder="Search Item ID"
+            placeholder="Search User"
             value={searchTerm}
             onChange={handleSearchChange}
             onClick={handleSearch}
@@ -224,8 +235,13 @@ const UserTable = () => {
                   {formatDate(item.created_at)}
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  <div className="relative">
-                    <EllipsisButton onClick={() => toggleDropdown(index)} />
+                  {/* <div className="relative">
+                    <EllipsisButton
+                      onClick={() => toggleDropdown(index)}
+                      icon={
+                        openDropdownId === index ? faXmark : faEllipsisVertical
+                      }
+                    />
                     {openDropdownId === index && (
                       <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
                         <ul className="text-gray-700">
@@ -236,6 +252,33 @@ const UserTable = () => {
                             />
                           </li>
                         </ul>
+                      </div>
+                    )}
+                  </div> */}
+                  <div className="relative">
+                    <EllipsisButton
+                      onClick={() => toggleDropdown(index)}
+                      icon={
+                        openDropdownId === index ? faXmark : faEllipsisVertical
+                      }
+                    />
+                    {openDropdownId === index && (
+                      <div className="absolute -top-2 z-10 flex right-14">
+                        <ul className="flex flex-col items-start text-gray-700 border border-gray-200 shadow-lg dark:border-darkBorder bg-primary dark:bg-darkButton">
+                          <li className="w-full">
+                            <BlockButton
+                              isActive={item.is_active}
+                              onClick={() => blockUser(item.id, item.is_active)}
+                              ariaLabel="Block"
+                            />
+                          </li>
+                        </ul>
+                        <div>
+                          <FontAwesomeIcon
+                            icon={faCaretRight}
+                            className="w-10 h-10 -mt-1 -ml-4 text-primary dark:text-darkBorder bg-none dark:bg-none"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

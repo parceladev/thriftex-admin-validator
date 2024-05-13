@@ -93,10 +93,10 @@ const PersonalForm = (props) => {
         onChange={handleInputChange}
         readOnly={false}
       >
-        <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
+        <option value="">{t('Select Gender')}</option>
+        <option value="male">{t('Male')}</option>
+        <option value="female">{t('Female')}</option>
+        <option value="other">{t('Other')}</option>
       </InputForm>
     </div>
   );

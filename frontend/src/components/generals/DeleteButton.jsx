@@ -4,14 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faUnlockAlt } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 
-const BlockButton = ({ isActive, onClick, ariaLabel }) => {
+const DeleteButton = ({ isActive, onClick, ariaLabel }) => {
   const { t } = useTranslation();
 
   return (
     <button
-      className={`hover:bg-gray-100 dark:hover:bg-secondary p-3 cursor-pointer flex justify-center gap-3 w-full font-sans text-md font-light ${
-        isActive ? 'text-red-500' : 'text-green-500'
-      }`}
+      className={`hover:bg-gray-100 dark:hover:bg-secondary p-3 cursor-pointer flex justify-start gap-3 w-full font-sans text-md font-light text-red-500`}
       onClick={onClick}
       ariaLabel={ariaLabel}
     >
@@ -19,15 +17,15 @@ const BlockButton = ({ isActive, onClick, ariaLabel }) => {
         icon={isActive ? faBan : faUnlockAlt}
         className="w-5 h-5"
       />
-      {isActive ? t('Block User') : t('Unblock User')}
+      {t('Delete')}
     </button>
   );
 };
 
-BlockButton.propTypes = {
-  isActive: PropTypes.bool,
+DeleteButton.propTypes = {
+  isActive: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   ariaLabel: PropTypes.string,
 };
 
-export default BlockButton;
+export default DeleteButton;
