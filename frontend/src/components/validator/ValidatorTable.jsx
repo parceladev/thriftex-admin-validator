@@ -33,7 +33,6 @@ const ValidatorTable = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [brandToEdit, setBrandToEdit] = useState(null);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
@@ -51,7 +50,6 @@ const ValidatorTable = () => {
 
       if (response.data && response.data.data) {
         const apiData = response.data;
-        console.log(apiData);
         setData(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
@@ -111,9 +109,9 @@ const ValidatorTable = () => {
     setIsModalBlockOpen(false);
   };
 
-  const openModalEditBrand = (id) => {
+  const openModalEditBrand = (validatorId) => {
     setIsModalEditOpen(true);
-    setBrandToEdit(id);
+    setSelectedUserId(validatorId);
   };
 
   const closeModalEdit = () => {
@@ -217,13 +215,13 @@ const ValidatorTable = () => {
                 scope="col"
                 className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                {t('Id')}
+                {t('Brand')}
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                {t('Brand')}
+                {t('Id')}
               </th>
               <th
                 scope="col"
@@ -265,8 +263,8 @@ const ValidatorTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4 text-center">{item.id}</td>
                 <td className="px-6 py-4 text-center">{item.brand_name}</td>
+                <td className="px-6 py-4 text-center">{item.id}</td>
                 <td className="px-6 py-4">
                   {item.username} {renderUserStatus(item.is_active)}
                 </td>
@@ -297,7 +295,6 @@ const ValidatorTable = () => {
                           <li className="w-full">
                             <EditButton
                               itemId={item.id}
-                              openModalEditBrand={openModalEditBrand}
                               onClick={() => openModalEditBrand(item.id)}
                               ariaLabel="Edit"
                             />
@@ -328,7 +325,7 @@ const ValidatorTable = () => {
       <ModalEditValidatorBrand
         isOpen={isModalEditOpen}
         onClose={closeModalEdit}
-        brandId={brandToEdit}
+        validatorId={selectedUserId}
       />
       <TablePagination
         htmlFor="itemsPerPage"

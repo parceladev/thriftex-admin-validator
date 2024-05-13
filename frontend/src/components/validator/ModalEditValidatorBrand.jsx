@@ -6,10 +6,10 @@ import {
 } from '../../utils/brand-api-service';
 import { useTranslation } from 'react-i18next';
 
-const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
+const ModalEditValidatorBrand = ({ isOpen, onClose, validatorId }) => {
   const { t } = useTranslation();
 
-  const [brandId, setBrandId] = useState(currentBrandId);
+  const [brandId, setBrandId] = useState();
   const [brands, setBrands] = useState([]);
   const [updateStatus, setUpdateStatus] = useState(null);
 
@@ -19,7 +19,6 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
         const result = await fetchBrands(1, 100);
         if (result && result.data && result.data.data) {
           setBrands(result.data.data);
-          setBrandId(currentBrandId);
         }
       } catch (error) {
         console.error('Failed to load brands:', error);
@@ -29,11 +28,11 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
     if (isOpen) {
       loadBrands();
     }
-  }, [isOpen, currentBrandId]);
+  }, [isOpen]);
 
   const handleUpdate = async () => {
     try {
-      await updateValidatorBrand(brandId);
+      await updateValidatorBrand(brandId, validatorId);
       setUpdateStatus({
         success: true,
         message: 'Validator brand changed successfully',
@@ -131,4 +130,4 @@ const ModalValidator = ({ isOpen, onClose, currentBrandId }) => {
   );
 };
 
-export default ModalValidator;
+export default ModalEditValidatorBrand;
