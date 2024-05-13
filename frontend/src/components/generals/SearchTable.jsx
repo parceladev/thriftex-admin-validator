@@ -16,7 +16,7 @@ const SearchTable = (props) => {
     <div className="flex w-full">
       <input
         type={typeInput}
-        className="w-full dark:bg-secondary border-[1px] border-lightBorder rounded-s-sm border-r-0 dark:border-darkBorder leading-none text-gray-700 p-3 text-md focus:outline-none focus:ring-0"
+        className="w-full dark:text-textWhite dark:bg-secondary border-[1px] border-lightBorder rounded-s-sm border-r-0 dark:border-darkBorder leading-none text-gray-700 p-3 text-md focus:outline-none focus:ring-0"
         placeholder={placeholder}
         value={value}
         onChange={onChange}

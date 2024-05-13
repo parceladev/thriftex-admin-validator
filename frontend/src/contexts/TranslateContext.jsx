@@ -107,10 +107,10 @@ i18n.use(initReactI18next).init({
         records: 'data',
         'Add Validator': 'Tambah Validator',
         'Edit Brand': 'Edit Merek',
-        'Add Brand': 'Tambah Brand',
+        'Add Brand': 'Tambah Merek',
         'Block User': 'Blokir Pengguna',
         'Unblock User': 'Actifkan Pengguna',
-        'Friendly Reminder': 'Peringatan',
+        'Friendly Reminder': 'Peringatan Penting!',
 
         // Details
         'Legit Check Detail': 'Detail Legit',
@@ -139,6 +139,17 @@ i18n.use(initReactI18next).init({
         'Brand Logo': 'Logo Merek',
         'Brand Name': 'Nama Merek',
         'Add New Brand Name': 'Tambah Nama Merek Baru',
+        'Blocking means that the user cannot log in again and access the all of feature':
+          'Pemblokiran berarti pengguna tidak dapat login lagi dan membatasi akses seluruh fitur.',
+        'Once you delete the data, it can’t be restored again, are you sure to delete the data?':
+          'Sekali data dihapus tidak dapat dikembalikan lagi, yakin ingin menghapus data?',
+        'Yes, confirm': 'Ya, Konfirmasi',
+        'Image Logo Brand': 'Gambar Logo Merek',
+        'Validator brand changed successfully':
+          'Merek validator berhasil diubah',
+        'Validator brand failed to change': 'Merek validator gagal diubah',
+        'Select Brand': 'Pilih Merek',
+        'Changes Brand Validator': 'Ubah Merek Validator',
 
         // Dashboard Admin
         'Total Legit Check': 'Total Produk Legit',
@@ -146,6 +157,9 @@ i18n.use(initReactI18next).init({
         'Total Validators': 'Total Penilai Produk',
         'Total Checked': 'Total Tervalidasi',
         'Total Pending': 'Total Tertunda',
+        'Full Name': 'Nama Lengkap',
+        'Required': 'Diperlukan',
+        'Create Account': 'Buat Akun',
 
         // Tables
         DONE: 'SELESAI',

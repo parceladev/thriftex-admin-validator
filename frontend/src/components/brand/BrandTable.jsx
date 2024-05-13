@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faCaretRight,
+  faEllipsisVertical,
+} from '@fortawesome/free-solid-svg-icons';
 import ModalAddBrand from './ModalAddBrand';
 import ModalDeleteBrand from './ModalDeleteBrand';
 import { SearchTable, TablePagination, AddButton } from '../generals';
 import { fetchBrands } from '../../utils/brand-api-service';
 import ModalEditBrand from './ModalEditBrand';
 import { useTranslation } from 'react-i18next';
+import { EllipsisButton, DeleteButton, EditButton } from '../generals/';
 
 const BrandTable = () => {
   const { t } = useTranslation();
@@ -19,6 +24,7 @@ const BrandTable = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
   const [brandToDelete, setBrandToDelete] = useState(null);
   const [brandToEdit, setBrandToEdit] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,6 +87,14 @@ const BrandTable = () => {
     }
   };
 
+  const toggleDropdown = (index) => {
+    if (openDropdownId === index) {
+      setOpenDropdownId(null);
+    } else {
+      setOpenDropdownId(index);
+    }
+  };
+
   const openModalAddBrand = () => {
     setIsModalAddOpen(true);
   };
@@ -136,7 +150,7 @@ const BrandTable = () => {
           <div className="flex items-center gap-4 rounded-md ">
             <SearchTable
               typeInput="text"
-              placeholder="Search Item ID"
+              placeholder="Search Brand"
               value={searchTerm}
               onChange={handleSearchChange}
               onClick={handleSearch}
@@ -225,26 +239,36 @@ const BrandTable = () => {
                   {formatDate(item.created_at)}
                 </td>
                 <td className="flex justify-center gap-2 px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  <button
-                    type="button"
-                    onClick={() => openModalDeleteBrand(item.id)}
-                    aria-label="Delete"
-                  >
-                    <FontAwesomeIcon
-                      icon={faTrashCan}
-                      className="w-5 h-5 text-gray-500 hover:text-red-600"
+                  <div className="relative">
+                    <EllipsisButton
+                      onClick={() => toggleDropdown(index)}
+                      icon={
+                        openDropdownId === index ? faXmark : faEllipsisVertical
+                      }
                     />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openModalEditBrand(item.id)}
-                    aria-label="Edit"
-                  >
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      className="w-5 h-5 text-gray-500 hover:text-yellow-500"
-                    />
-                  </button>
+                    {openDropdownId === index && (
+                      <div className="absolute -top-2 z-10 flex right-4">
+                        <ul className="flex flex-col justify-start items-start text-gray-700 border border-gray-200 shadow-lg dark:border-darkBorder bg-primary dark:bg-darkButton">
+                          <DeleteButton
+                            isActive={item.is_active}
+                            onClick={() => openModalDeleteBrand(item.id)}
+                            ariaLabel="Delete"
+                          />
+                          <EditButton
+                            itemId={item.id}
+                            onClick={() => openModalEditBrand(item.id)}
+                            ariaLabel="Edit"
+                          />
+                        </ul>
+                        <div>
+                          <FontAwesomeIcon
+                            icon={faCaretRight}
+                            className="w-10 h-10 -mt-1 -ml-4 text-primary dark:text-darkBorder bg-none dark:bg-none"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

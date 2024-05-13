@@ -7,10 +7,16 @@ import {
   AddButton,
   EllipsisButton,
   BlockButton,
+  EditButton,
 } from '../generals';
 import { fetchAllValidator } from '../../utils/users_api-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPenToSquare,
+  faCaretRight,
+  faXmark,
+  faEllipsisVertical,
+} from '@fortawesome/free-solid-svg-icons';
 import ModalEditValidatorBrand from './ModalEditValidatorBrand';
 import { useTranslation } from 'react-i18next';
 
@@ -27,7 +33,6 @@ const ValidatorTable = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [brandToEdit, setBrandToEdit] = useState(null);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 
   useEffect(() => {
@@ -45,7 +50,6 @@ const ValidatorTable = () => {
 
       if (response.data && response.data.data) {
         const apiData = response.data;
-        console.log(apiData);
         setData(apiData.data);
         setFilteredData(apiData.data);
         setTotalRecords(apiData.total_data);
@@ -105,9 +109,9 @@ const ValidatorTable = () => {
     setIsModalBlockOpen(false);
   };
 
-  const openModalEditBrand = (id) => {
+  const openModalEditBrand = (validatorId) => {
     setIsModalEditOpen(true);
-    setBrandToEdit(id);
+    setSelectedUserId(validatorId);
   };
 
   const closeModalEdit = () => {
@@ -115,8 +119,13 @@ const ValidatorTable = () => {
   };
 
   const toggleDropdown = (index) => {
-    setOpenDropdownId(openDropdownId === index ? null : index);
+    if (openDropdownId === index) {
+      setOpenDropdownId(null);
+    } else {
+      setOpenDropdownId(index);
+    }
   };
+
   const blockValidator = (validatorId, isActive) => {
     setSelectedUserId(validatorId);
     setIsModalBlockOpen(true);
@@ -167,7 +176,7 @@ const ValidatorTable = () => {
           <div className="flex items-center gap-4 rounded-md ">
             <SearchTable
               typeInput="text"
-              placeholder="Search Item ID"
+              placeholder="Search Validator"
               value={searchTerm}
               onChange={handleSearchChange}
               onClick={handleSearch}
@@ -206,13 +215,13 @@ const ValidatorTable = () => {
                 scope="col"
                 className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                {t('Id')}
+                {t('Brand')}
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
               >
-                {t('Brand')}
+                {t('Id')}
               </th>
               <th
                 scope="col"
@@ -254,8 +263,8 @@ const ValidatorTable = () => {
                 >
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </th>
-                <td className="px-6 py-4 text-center">{item.id}</td>
                 <td className="px-6 py-4 text-center">{item.brand_name}</td>
+                <td className="px-6 py-4 text-center">{item.id}</td>
                 <td className="px-6 py-4">
                   {item.username} {renderUserStatus(item.is_active)}
                 </td>
@@ -265,33 +274,38 @@ const ValidatorTable = () => {
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
                   <div className="relative">
-                    <EllipsisButton onClick={() => toggleDropdown(index)} />
+                    <EllipsisButton
+                      onClick={() => toggleDropdown(index)}
+                      icon={
+                        openDropdownId === index ? faXmark : faEllipsisVertical
+                      }
+                    />
                     {openDropdownId === index && (
-                      <div className="absolute right-0 z-10 p-2 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <ul className="flex flex-col items-start text-gray-700 ">
+                      <div className="absolute -top-2 z-10 flex right-10">
+                        <ul className="flex flex-col items-start text-gray-700 border border-gray-200 shadow-lg dark:border-darkBorder bg-primary dark:bg-darkButton">
                           <li className="w-full">
                             <BlockButton
                               isActive={item.is_active}
                               onClick={() =>
                                 blockValidator(item.id, item.is_active)
                               }
+                              ariaLabel="Block"
                             />
                           </li>
                           <li className="w-full">
-                            <button
-                              type="button"
+                            <EditButton
+                              itemId={item.id}
                               onClick={() => openModalEditBrand(item.id)}
-                              aria-label="Edit"
-                              className="flex justify-center w-full gap-3 p-3 font-sans font-light text-yellow-500 cursor-pointer hover:bg-gray-100 text-md"
-                            >
-                              <FontAwesomeIcon
-                                className="w-5 h-5"
-                                icon={faPenToSquare}
-                              />
-                              {t('Edit Brand')}
-                            </button>
+                              ariaLabel="Edit"
+                            />
                           </li>
                         </ul>
+                        <div>
+                          <FontAwesomeIcon
+                            icon={faCaretRight}
+                            className="w-10 h-10 -mt-1 -ml-4 text-primary dark:text-darkBorder bg-none dark:bg-none"
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
@@ -311,7 +325,7 @@ const ValidatorTable = () => {
       <ModalEditValidatorBrand
         isOpen={isModalEditOpen}
         onClose={closeModalEdit}
-        brandId={brandToEdit}
+        validatorId={selectedUserId}
       />
       <TablePagination
         htmlFor="itemsPerPage"

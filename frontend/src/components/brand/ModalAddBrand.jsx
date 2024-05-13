@@ -68,7 +68,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
           <div className="p-4 bg-primary dark:bg-secondary">
             <div className="sm:flex sm:items-start">
               <div className="flex flex-col w-full gap-6 p-3 text-left">
-                <div className="flex items-center justify-between w-full pb-3 border-b">
+                <div className="flex items-center justify-between w-full pb-3 border-b dark:border-darkBorder">
                   <h3
                     className="text-xl font-medium text-textBlack dark:text-textWhite"
                     id="modal-title"
@@ -100,7 +100,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         required
                         placeholder={t('Add New Brand Name')}
                         onChange={handleBrandNameChange}
-                        className="block w-full px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none bg-primary dark:bg-secondary border-lightBorder dark:darkBorder focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                        className="block w-full dark:border-darkBorder px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none bg-primary dark:bg-secondary border-lightBorder dark:darkBorder focus:outline-none focus:ring-black focus:border-black sm:text-sm"
                       />
                     </div>
                   </div>
@@ -117,7 +117,7 @@ const ModalAddBrand = ({ isOpen, onClose }) => {
                         name="file-upload"
                         type="file"
                         onChange={handleFileChange}
-                        className="w-full text-sm text-gray-500 border rounded-md file:mr-4 file:py-2 file:px-4 bg-primary dark:bg-secondary border-lightBorder dark:darkBorder file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        className="w-full text-sm cursor-pointer dark:border-darkBorder text-gray-500 border rounded-md file:mr-4 file:py-2 file:px-4 bg-primary dark:bg-secondary border-lightBorder dark:darkBorder file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                       />
                     </div>
                   </div>
