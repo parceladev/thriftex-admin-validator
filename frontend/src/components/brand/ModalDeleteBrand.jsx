@@ -1,8 +1,11 @@
 import React from 'react';
 import { IoCloseSharp } from 'react-icons/io5';
 import { deleteBrand } from '../../utils/brand-api-service';
+import { useTranslation } from 'react-i18next';
 
 const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
+  const { t } = useTranslation();
+
   const handleDelete = async () => {
     try {
       const response = await deleteBrand(brandId);
@@ -40,12 +43,12 @@ const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
                     className="text-xl font-medium leading-6 text-textBlack dark:text-textWhite"
                     id="modal-title"
                   >
-                    Friendly Reminder
+                    {t('Friendly Reminder')}
                   </h3>
                   <button
                     onClick={onClose}
                     type="button"
-                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5  inline-flex items-center"
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-textWhite hover:text-gray-900 rounded-lg text-sm p-1.5  inline-flex items-center"
                     data-modal-toggle="popup-modal"
                   >
                     <IoCloseSharp size={24} />
@@ -53,15 +56,16 @@ const ModalDeleteBrand = ({ isOpen, onClose, brandId, onDeleteAccount }) => {
                 </div>
                 <div className="p-5 h-full text-center">
                   <p className="font-sans font-thin text-[16px] max-w-[340px] mx-auto mb-5">
-                    Once you delete the data, it can’t be restored again, are
-                    you sure to delete the data?
+                    {t(
+                      'Once you delete the data, it can’t be restored again, are you sure to delete the data?'
+                    )}
                   </p>
                   <button
                     onClick={handleDelete}
                     type="button"
-                    className="bg-darkButton text-textWhite dark:bg-LightButton py-4 rounded-sm mt-3 w-full"
+                    className="bg-darkButton dark:hover:bg-gray-700 text-textWhite dark:bg-LightButton py-4 rounded-sm mt-3 w-full"
                   >
-                    Yes, confirm
+                    {t('Yes, confirm')}
                   </button>
                 </div>
               </div>

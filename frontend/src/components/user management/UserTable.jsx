@@ -235,26 +235,6 @@ const UserTable = () => {
                   {formatDate(item.created_at)}
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900 whitespace-nowrap">
-                  {/* <div className="relative">
-                    <EllipsisButton
-                      onClick={() => toggleDropdown(index)}
-                      icon={
-                        openDropdownId === index ? faXmark : faEllipsisVertical
-                      }
-                    />
-                    {openDropdownId === index && (
-                      <div className="absolute right-0 z-10 w-48 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
-                        <ul className="text-gray-700">
-                          <li className="flex justify-center">
-                            <BlockButton
-                              isActive={item.is_active}
-                              onClick={() => blockUser(item.id, item.is_active)}
-                            />
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div> */}
                   <div className="relative">
                     <EllipsisButton
                       onClick={() => toggleDropdown(index)}
