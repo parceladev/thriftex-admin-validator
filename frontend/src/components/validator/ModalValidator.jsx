@@ -3,8 +3,11 @@ import { IoCloseSharp } from 'react-icons/io5';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { fetchAddValidator } from '../../utils/auth-api-service';
 import { fetchBrands } from '../../utils/brand-api-service';
+import { useTranslation } from 'react-i18next';
 
 const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
+  const { t } = useTranslation();
+
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -54,11 +57,11 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
     fetchAddValidator(
       userData,
       (data) => {
-        alert('Registration Successful', data);
+        alert('Registration Validator Successfully', data);
         window.location.reload();
       },
       (message) => {
-        alert('Registration Failed:', message);
+        alert('Registration Validator Failed:', message);
         window.location.reload();
       }
     );
@@ -90,7 +93,7 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                   className="text-xl font-medium text-textBlack dark:text-textWhite"
                   id="modal-title"
                 >
-                  Add Validator
+                  {t('Add Validator')}
                 </h3>
                 <button
                   onClick={onClose}
@@ -107,10 +110,10 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                       htmlFor="full-name"
                       className="block w-full font-medium text-md"
                     >
-                      Full name
+                      {t('Full Name')}
                       <span className="text-textBlack dark:text-textWhite">
                         {' '}
-                        (Required)
+                        ({t('Required')})
                       </span>
                     </label>
                     <div className="w-full mt-1">
@@ -132,9 +135,10 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                       htmlFor="email"
                       className="block w-full font-medium text-md"
                     >
-                      Email{' '}
+                      {t('Email')}
                       <span className="text-textBlack dark:text-textWhite">
-                        (Required)
+                        {' '}
+                        ({t('Required')})
                       </span>
                     </label>
                     <div className="w-full mt-1">
@@ -156,9 +160,10 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                       htmlFor="password"
                       className="block w-full font-medium text-md"
                     >
-                      Password{' '}
+                      {t('Password')}
                       <span className="text-textBlack dark:text-textWhite">
-                        (Required)
+                        {' '}
+                        ({t('Required')})
                       </span>
                     </label>
                     <div className="relative w-full mt-1">
@@ -197,10 +202,10 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                       htmlFor="confirm-password"
                       className="block w-full font-medium text-md"
                     >
-                      Confirm Password
+                      {t('Confirm Password')}
                       <span className="text-textBlack dark:text-textWhite">
                         {' '}
-                        (Required)
+                        ({t('Required')})
                       </span>
                     </label>
                     <div className="relative w-full mt-1">
@@ -239,10 +244,10 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                       htmlFor="brand"
                       className="block w-full font-medium text-md"
                     >
-                      Brand{' '}
+                      {t('Brand')}
                       <span className="text-textBlack dark:text-textWhite">
                         {' '}
-                        (Required)
+                        ({t('Required')})
                       </span>
                     </label>
                     <div className="w-full mt-1">
@@ -276,9 +281,9 @@ const ModalValidator = ({ isOpen, onClose, onCreateAccount }) => {
                 <div className="mt-5">
                   <button
                     type="submit"
-                    className="flex items-center justify-center w-full py-3 text-center text-textWhite bg-lightButton dark:bg-darkButton dark:text-textWhite"
+                    className="flex items-center uppercase justify-center w-full py-3 text-center text-textWhite bg-lightButton dark:bg-darkButton dark:text-textWhite"
                   >
-                    CREATE ACCOUNT
+                    {t('Create Account')}
                   </button>
                 </div>
               </form>

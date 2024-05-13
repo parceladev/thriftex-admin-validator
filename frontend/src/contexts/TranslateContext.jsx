@@ -157,6 +157,9 @@ i18n.use(initReactI18next).init({
         'Total Validators': 'Total Penilai Produk',
         'Total Checked': 'Total Tervalidasi',
         'Total Pending': 'Total Tertunda',
+        'Full Name': 'Nama Lengkap',
+        'Required': 'Diperlukan',
+        'Create Account': 'Buat Akun',
 
         // Tables
         DONE: 'SELESAI',
