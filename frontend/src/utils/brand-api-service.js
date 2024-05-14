@@ -96,7 +96,6 @@ export const updateBrand = async (brandId, brandName, selectedFile) => {
     const token = getAccessToken();
     const formData = new FormData();
 
-    // Append data to FormData
     formData.append('id', brandId);
     formData.append('brand_name', brandName);
 
@@ -104,7 +103,6 @@ export const updateBrand = async (brandId, brandName, selectedFile) => {
       formData.append('foto', selectedFile);
     }
 
-    // Log form data
     for (var pair of formData.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }

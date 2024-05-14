@@ -20,17 +20,17 @@ const ModalEditBrand = ({ isOpen, onClose, brandId }) => {
   const handleSave = async () => {
     try {
       const updateResult = await updateBrand(brandId, brandName, selectedFile);
-      alert('Update Success:', updateResult);
-      // onClose();
+      console.log(updateResult.message);
+      alert(updateResult.message);
       window.location.reload();
     } catch (error) {
-      alert('Update Failed:', error);
+      alert(error);
     }
   };
   if (!isOpen) return null;
 
   return (
-    <div className="fixed -inset-40 z-50 overflow-y-auto">
+    <div className="fixed z-50 overflow-y-auto -inset-40">
       <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-opacity-50 bg-secondary dark:bg-primary dark:bg-opacity-10"></div>
@@ -51,7 +51,7 @@ const ModalEditBrand = ({ isOpen, onClose, brandId }) => {
               <div className="flex flex-col gap-5 mt-8">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="brand-name" className="block w-full">
-                    {t('Brand Name')}
+                    {t('Brand Name')} (Required)
                   </label>
                   <input
                     type="text"
@@ -64,7 +64,7 @@ const ModalEditBrand = ({ isOpen, onClose, brandId }) => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="file-upload" className="block w-full">
-                    {t('Image Logo Brand')}
+                    {t('Image Logo Brand')} (Required)
                   </label>
                   <input
                     type="file"
