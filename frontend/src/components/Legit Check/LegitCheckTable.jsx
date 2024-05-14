@@ -237,12 +237,6 @@ const LegitCheckTable = () => {
               >
                 {t('Date Uploaded')}
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-center border border-lightBorder dark:border-darkBorder"
-              >
-                {t('Validator')}
-              </th>
             </tr>
           </thead>
           <tbody className="border border-lightBorder dark:border-darkBorder">
@@ -285,7 +279,6 @@ const LegitCheckTable = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-center">{item.submit_time}</td>
-                <td className="px-6 py-4 text-center">{item.user_id}</td>
               </tr>
             ))}
           </tbody>
