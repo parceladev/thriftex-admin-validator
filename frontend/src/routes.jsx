@@ -22,7 +22,7 @@ import {
   SettingsValidatorPage,
 } from "./pages/validator";
 
-import { SignInPage } from "./pages/auth";
+import { ContactUsPage, SignInPage } from "./pages/auth";
 
 export const routes = [
   {
@@ -97,6 +97,11 @@ export const routes = [
         name: "Sign In",
         path: "/sign-in",
         element: <SignInPage />,
+      },
+      {
+        name: "Contact Us",
+        path: "/contact-us",
+        element: <ContactUsPage />,
       },
     ],
   },

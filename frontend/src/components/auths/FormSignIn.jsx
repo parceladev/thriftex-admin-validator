@@ -28,7 +28,7 @@ const FormSignIn = () => {
         }
       }, 1000);
     } else {
-      console.log('No token found');
+      console.error('No token found');
     }
   };
 
@@ -70,11 +70,11 @@ const FormSignIn = () => {
 
   return (
     <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
-      <a href="/" className="flex justify-center mb-4 w-full">
+      <a href="/" className="flex justify-center w-full mb-4">
         <img
           src="../../../public/generals/thriftex-logo.jpg"
           alt="Logo"
-          className="w-44 h-10"
+          className="h-10 w-44"
         />
       </a>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -90,8 +90,8 @@ const FormSignIn = () => {
             placeholder="Your Password"
           />
         </div>
-        <a href="/forgot-password" className="mb-4 text-sm font-bold">
-          Forgot password?
+        <a href="/auth/contact-us" className="my-4 text-sm font-bold underline">
+          Contact Admin?
         </a>
         <button
           type="submit"
@@ -102,7 +102,7 @@ const FormSignIn = () => {
         >
           Sign In
         </button>
-        <BorderButton />
+        {/* <BorderButton /> */}
       </form>
       {errorMessage && (
         <p className="mt-2 text-center text-red-500">{errorMessage}</p>
