@@ -62,13 +62,12 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex bg-opacity-50 bg-secondary dark:bg-primary dark:bg-opacity-5"
-      style={{ overflowY: 'auto' }}
     >
       <div
-        className="relative bg-white dark:bg-secondary w-full max-w-[800px] m-auto flex-col flex rounded-lg shadow-lg"
-        style={{ maxHeight: '90vh', overflowY: 'auto' }}
+        className="relative bg-white dark:bg-secondary w-full max-w-[800px] m-auto flex-col flex rounded-lg shadow-lg overflow-hidden"
+        style={{ maxHeight: '90vh'}}
       >
-        <div className="flex flex-row items-center justify-between p-4 ml-4 border-b-2">
+        <div className="flex flex-row sticky top-0 items-center justify-between p-4 ml-4 border-b-2 z-10 rounded-t-lg ">
           <p className="text-2xl font-bold text-sans text-textBlack dark:text-textWhite">
             {t('Legit Check Detail')}
           </p>
@@ -87,7 +86,7 @@ const ItemDetaiLegitAdmin = ({ isOpen, onClose, item }) => {
           </div>
         )}
         {!loading && !error && itemDetails && (
-          <div className="p-8">
+          <div className="p-8 overflow-y-auto rounded-lg" style={{ maxHeight: 'calc(90vh - 64px)' }}>
             <InputModal
               onChange={handleChange}
               label={t('Id Legit')}

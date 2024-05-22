@@ -82,7 +82,7 @@ const FormSignIn = () => {
           <InputEmail
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Username or Email"
+            placeholder="Your Email"
           />
           <InputPassword
             value={password}

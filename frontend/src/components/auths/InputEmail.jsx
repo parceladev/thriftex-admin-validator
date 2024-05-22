@@ -10,7 +10,7 @@ const InputEmail = (props) => {
         value={value}
         required
         onChange={onChange}
-        placeholder="Username or Email"
+        placeholder="Your Email"
         className="w-full p-4 text-black placeholder-black border border-black rounded-md"
       />
     </div>
