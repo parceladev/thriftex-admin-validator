@@ -71,11 +71,7 @@ const FormSignIn = () => {
   return (
     <div className="flex flex-col gap-5 sm:p-12 p-9 rounded-2xl text-black bg-white w-full sm:w-[475px]">
       <a href="/" className="flex justify-center w-full mb-4">
-        <img
-          src="../../../public/generals/thriftex-logo.jpg"
-          alt="Logo"
-          className="h-10 w-44"
-        />
+        <p className="flex gap-1 font-semibold text-2xl tracking-[6px] dark:text-white">REAL<span className="pr-1 text-2xl">n</span>FAKE</p>
       </a>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
