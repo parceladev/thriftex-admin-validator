@@ -32,7 +32,9 @@ const Sidebar = () => {
       <div className="flex flex-col w-full h-full">
         <div className="flex flex-col w-full">
           <div className="p-5 mb-12">
-            <img src="../../../public/generals/thriftex-logo.jpg" alt="Logo" />
+          <a href="/user/home">
+            <p className="flex gap-1 font-semibold text-2xl tracking-[6px] dark:text-white">REAL<span className="pr-1 text-2xl">n</span>FAKE</p>
+          </a>
           </div>
           <p className="pl-3 text-md text-sans">
             {isValidator ? 'Menu Validator' : 'Menu Admin'}

@@ -130,7 +130,7 @@ const ItemDetailModal = ({ isOpen, onClose, item }) => {
                     <img
                       src={image.file_path}
                       alt={`Item Photo ${index}`}
-                      className="object-cover rounded w-30 h-30"
+                      className="object-cover rounded w-32 h-32"
                     />
                   </Zoom>
                 ))}
